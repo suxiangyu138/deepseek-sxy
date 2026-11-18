@@ -337,7 +337,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">DeepSeek_sxy</span><span class="tsub" id="topVer">v1.6.3</span></div>
+    <div class="title"><span id="chatTitle">DeepSeek_sxy</span><span class="tsub" id="topVer">v1.6.4</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -409,7 +409,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">作者 苏巷雨</span> · <span id="verLabel">v1.6.3</span></div>
+    <div class="author"><span data-i18n="author">作者 苏巷雨</span> · <span id="verLabel">v1.6.4</span></div>
   </div>
 </aside>
 
@@ -565,7 +565,7 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.6.3</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.6.4</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">有问题、建议或者想反馈，直接发邮件，或者在仓库里提 issue。</div>
@@ -581,7 +581,7 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='1.6.3';
+const APP_VER='1.6.4';
 const T_BOOT=performance.now();
 const I18N={
 zh:{
@@ -1020,7 +1020,8 @@ function renderList(){
 }
 let menuConv=null;
 function openConvMenu(c){
-  menuConv=c;closeAll();
+  menuConv=c;
+  document.querySelectorAll('.sheet').forEach(e=>e.classList.remove('show'));
   $('#convSheetTitle').textContent=c.title||t('newTitle');
   $('#csPin').textContent=c.pinned?t('unpin'):t('pin');
   $('#csLock').textContent=c.locked?t('unlock'):t('lock');
@@ -1029,8 +1030,8 @@ function openConvMenu(c){
   del.textContent=prot?t('protectedHint'):t('delChat');
   $('#convSheet').classList.add('show');$('#mask').classList.add('show');
 }
-$('#csPin').onclick=()=>{if(!menuConv)return;menuConv.pinned=!menuConv.pinned;save(true);renderList();closeAll();toast(menuConv.pinned?t('pin'):t('unpin'))};
-$('#csLock').onclick=()=>{if(!menuConv)return;menuConv.locked=!menuConv.locked;save(true);renderList();closeAll();toast(menuConv.locked?t('lock'):t('unlock'))};
+$('#csPin').onclick=()=>{if(!menuConv)return;menuConv.pinned=!menuConv.pinned;save(true);renderList();closeSheets();toast(menuConv.pinned?t('pin'):t('unpin'))};
+$('#csLock').onclick=()=>{if(!menuConv)return;menuConv.locked=!menuConv.locked;save(true);renderList();closeSheets();toast(menuConv.locked?t('lock'):t('unlock'))};
 $('#csDel').onclick=()=>{
   if(!menuConv)return;
   if(menuConv.pinned||menuConv.locked){toast(t('protectedHint'));return}
@@ -1038,7 +1039,7 @@ $('#csDel').onclick=()=>{
   const id=menuConv.id;
   S.convs=S.convs.filter(x=>x.id!==id);selected.delete(id);
   if(S.current===id)S.current=S.convs[0]?S.convs[0].id:null;
-  menuConv=null;save(true);renderAll();updateSelbar();closeAll();
+  menuConv=null;save(true);renderAll();updateSelbar();closeSheets();
 };
 function updateSelbar(){
   const bar=$('#selbar');if(!bar)return;
@@ -1679,6 +1680,7 @@ async function loadBalance(force){
   }
 }
 function closeAll(){document.querySelectorAll('.sheet,.drawer').forEach(e=>e.classList.remove('show'));$('#mask').classList.remove('show')}
+function closeSheets(){document.querySelectorAll('.sheet').forEach(e=>e.classList.remove('show'));$('#mask').classList.remove('show')}
 function renderInstallGuide(){
   const el=$('#installGuide');if(!el)return;
   el.innerHTML=esc(t_('install1'))+' <span id="curUrl">'+esc(location.href)+'</span><br>'+esc(t_('install2'))+'<br>'+esc(t_('install3'))+'<br>'+esc(t_('install4'));
@@ -1700,7 +1702,10 @@ function openModels(){
 /* ---------- events ---------- */
 $('#btnMenu').onclick=openDrawer;
 $('#btnNew').onclick=()=>newConv();
-$('#mask').onclick=closeAll;
+$('#mask').onclick=()=>{
+  if(document.querySelector('.sheet.show')){closeSheets();return}
+  closeAll();
+};
 $('#balance').onclick=()=>loadBalance(true);
 function openAppear(){
   const m=S.settings.fsMsg||13.5,c=S.settings.fsCode||11.5;
