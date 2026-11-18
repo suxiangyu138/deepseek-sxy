@@ -5,10 +5,8 @@
 ```mermaid
 flowchart TB
     subgraph PWA["手机浏览器 · PWA 安装到桌面"]
-        direction TB
         subgraph HTML["index.html"]
-            direction TB
-            V["视图层：会话列表 / 消息流 / 输入区"]
+                V["视图层：会话列表 / 消息流 / 输入区"]
             R["渲染层：自写 Markdown → HTML"]
             S["状态层：localStorage 单一状态树"]
             N["网络层：fetch + ReadableStream（SSE）"]
