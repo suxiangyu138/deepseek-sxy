@@ -153,7 +153,27 @@ tools/sync.sh        同步到手机目录
 
 ---
 
-## 七、隐私
+## 七、自建部署
+
+整套系统是纯静态的，任意静态服务器都能托管。推荐的目录结构：
+
+```
+/app/       网页版，iOS 用户添加到主屏幕用的就是它
+/download/  下载页、APK、release.json
+```
+
+Nginx 需要处理四件事：
+
+1. `/app/index.html` 与 `/app/sw.js` 设为 `Cache-Control: no-store`，避免 CDN 缓存旧版本
+2. `.apk` 的 MIME 设为 `application/vnd.android.package-archive`
+3. CSP 至少放行 `connect-src 'self' https://api.deepseek.com data: blob:`，同时允许内联脚本与样式
+4. APK 使用版本化文件名 `app-X.Y.Z.apk`，`release.json` 指向它，避免固定文件名被 CDN 缓存旧包
+
+`app-latest.apk` 可以保留作固定入口，但页面不要依赖它。
+
+---
+
+## 八、隐私
 
 - API Key、会话、记忆、图片全部保存在本机
 - 唯一的外部请求是 `api.deepseek.com`
@@ -164,7 +184,7 @@ tools/sync.sh        同步到手机目录
 
 ---
 
-## 八、已知限制
+## 九、已知限制
 
 - 自定义服务商、云同步不在规划内，保持「单 Key、单机、单用户」
 - 网页版依赖 Service Worker，偶尔会缓存旧版本，需要强制刷新
@@ -173,7 +193,7 @@ tools/sync.sh        同步到手机目录
 
 ---
 
-## 九、版本与发布
+## 十、版本与发布
 
 当前 v1.8.6，versionCode 5。
 
@@ -183,9 +203,11 @@ tools/sync.sh        同步到手机目录
 
 每次发布在 Release 附 APK 与 SHA-256，变更记录见 [CHANGELOG.md](CHANGELOG.md)。
 
+APK 命名约定为 `DeepSeek_sxy-X.Y.Z.apk`，站点上另存一份 `app-X.Y.Z.apk` 供下载页引用。
+
 ---
 
-## 十、许可
+## 十一、许可
 
 本项目以 [MIT](LICENSE) 协议开源，可自由使用、修改、分发，保留版权声明即可。
 
