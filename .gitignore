@@ -1,2 +1,4 @@
-.DS_Store
-*.log
+apk/build/
+apk/r8.jar
+apk/*.jks
+apk/*.keystore

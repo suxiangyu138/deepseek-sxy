@@ -1,78 +1,171 @@
 # DeepSeek_sxy
 
-一个只做日常对话的轻量 DeepSeek 客户端：不启动本地引擎、不跑任务、不读写文件，打开就是聊天界面。
+> 一个自带 API Key、数据只存本机的 DeepSeek 桌面级聊天客户端。
+> 针对 2026 年 11 月 DeepSeek C 端限额政策重新设计：不再受每日对话额度、4 万字单次输入、7 天闲置会话失效的限制。
 
-- 形态：单页 PWA（HTML + CSS + 原生 JS），无需构建
-- 后端：只有 `api.deepseek.com`，一把 DeepSeek API Key 跑通全部功能
-- 部署：静态文件 + Chrome「安装应用」，或直接本地打开
+---
 
-## 功能
+## 一、为什么做这个项目
 
-| 能力 | 实现方式 |
-|---|---|
-| 对话 | Chat Completions 流式（SSE） |
-| 深度思考 | `thinking: {type: enabled}`，`reasoning_content` 折叠展示 |
-| 联网搜索 | 服务端工具 `deepseek_web_search`（思考模式下为深度思考搜索） |
-| 阅读链接 | 服务端工具 `deepseek_read_url`，消息里的链接自动读 |
-| 图片识别 | `deepseek-flash` 原生视觉，`image_url` 内联 base64，前端压缩到 1600px |
-| 模型切换 | `deepseek-flash`（V4.1 Flash）/ `deepseek-v4-pro`（V4 Pro） |
-| 时间感知 | 每轮 `latest_reminder` + system 提示中的精确时间 |
-| 用量计费 | `stream_options.include_usage`，按 token 与高峰/空闲价计算 |
-| 离线 | Service Worker 预缓存外壳，断网/停引擎也能打开 |
-| 记忆 | 侧边栏模块；开启后每次对话注入长期记忆；聊天里说「记住…」「添加记忆…」或陈述偏好会自动归纳保存 |
-| 个性化 | 一段模板文本，开启后每次对话注入系统提示，优先于默认风格 |
-| 批量删除 | 会话列表「管理」进入多选，勾选后一次删除 |
-| 双语 | 设置里切换中文 / English，界面、日期、提示词同步切换 |
-| 外观 | 正文字号、代码字号可调，实时生效 |
-| 代码 | 语法高亮、最大高度限制、独立滚动 |
-| 渲染 | 表格、任务列表、嵌套列表、图片、KaTeX 公式 |
-| 指标 | 每条回答的缓存命中率、输出速率；顶栏上下文占用 / 1M |
-| 余额 | 顶栏显示当前 Key 余额，点击刷新 |
-| 连接测试 | 设置里一键校验 Key、列出可用模型与余额 |
-| 附件 | 拍照、相册、文件（PDF/Office 走 Files API 解析） |
-| 编辑重发 | 用户消息可编辑，保存后截断后续内容并重新回答 |
+2026 年 11 月 16 日，DeepSeek 因算力紧张，对 App 与网页版的免费用户收紧用量：
 
-## 计费
+- 单次输入上限压缩到约 4 万字
+- 存续超过 7 天且无活跃交互的长对话不再支持接续
+- 每日对话额度另设上限，触顶后提示「因服务器繁忙，使用额度已达上限」
+- 同期服务稳定性下降，10 月以来多次出现对话服务与 API 中断
 
-单价（元 / 百万 token，来自官方模型页）：
+而官方的 API 通道是独立规则：按量计费、独立的并发限制，不受 C 端限额影响，模型能力一致，上下文同样支持 1M。
 
-| 模型 | 输入（缓存命中） | 输入（未命中） | 输出 |
-|---|---|---|---|
-| deepseek-flash | 0.02 / 0.04 | 1 / 2 | 4 / 8 |
-| deepseek-v4-pro | 0.15 / 0.30 | 4.5 / 9 | 13.5 / 27 |
+这就产生了一个明显的错位：**同一个模型，走 App 会被限流，走 API 不会。**
 
-斜杠前为空闲时段，斜杠后为高峰时段（北京时间工作日 9:00–12:00、14:00–18:00，不含法定节假日；节假日未在代码内判定）。
+DeepSeek_sxy 就是为这个错位准备的客户端：把官方 API 包装成一个接近官方 App 的对话体验，用自己的 Key 直接调用，绕开 C 端配额，同时把对话数据留在本机。
 
-每条回答下方显示：输入 token（含缓存命中）、输出 token、思考 token、本次费用；抽屉底部显示本对话累计用量与费用。
+| 维度 | 官方 App / 网页版 | DeepSeek_sxy |
+|---|---|---|
+| 每日额度 | 有上限，触顶停用 | 无，按 API 用量计费 |
+| 单次输入 | 约 4 万字 | 受模型 1M 上下文限制 |
+| 闲置会话 | 7 天未活跃可能无法接续 | 永久保留，存在本机 |
+| 上下文 | 受限 | 1M，实时显示占用 |
+| 数据 | 存在服务端 | 只存本机浏览器或 APK |
+| 联网/思考 | 服务端能力 | 同一个服务端工具接口 |
 
-## 本地运行
+参考报道：
+
+- [DeepSeek 成立以来首次限制免费用户（21 世纪经济报道）](https://m.21jingji.com/article/20261118/9955e792673f679b6ba6e29b0fae1c91.html)
+- [DeepSeek 开始限制使用（光明网）](https://m.gmw.cn/2026-11/16/content_1304586782.htm)
+- [调用量冲上全球第一，DeepSeek 开始对免费用户限额（央广网）](https://tech.cnr.cn/techds/20261117/t20261117_527875325.shtml)
+
+---
+
+## 二、它是什么
+
+一个纯前端的单页应用，同时提供两种形态：
+
+- **网页 / PWA**：一个 HTML 文件加本地资源，装到桌面即可用
+- **安卓 APK**：用 WebView 封装，资源打包进安装包，启动不依赖任何服务
+
+没有后端、没有账号体系、没有中转服务器。所有请求从设备直连 `api.deepseek.com`。
+
+### 功能
+
+- 流式对话，深度思考（`thinking`），联网搜索与阅读链接（服务端工具）
+- 图片理解、PDF/Word/PPT 文档解析（Files API）
+- 记忆与个性化：聊天里说「记住…」自动归纳，长期生效
+- 表格、KaTeX 公式、代码高亮、任务列表、Mermaid 之外的 Markdown 子集
+- 会话搜索、置顶、锁定、批量删除、草稿、分页渲染
+- 每条回答的缓存命中率、输出速率、费用；顶栏实时上下文占用（/1M）
+- 中英双语、字号与整体界面缩放
+- 全量备份导出/导入，支持导入 DeepSeek 官方导出的会话 JSON
+
+---
+
+## 三、架构
+
+```mermaid
+flowchart TB
+    subgraph Client["客户端（PWA / APK）"]
+        UI["index.html：视图 · 渲染 · 状态 · 网络 · 计费"]
+        STORE["localStorage：会话 / 记忆 / 设置"]
+        IMG["Cache Storage：图片缓存"]
+        SHELL["sw.js：离线外壳（PWA）"]
+    end
+
+    API["api.deepseek.com"]
+    SUB1["/chat/completions · 流式"]
+    SUB2["/beta/chat/completions · 续写"]
+    SUB3["/files · 文档解析"]
+    SUB4["/user/balance · 余额"]
+
+    UI --> STORE
+    UI --> IMG
+    SHELL -.离线.-> UI
+    UI -->|"HTTPS 直连，Key 只在本机"| API
+    API --- SUB1
+    API --- SUB2
+    API --- SUB3
+    API --- SUB4
+```
+
+---
+
+## 四、快速开始
+
+### 方式一：安装 APK
+
+1. 从 Releases 下载最新的 `DeepSeek_sxy-*.apk`
+2. 安装时允许「未知来源」
+3. 打开后填入自己的 DeepSeek API Key（可在 [platform.deepseek.com](https://platform.deepseek.com/api_keys) 申请）
+4. 设置里「测试连接」确认 Key 与余额
+
+### 方式二：网页版
+
+项目是静态资源，任意静态服务器都能跑：
 
 ```bash
-# 任意静态服务器即可
 cd app && python3 -m http.server 8899
 ```
 
-手机 Chrome 打开 `http://127.0.0.1:8899`，菜单里「安装应用 / 添加到主屏幕」。
+浏览器打开后「安装应用 / 添加到主屏幕」。
 
-`tools/sync.sh` 把 `app/` 同步到手机的可访问目录 `/sdcard/Download/DSH-Go/light`。
+---
 
-## 目录
+## 五、从源码构建 APK
+
+不依赖 Android Studio 与 Gradle，在 ARM64 的 Ubuntu 上也能出包：
+
+```bash
+apt install -y openjdk-17-jdk-headless aapt apksigner zipalign android-sdk-platform-23
+# R8 用于生成 dex
+curl -O https://maven.aliyun.com/repository/google/com/android/tools/r8/9.5.33/r8-9.5.33.jar
+
+aapt package -f -M AndroidManifest.xml -S res -A app -I android.jar -F base.apk
+javac -source 8 -target 8 -bootclasspath android.jar -d classes src/**/MainActivity.java
+java -cp r8.jar com.android.tools.r8.D8 --min-api 24 --lib android.jar --output dex classes/**/*.class
+# 把 classes.dex 塞进 APK，对齐、签名
+zipalign -f 4 base.apk aligned.apk
+apksigner sign --ks release.jks --out DeepSeek_sxy.apk aligned.apk
+```
+
+---
+
+## 六、项目结构
 
 ```
-app/           前端源码（index.html 全部逻辑内联）
-tools/sync.sh  同步到手机目录
-README.md      本文件
-ARCHITECTURE.md 架构与接口契约
-CHANGELOG.md   迭代记录
+app/                 前端全部资源（单文件 index.html + sw.js + KaTeX）
+download/            下载页与隐私说明
+docs/                架构、发行、封装方案
+apk/                 Android 清单、Java 源码、图标资源
+tools/serve.py       本地开发服务器（带 no-store 与 APK MIME）
+tools/sync.sh        同步到手机目录
 ```
 
-## 作者
+---
 
-- 邮箱：suxiangyu_dev@foxmail.com
-- GitHub / Gitee：suxiangyu138
+## 七、隐私
 
-## 隐私
+- API Key、会话、记忆、图片全部保存在本机
+- 唯一的外部请求是 `api.deepseek.com`
+- 没有统计埋点，没有账号，没有云端同步
+- 卸载应用即删除全部数据
 
-- API Key、对话、图片都只存在手机浏览器本地（localStorage），不上传第三方
-- 请求只发往 `api.deepseek.com`
-- 导出的任何内容都不包含 Key
+详见 [docs/PRIVACY.md](download/privacy.html)。
+
+---
+
+## 八、已知限制
+
+- 自定义服务商、云同步不在规划内，保持「单 Key、单机、单用户」
+- 网页版依赖 Service Worker，偶尔会缓存旧版本，需要强制刷新
+- APK 目前使用系统 WebView，极旧机型上玻璃效果会退化
+
+---
+
+## 九、版本
+
+当前 v1.8.5。每次发布在 Releases 附 APK 与校验值，变更记录见 [CHANGELOG.md](CHANGELOG.md)。
+
+---
+
+## 十、许可
+
+个人项目，暂未开源，保留所有权利。第三方组件：KaTeX（MIT）。
