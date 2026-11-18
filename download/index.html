@@ -73,7 +73,7 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
 <div class="bg"><i></i><i></i></div>
 <div class="wrap">
 
-  <span class="badge" id="badge"><span class="dot"></span>v1.8.5 · 开源 · 长期可用</span>
+  <span class="badge" id="badge"><span class="dot"></span>v1.8.6 · 开源 · 长期可用</span>
 
   <div class="hero">
     <div>
@@ -94,7 +94,7 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
 
     <div class="panel">
       <h2>版本信息</h2>
-      <div class="row"><span>版本</span><b id="pVer">1.8.5</b></div>
+      <div class="row"><span>版本</span><b id="pVer">1.8.6</b></div>
       <div class="row"><span>大小</span><b id="pSize">约 1.2 MB</b></div>
       <div class="row"><span>系统</span><b id="pReq">Android 8.0+</b></div>
       <div class="row"><span>更新</span><b id="pDate">2026-11-19</b></div>
@@ -193,7 +193,9 @@ document.getElementById('copySha').addEventListener('click',function(){
 fetch('release.json',{cache:'no-cache'}).then(function(r){return r.ok?r.json():null}).then(function(j){
   if(!j)return;
   if(j.url)document.getElementById('dl').setAttribute('href',j.url);
-  if(j.version){document.getElementById('pVer').textContent=j.version;document.getElementById('badge').innerHTML='<span class="dot"></span>v'+j.version+' · 开源 · 长期可用'}
+  if(j.version){document.getElementById('pVer').textContent=j.version;
+  var bd=document.getElementById('badge');
+  if(bd)bd.innerHTML=FORCE_IOS?'<span class="dot"></span>iOS 预览模式':'<span class="dot"></span>v'+j.version+' · 开源 · 长期可用'}
   if(j.size)document.getElementById('pSize').textContent=j.size;
   if(j.requires)document.getElementById('pReq').textContent=j.requires;
   if(j.updated)document.getElementById('pDate').textContent=j.updated;
