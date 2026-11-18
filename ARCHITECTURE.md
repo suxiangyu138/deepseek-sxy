@@ -124,6 +124,16 @@ data: [DONE]
 
 CSS 变量集中控制配色与字号：`--fs-msg`、`--fs-code` 由设置里的滑块写入 `document.documentElement`，主题只有墨色/纸色两套，无彩色主色。代码高亮用单次正则扫描（注释、字符串、数字、标识符）生成 `tk-*` 类，不做完整语法分析。
 
+## 5.4 渲染与指标
+
+Markdown 自写解析：先抽出围栏代码、行内代码与数学公式占位，转义后再处理行内样式，最后按行分块（表格、列表、引用、标题、段落）。数学用 KaTeX（`output: html`，字体随包本地缓存），结果按公式字符串缓存。
+
+指标：`usage` 来自 `stream_options.include_usage`；缓存命中率 = `prompt_cache_hit_tokens / prompt_tokens`；输出速率 = 可见输出 token / 首字到末字耗时；上下文占用取最近一次请求的 `prompt_tokens + completion_tokens`，除以 1M 窗口。
+
+## 5.5 启动路径
+
+`applyLang()` → 读取 localStorage → 渲染会话 → 首帧。KaTeX 不在启动链里：只有渲染到公式时才注入脚本（约 275KB），加载完成后扫描 `.math-raw[data-tex]` 原地替换，避免打断流式输出或滚动位置。启动耗时记在 `window.__bootMs`，关于页展示。
+
 ## 6. 渲染
 
 自写 Markdown 子集：围栏代码块（带语言标签与复制）、行内代码、粗斜体、删除线、标题、有序/无序列表、引用、分割线、链接。先整体转义再按行分块，避免 XSS。
