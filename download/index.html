@@ -82,9 +82,13 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
         <h1>DeepSeek_sxy</h1>
       </div>
       <p class="sub">自带 API Key、数据只存本机的 DeepSeek 客户端。绕开 C 端每日对话额度与 4 万字输入限制，上下文 1M，界面与能力对齐官方手机客户端。</p>
-      <div class="actions">
+      <div class="actions" id="androidActions">
         <a class="btn" id="dl" href="app-latest.apk" download>下载 Android 安装包</a>
         <a class="btn ghost" href="#install">安装说明</a>
+      </div>
+      <div class="actions" id="iosActions" style="display:none">
+        <a class="btn" href="https://suxiangyu.top/app/" target="_blank" rel="noopener">打开网页版</a>
+        <button class="btn ghost" id="copyApp">复制链接</button>
       </div>
     </div>
 
@@ -96,7 +100,7 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
       <div class="row"><span>更新</span><b id="pDate">2026-11-19</b></div>
       <div class="row" style="border-bottom:0;padding-bottom:4px"><span>SHA-256</span><b>校验</b></div>
       <div class="sha">
-        <code id="sha">589b2767…b296a9ea</code>
+        <code id="sha">07e4fc7c…b6f728f</code>
         <button class="copy" id="copySha">复制</button>
       </div>
     </div>
@@ -121,9 +125,19 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
     </div>
   </section>
 
+  <section id="iosInstall" style="display:none">
+    <h3 class="sec">iOS 安装</h3>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div><b>用 Safari 打开网页版</b><p>点上方「打开网页版」，必须是 Safari，微信内置浏览器不行。</p></div></div>
+      <div class="step"><div class="num">2</div><div><b>点底部分享按钮</b><p>地址栏右侧或底部的方框箭头图标，菜单里选「添加到主屏幕」。</p></div></div>
+      <div class="step"><div class="num">3</div><div><b>确认添加</b><p>桌面出现 DeepSeek_sxy 图标，点开即全屏使用，首次进入填自己的 API Key。</p></div></div>
+    </div>
+  </section>
+
   <section>
     <h3 class="sec">开源与下载</h3>
     <div class="links">
+      <a class="link" href="https://suxiangyu.top/app/" target="_blank" rel="noopener">网页版 <span>iOS / 桌面</span></a>
       <a class="link" href="https://gitee.com/suxiangyu138/deepseek-sxy" target="_blank" rel="noopener">Gitee 源码 <span>↗</span></a>
       <a class="link" href="https://github.com/suxiangyu138/deepseek-sxy" target="_blank" rel="noopener">GitHub 源码 <span>↗</span></a>
       <a class="link" href="https://gitee.com/suxiangyu138/deepseek-sxy/releases" target="_blank" rel="noopener">Gitee Release <span>APK</span></a>
@@ -151,7 +165,21 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
 </div>
 
 <script>
-var FULL_SHA='589b27675722d4a5919d4f37dbf7a86cfb80fcda7118739b88f98671b296a9ea';
+var IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+if(IS_IOS){
+  document.getElementById('androidActions').style.display='none';
+  document.getElementById('iosActions').style.display='flex';
+  document.getElementById('iosInstall').style.display='block';
+  document.getElementById('install').style.display='none';
+  document.getElementById('pReq').textContent='iOS 16+ / Android 8.0+';
+}
+document.getElementById('copyApp').addEventListener('click',function(){
+  var t=this,u='https://suxiangyu.top/app/';
+  function ok(){t.textContent='已复制';setTimeout(function(){t.textContent='复制链接'},1200)}
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(u).then(ok).catch(fb)}else fb();
+  function fb(){var a=document.createElement('textarea');a.value=u;a.style.position='fixed';a.style.opacity=0;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}a.remove()}
+});
+var FULL_SHA='07e4fc7cabd117b4248d04849d03601d7104f8671f7fdd4c72ba059cdb6f728f';
 function shortSha(s){return s.slice(0,8)+'…'+s.slice(-8)}
 document.getElementById('sha').textContent=shortSha(FULL_SHA);
 document.getElementById('copySha').addEventListener('click',function(){

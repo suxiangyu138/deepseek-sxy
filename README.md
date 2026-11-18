@@ -7,7 +7,7 @@
 
 **源码**：[Gitee](https://gitee.com/suxiangyu138/deepseek-sxy) · [GitHub](https://github.com/suxiangyu138/deepseek-sxy)
 
-![version](https://img.shields.io/badge/version-1.8.5-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B-black)
+![version](https://img.shields.io/badge/version-1.8.6-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B-black)
 
 ---
 
@@ -103,7 +103,13 @@ flowchart TB
 3. 打开后填入自己的 DeepSeek API Key（可在 [platform.deepseek.com](https://platform.deepseek.com/api_keys) 申请）
 4. 设置里「测试连接」确认 Key 与余额
 
-### 方式二：网页版
+### 方式二：iOS
+
+Safari 打开 [网页版](https://suxiangyu.top/app/)，点底部「分享」→「添加到主屏幕」，桌面会出现图标，全屏使用。
+
+不需要开发者账号，也不需要审核。代价是没有推送，且 iOS 会定期清理长期未访问站点的缓存，重新打开时会自动重新拉取。
+
+### 方式三：网页版（桌面 / 其它浏览器）
 
 项目是静态资源，任意静态服务器都能跑：
 
@@ -163,12 +169,13 @@ tools/sync.sh        同步到手机目录
 - 自定义服务商、云同步不在规划内，保持「单 Key、单机、单用户」
 - 网页版依赖 Service Worker，偶尔会缓存旧版本，需要强制刷新
 - APK 目前使用系统 WebView，极旧机型上玻璃效果会退化
+- iOS 只能通过 Safari 添加到主屏幕，没有独立安装包；缓存可能被系统清理，重新打开会重新加载
 
 ---
 
 ## 九、版本与发布
 
-当前 v1.8.5，versionCode 4。
+当前 v1.8.6，versionCode 5。
 
 - 下载页：[suxiangyu.top/download](https://suxiangyu.top/download/)
 - Gitee Release：[releases](https://gitee.com/suxiangyu138/deepseek-sxy/releases)

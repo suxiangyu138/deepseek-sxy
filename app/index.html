@@ -11,6 +11,7 @@
 <title>DeepSeek_sxy</title>
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
 <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" href="icon-192.png">
 <style>
@@ -41,6 +42,8 @@ a{color:inherit;text-decoration:none}
 .bg i{position:absolute;display:block;border-radius:50%;filter:blur(44px);opacity:.28}
 body.scrolling .top{-webkit-backdrop-filter:none;backdrop-filter:none}
 body.busy .bg i{animation-play-state:paused}
+html.ios .bg i{animation:none}
+html.ios #input,html.ios #perText,html.ios #editText,html.ios .field input,html.ios .mini{font-size:16px}
 .bg i:nth-child(1){width:56vw;height:56vw;left:-14vw;top:-8vh;background:radial-gradient(circle,#e2e2e6,transparent 70%);animation:drift1 40s ease-in-out infinite alternate}
 .bg i:nth-child(2){width:50vw;height:50vw;right:-16vw;top:22vh;background:radial-gradient(circle,#e8e8ec,transparent 70%);animation:drift2 46s ease-in-out infinite alternate}
 .bg i:nth-child(3){width:44vw;height:44vw;left:18vw;bottom:-10vh;background:radial-gradient(circle,#ededf0,transparent 70%);animation:drift3 44s ease-in-out infinite alternate}
@@ -360,7 +363,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">DeepSeek_sxy</span><span class="tsub" id="topVer">v1.8.5</span></div>
+    <div class="title"><span id="chatTitle">DeepSeek_sxy</span><span class="tsub" id="topVer">v1.8.6</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -436,7 +439,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">作者 苏巷雨</span> · <span id="verLabel">v1.8.5</span></div>
+    <div class="author"><span data-i18n="author">作者 苏巷雨</span> · <span id="verLabel">v1.8.6</span></div>
   </div>
 </aside>
 
@@ -619,7 +622,7 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.8.5</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.8.6</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">有问题、建议或者想反馈，直接发邮件，或者在仓库里提 issue。</div>
@@ -641,8 +644,10 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='1.8.5';
+const APP_VER='1.8.6';
 const T_BOOT=performance.now();
+const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+if(IS_IOS)document.documentElement.classList.add('ios');
 const I18N={
 zh:{
   appName:'DeepSeek_sxy',newChat:'新建对话',memory:'记忆',personal:'个性化',chats:'对话',manage:'管理',done:'完成',
@@ -1261,13 +1266,22 @@ function exportName(m){
   const d=new Date(),p=n=>String(n).padStart(2,'0');
   return base+'-'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes());
 }
-function saveBlob(name,text,type){
-  const blob=new Blob([text],{type});
+function downloadBlob(blob,name){
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download=name;a.style.display='none';
   document.body.appendChild(a);a.click();
   setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},1500);
 }
+function saveAny(blob,name){
+  if(IS_IOS&&navigator.canShare&&window.File){
+    try{
+      const f=new File([blob],name,{type:blob.type||'application/octet-stream'});
+      if(navigator.canShare({files:[f]})){navigator.share({files:[f]}).catch(()=>downloadBlob(blob,name));return}
+    }catch(e){}
+  }
+  downloadBlob(blob,name);
+}
+function saveBlob(name,text,type){saveAny(new Blob([text],{type}),name)}
 function exportMarkdown(){
   if(!exportMsg)return;
   saveBlob(exportName(exportMsg)+'.md',exportMsg.content||'','text/markdown;charset=utf-8');
@@ -1955,9 +1969,7 @@ $('#ivSave').onclick=async()=>{
   const src=$('#ivImg').dataset.src||$('#ivImg').src;
   try{
     const blob=await (await fetch(src)).blob();
-    const a=document.createElement('a');const url=URL.createObjectURL(blob);
-    a.href=url;a.download='image-'+Date.now()+'.jpg';document.body.appendChild(a);a.click();
-    setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},1500);
+    saveAny(blob,'image-'+Date.now()+'.jpg');
     toast(t('saved')||'已保存');
   }catch(e){toast(t('imgFail'))}
 };
@@ -2001,7 +2013,7 @@ $('#btnHelp').onclick=()=>{closeAll();$('#helpSheet').classList.add('show');$('#
 $('#expMd').onclick=exportMarkdown;
 $('#expTxt').onclick=exportText;
 $('#expPdf').onclick=exportPdf;
-$('#btnAbout').onclick=()=>{closeAll();$('#aboutVer').textContent='v'+APP_VER;$('#bootInfo').textContent=(window.__bootMs?('启动 '+window.__bootMs+' ms'):'');$('#aboutSheet').classList.add('show');$('#mask').classList.add('show')};
+$('#btnAbout').onclick=()=>{closeAll();$('#aboutVer').textContent='v'+APP_VER;$('#bootInfo').textContent=(window.__bootMs?('启动 '+window.__bootMs+' ms'):'')+(IS_IOS?' · 建议添加到主屏幕，长期不用可能被系统清缓存':'');$('#aboutSheet').classList.add('show');$('#mask').classList.add('show')};
 $('#btnForceUpdate').onclick=async()=>{
   if(!confirm(t('forceAsk')))return;
   toast(t('updating'),4000);
