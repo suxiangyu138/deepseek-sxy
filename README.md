@@ -1,7 +1,13 @@
 # DeepSeek_sxy
 
-> 一个自带 API Key、数据只存本机的 DeepSeek 桌面级聊天客户端。
+> 一个自带 API Key、数据只存本机的 DeepSeek 客户端。
 > 针对 2026 年 11 月 DeepSeek C 端限额政策重新设计：不再受每日对话额度、4 万字单次输入、7 天闲置会话失效的限制。
+
+**下载**：[官方下载页](https://suxiangyu.top/download/) · [Gitee Release](https://gitee.com/suxiangyu138/deepseek-sxy/releases) · [GitHub Release](https://github.com/suxiangyu138/deepseek-sxy/releases)
+
+**源码**：[Gitee](https://gitee.com/suxiangyu138/deepseek-sxy) · [GitHub](https://github.com/suxiangyu138/deepseek-sxy)
+
+![version](https://img.shields.io/badge/version-1.8.5-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B-black)
 
 ---
 
@@ -148,7 +154,7 @@ tools/sync.sh        同步到手机目录
 - 没有统计埋点，没有账号，没有云端同步
 - 卸载应用即删除全部数据
 
-详见 [docs/PRIVACY.md](download/privacy.html)。
+详见 [隐私说明](https://suxiangyu.top/download/privacy.html)。
 
 ---
 
@@ -160,12 +166,24 @@ tools/sync.sh        同步到手机目录
 
 ---
 
-## 九、版本
+## 九、版本与发布
 
-当前 v1.8.5。每次发布在 Releases 附 APK 与校验值，变更记录见 [CHANGELOG.md](CHANGELOG.md)。
+当前 v1.8.5，versionCode 4。
+
+- 下载页：[suxiangyu.top/download](https://suxiangyu.top/download/)
+- Gitee Release：[releases](https://gitee.com/suxiangyu138/deepseek-sxy/releases)
+- GitHub Release：[releases](https://github.com/suxiangyu138/deepseek-sxy/releases)
+
+每次发布在 Release 附 APK 与 SHA-256，变更记录见 [CHANGELOG.md](CHANGELOG.md)。
 
 ---
 
 ## 十、许可
 
-个人项目，暂未开源，保留所有权利。第三方组件：KaTeX（MIT）。
+本项目以 [MIT](LICENSE) 协议开源，可自由使用、修改、分发，保留版权声明即可。
+
+第三方组件：
+
+- KaTeX — MIT
+- 其余依赖均为 Android 系统自带组件
+
