@@ -5,6 +5,10 @@
 小修小补不单独升版本号，先记在「未发布」里；只在正式发布时升一次版本（1.4 → 1.5），并同步 `app/index.html` 里的 `APP_VER`。
 缓存不再依赖版本号：`sw.js` 用固定缓存名 + stale-while-revalidate，刷新即可拿到最新资源。
 
+## 文档
+
+- 新增 `docs/PACKAGING.md`：Capacitor 封装 APK、签名、版本号、GitHub Release 与 Actions 的完整技术方案
+
 ## v1.6.0 — 2026-11-18 23:33
 
 - 附件菜单：拍照、相册、文件三个入口
