@@ -6,9 +6,9 @@
 <meta name="theme-color" content="#ffffff">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="苏巷雨的DeepSeek">
+<meta name="apple-mobile-web-app-title" content="DeepSeek_sxy">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>苏巷雨的DeepSeek</title>
+<title>DeepSeek_sxy</title>
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -63,7 +63,9 @@ html[data-theme="dark"] .bg i:nth-child(3){background:radial-gradient(circle,#13
 .top.scrolled{background:var(--panel);-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);border-bottom-color:var(--line)}
 .iconbtn{width:36px;height:36px;display:grid;place-items:center;border-radius:10px;color:var(--fg)}
 .iconbtn:active{background:var(--soft)}
-.title{flex:1;text-align:center;font-size:12.5px;font-weight:600;letter-spacing:.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px}
+.title{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;padding:0 6px;line-height:1.2}
+.title #chatTitle{max-width:100%;font-size:12.5px;font-weight:600;letter-spacing:.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tsub{font-size:8.5px;color:var(--muted);opacity:.65;letter-spacing:.5px;margin-top:1px;font-variant-numeric:tabular-nums}
 .bal{font-size:10.5px;color:var(--muted);padding:4px 8px;border-radius:999px;border:1px solid var(--line);background:transparent;white-space:nowrap;flex:0 0 auto;margin-right:2px;letter-spacing:.2px;font-variant-numeric:tabular-nums}
 .bal:active{border-color:var(--fg);color:var(--fg)}
 .usagebar{flex:0 0 auto;text-align:center;font-size:9.5px;color:var(--muted);letter-spacing:.2px;padding:0 12px;height:0;overflow:hidden;font-variant-numeric:tabular-nums}
@@ -78,6 +80,7 @@ html[data-theme="dark"] .bg i:nth-child(3){background:radial-gradient(circle,#13
 .avatar img{width:100%;height:100%;object-fit:cover;display:block}
 .empty h1{font-size:16px;margin:10px 0 0;font-weight:600;letter-spacing:.2px}
 .empty p{margin:0;font-size:11.5px;color:var(--muted)}
+.homever{margin-top:16px;font-size:10px;letter-spacing:.6px;color:var(--muted);opacity:.55}
 .msg{display:flex;margin:0 0 16px;font-size:var(--fs-msg);animation:rise .24s cubic-bezier(.2,.8,.2,1)}
 @keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .msg.user{justify-content:flex-end}
@@ -148,6 +151,8 @@ td{min-width:72px;max-width:280px;white-space:normal}
 .srclist a span{color:var(--muted);font-size:10px;margin-left:6px}
 .memsaved{margin-top:8px;font-size:10px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;border:1px dashed var(--line)}
 .memsaved::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--muted)}
+.tailtext{white-space:pre-wrap}
+.s-tail .codeblock{margin-top:8px}
 .typing{display:inline-block;width:6px;height:14px;background:var(--fg);vertical-align:-3px;animation:blink 1s steps(2) infinite;border-radius:2px}
 @keyframes blink{50%{opacity:0}}
 .composer{flex:0 0 auto;padding:6px 12px calc(10px + env(safe-area-inset-bottom));position:relative;z-index:4}
@@ -200,6 +205,9 @@ td{min-width:72px;max-width:280px;white-space:normal}
 .conv.on{background:var(--soft)}
 .conv .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .conv .del{color:var(--muted);font-size:14px;padding:0 4px}
+.conv .more{color:var(--muted);font-size:16px;padding:0 4px;letter-spacing:1px}
+.conv .tag{font-size:9px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 5px;margin-left:2px;flex:0 0 auto}
+.conv .tag+ .tag{margin-left:0}
 .conv .ck{width:16px;height:16px;flex:0 0 auto;border-radius:50%;border:1.5px solid var(--line);display:none}
 .conv.sel .ck{display:block}
 .conv.sel.on .ck{border-color:var(--fg);background:radial-gradient(circle,var(--fg) 45%,transparent 48%)}
@@ -279,6 +287,22 @@ a.tile{text-decoration:none}
 .helprow{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:12px;line-height:1.65}
 .helprow:last-child{border-bottom:0}
 .helprow b{flex:0 0 64px;font-weight:600;font-size:11.5px;color:var(--fg)}
+#printRoot{display:none}
+@media print{
+  html,body{position:static!important;overflow:visible!important;height:auto!important;background:#fff!important;color:#000!important}
+  .app,.bg,.drawer,.sheet,.mask,.toast,.install,#boot{display:none!important}
+  #printRoot{display:block!important;max-width:760px;margin:0 auto;padding:20px;font-size:12pt;line-height:1.7}
+  #printRoot h1{font-size:16pt;margin:0 0 14px}
+  #printRoot h2{font-size:14pt}
+  #printRoot h3{font-size:13pt}
+  #printRoot pre{white-space:pre-wrap;word-break:break-word;border:1px solid #ddd;padding:8px;background:#fafafa}
+  #printRoot code{background:#f4f4f4}
+  #printRoot table{border-collapse:collapse;width:100%}
+  #printRoot th,#printRoot td{border:1px solid #ccc;padding:4px 6px}
+  #printRoot .codeblock{break-inside:avoid}
+  #printRoot .actions,#printRoot .meta,#printRoot .sources,#printRoot .memsaved{display:none!important}
+  #printRoot img{max-width:100%}
+}
 @media (prefers-reduced-motion:reduce){.bg i{animation:none}.msg{animation:none}}
 </style>
 </head>
@@ -313,7 +337,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title" id="chatTitle">苏巷雨的DeepSeek</div>
+    <div class="title"><span id="chatTitle">DeepSeek_sxy</span><span class="tsub" id="topVer">v1.6.3</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -351,7 +375,7 @@ a.tile{text-decoration:none}
 
 <div class="mask" id="mask"></div>
 <aside class="drawer" id="drawer">
-  <div class="dhead"><span class="dbrand" data-i18n="appName">苏巷雨的DeepSeek</span></div>
+  <div class="dhead"><span class="dbrand" data-i18n="appName">DeepSeek_sxy</span></div>
   <div class="modules">
     <button class="mod" id="modMemory">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3a5 5 0 0 0-5 5v1a4 4 0 0 0 0 8v1a3 3 0 0 0 6 0V5a2 2 0 0 0-1-2z"/><path d="M12 3a5 5 0 0 1 5 5v1a4 4 0 0 1 0 8v1a3 3 0 0 1-6 0"/></svg>
@@ -375,7 +399,7 @@ a.tile{text-decoration:none}
       <span data-i18n="help">使用说明</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <a class="tile" id="linkRepo" href="https://gitee.com/suxiangyu138/suxiangyu-deepseek" target="_blank" rel="noopener">
+    <a class="tile" id="linkRepo" href="https://gitee.com/suxiangyu138/deepseek-sxy" target="_blank" rel="noopener">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9 19c-4 1.5-4-2.5-6-3m12 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.1-1.5 6.1-6.7A5.2 5.2 0 0 0 18.8 5 4.9 4.9 0 0 0 18.7 1S17.5.6 15 2.6a12.3 12.3 0 0 0-6 0C6.5.6 5.3 1 5.3 1a4.9 4.9 0 0 0-.1 4A5.2 5.2 0 0 0 3.8 8.8c0 5.2 3.1 6.4 6.1 6.7a3.4 3.4 0 0 0-.9 2.6V22"/></svg>
       <span data-i18n="repo">仓库</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
@@ -385,7 +409,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">作者 苏巷雨</span> · <span id="verLabel">v1.6.0</span></div>
+    <div class="author"><span data-i18n="author">作者 苏巷雨</span> · <span id="verLabel">v1.6.3</span></div>
   </div>
 </aside>
 
@@ -407,6 +431,10 @@ a.tile{text-decoration:none}
       <button class="mini" id="btnTheme" style="flex:1">跟随系统</button>
       <button class="mini danger" id="btnClear" style="flex:1" data-i18n="clearAll">清空全部会话</button>
     </div>
+  </div>
+  <div class="field">
+    <label data-i18n="nickname">称呼（可选）</label>
+    <input id="inName" maxlength="16" data-i18n-ph="nicknamePh" placeholder="留空就只显示问候语">
   </div>
   <div class="field">
     <button class="mini" id="btnAppearance" style="width:100%" data-i18n="appearance">外观</button>
@@ -464,6 +492,43 @@ a.tile{text-decoration:none}
   </div>
 </div>
 
+<div class="sheet" id="welcomeSheet">
+  <div class="bar"></div>
+  <div class="about-head" style="margin-bottom:6px">
+    <img class="about-avatar" src="icon-192.png" alt="">
+    <div>
+      <div class="about-name" data-i18n="welcomeTitle">你好，我是 DeepSeek</div>
+      <div class="about-sub" data-i18n="welcomeSub">先告诉我怎么称呼你，之后都可以在设置里改</div>
+    </div>
+  </div>
+  <div class="field" style="margin-top:14px">
+    <input id="welcomeName" maxlength="16" data-i18n-ph="welcomePh" placeholder="你的称呼，可以留空">
+  </div>
+  <div style="display:flex;gap:8px">
+    <button class="mini" id="wlSkip" style="flex:1" data-i18n="skip">跳过</button>
+    <button class="primary" id="wlStart" style="flex:1" data-i18n="start">开始使用</button>
+  </div>
+</div>
+
+<div class="sheet" id="convSheet">
+  <div class="bar"></div>
+  <h2 id="convSheetTitle">对话</h2>
+  <button class="tile" id="csPin" style="margin-bottom:8px">置顶</button>
+  <button class="tile" id="csLock" style="margin-bottom:8px">锁定</button>
+  <button class="tile danger" id="csDel">删除对话</button>
+</div>
+
+<div class="sheet" id="exportSheet">
+  <div class="bar"></div>
+  <h2 data-i18n="exportTitle">导出这条回答</h2>
+  <div class="attach-grid">
+    <button class="abtn" id="expMd"><span>Markdown</span></button>
+    <button class="abtn" id="expTxt"><span data-i18n="exportTxt">纯文本</span></button>
+    <button class="abtn" id="expPdf"><span>PDF</span></button>
+  </div>
+  <div style="font-size:10.5px;color:var(--muted);line-height:1.8" data-i18n="exportHint">Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。</div>
+</div>
+
 <div class="sheet" id="editSheet">
   <div class="bar"></div>
   <h2 data-i18n="editTitle">编辑消息</h2>
@@ -500,7 +565,7 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.6.0</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.6.3</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">有问题、建议或者想反馈，直接发邮件，或者在仓库里提 issue。</div>
@@ -516,11 +581,11 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='1.6.0';
+const APP_VER='1.6.3';
 const T_BOOT=performance.now();
 const I18N={
 zh:{
-  appName:'苏巷雨的DeepSeek',newChat:'新建对话',memory:'记忆',personal:'个性化',chats:'对话',manage:'管理',done:'完成',
+  appName:'DeepSeek_sxy',newChat:'新建对话',memory:'记忆',personal:'个性化',chats:'对话',manage:'管理',done:'完成',
   selectAll:'全选',selected:'已选 ',delete:'删除',settings:'设置',save:'保存',paste:'粘贴',add:'添加',
   apiKeyLabel:'DeepSeek API Key（一个 Key 就能用全部功能）',theme:'主题',clearAll:'清空全部会话',
   themeAuto:'跟随系统',themeLight:'浅色',themeDark:'深色',language:'语言',
@@ -534,7 +599,7 @@ zh:{
   greetSub:'今天想聊点什么',userName:'苏巷雨',chatsEmpty:'还没有对话',
   gToday:'今天',gYesterday:'昨天',gWeek:'7 天内',gEarlier:'更早',
   metaIn:'输入',metaHit:'缓存命中',metaOut:'输出',metaThink:'思考',thisChat:'本对话',
-  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thought:'已深度思考',
+  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thought:'已深度思考',
   searchNow:'正在联网搜索：',openNow:'正在打开网页：',findNow:'正在网页内查找：',readNow:'正在阅读链接：',toolNow:'正在调用联网能力…',
   stopped:'（已停止）',netErr:'网络错误，请重试',reqFail:'请求失败（',keyBad:'API Key 无效或已过期',noBalance:'账户余额不足',
   tooOften:'请求太频繁或并发超限，稍后再试',genFail:'生成失败',
@@ -547,10 +612,10 @@ zh:{
   on:'开启 · ',onSet:'开启 · 已设置',onUnset:'开启 · 未设置',off:'已关闭',count:' 条',sec:' 秒）',
   modelFlash:'日常首选，快、便宜，支持图片',modelPro:'更强推理，复杂问题更稳，略慢略贵',
   installTitle:'装到桌面',install1:'用 Chrome 或 Edge 打开',install2:'右上角 ⋮ 菜单 →「安装应用」；没有这一项就选「添加到主屏幕」',
-  install3:'桌面出现「苏巷雨的DeepSeek」，点开即用',install4:'Chrome、Edge、部分国产浏览器都支持；微信/QQ 的内置浏览器装不了。',
+  install3:'桌面出现「DeepSeek_sxy」，点开即用',install4:'Chrome、Edge、部分国产浏览器都支持；微信/QQ 的内置浏览器装不了。',
   balance:'余额',balanceFail:'余额获取失败',balanceHint:'点击刷新余额',
   edit:'编辑',editTitle:'编辑消息',send:'发送',cancel:'取消',
-  appearance:'外观',fontSize:'正文字号',codeSize:'代码字号',help:'使用说明',repo:'仓库',author:'作者 苏巷雨',about:'关于作者',testConn:'测试连接',testing:'测试中…',keyOk:'连接正常',keyFail:'连接失败',
+  appearance:'外观',nickname:'称呼（可选）',nicknamePh:'留空就只显示问候语',welcomeTitle:'你好，我是 DeepSeek',welcomeSub:'先告诉我怎么称呼你，之后都可以在设置里改',welcomePh:'你的称呼，可以留空',skip:'跳过',start:'开始使用',fontSize:'正文字号',codeSize:'代码字号',help:'使用说明',repo:'仓库',author:'作者 苏巷雨',about:'关于作者',testConn:'测试连接',testing:'测试中…',keyOk:'连接正常',keyFail:'连接失败',
   aboutSub:'一个人写的小工具',email:'邮箱',version:'版本',copy:'复制',
   aboutNote:'有问题、建议或者想反馈，直接发邮件，或者在仓库里提 issue。',
   chatLabel:'对话',privacyLabel:'隐私',
@@ -563,7 +628,7 @@ zh:{
   note:'联网搜索、阅读链接、深度思考都由 DeepSeek 官方接口完成，不需要别的 Key。Key 和对话只存在本机浏览器，不经过任何第三方服务器。'
 },
 en:{
-  appName:"Suxiangyu's DeepSeek",newChat:'New chat',memory:'Memory',personal:'Persona',chats:'Chats',manage:'Manage',done:'Done',
+  appName:'DeepSeek_sxy',newChat:'New chat',memory:'Memory',personal:'Persona',chats:'Chats',manage:'Manage',done:'Done',
   selectAll:'Select all',selected:'Selected ',delete:'Delete',settings:'Settings',save:'Save',paste:'Paste',add:'Add',
   apiKeyLabel:'DeepSeek API Key (one key unlocks everything)',theme:'Theme',clearAll:'Clear all chats',
   themeAuto:'System',themeLight:'Light',themeDark:'Dark',language:'Language',
@@ -577,7 +642,7 @@ en:{
   greetSub:"What's on your mind",userName:'Suxiangyu',chatsEmpty:'No chats yet',
   gToday:'Today',gYesterday:'Yesterday',gWeek:'Previous 7 days',gEarlier:'Earlier',
   metaIn:'In',metaHit:'cached',metaOut:'Out',metaThink:'Thinking',thisChat:'This chat',
-  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thought:'Thought',
+  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',exportTitle:'Export this answer',exportTxt:'Plain text',exported:'Exported',exportShare:'Export',exportHint:'Markdown keeps formatting; plain text strips markers; PDF uses the system print dialog and pick Save as PDF.',pin:'Pin',updating:'Clearing cache…',updatedTo:'Updated to ',unpin:'Unpin',lock:'Lock',unlock:'Unlock',delChat:'Delete chat',protectedHint:'Pinned or locked chats cannot be deleted',tagPin:'Pinned',tagLock:'Locked',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thought:'Thought',
   searchNow:'Search: ',openNow:'Open: ',findNow:'Find: ',readNow:'Read: ',toolNow:'Web tools…',
   stopped:'(stopped)',netErr:'Network error, please retry',reqFail:'Request failed (',keyBad:'Invalid or expired API key',noBalance:'Insufficient balance',
   tooOften:'Too many requests, try again later',genFail:'Generation failed',
@@ -593,7 +658,7 @@ en:{
   install3:'Tap the new icon to open instantly',install4:'Chrome, Edge and most mobile browsers work; in-app browsers (WeChat/QQ) do not.',
   balance:'Balance',balanceFail:'Balance unavailable',balanceHint:'Tap to refresh balance',
   edit:'Edit',editTitle:'Edit message',send:'Send',cancel:'Cancel',
-  appearance:'Appearance',fontSize:'Text size',codeSize:'Code size',help:'Help',repo:'Repo',author:'By Suxiangyu',about:'About',testConn:'Test connection',testing:'Testing…',keyOk:'Connected',keyFail:'Connection failed',
+  appearance:'Appearance',nickname:'Nickname (optional)',nicknamePh:'Leave empty to show greeting only',welcomeTitle:"Hi, I'm DeepSeek",welcomeSub:'Tell me what to call you, you can change it later',welcomePh:'Your name, optional',skip:'Skip',start:'Start',fontSize:'Text size',codeSize:'Code size',help:'Help',repo:'Repo',author:'By Suxiangyu',about:'About',testConn:'Test connection',testing:'Testing…',keyOk:'Connected',keyFail:'Connection failed',
   aboutSub:'A small tool built by one person',email:'Email',version:'Version',copy:'Copy',
   aboutNote:'Questions, ideas or bugs? Send an email, or open an issue in the repo.',
   chatLabel:'Chat',privacyLabel:'Privacy',
@@ -628,7 +693,7 @@ function calcCost(model,u){
 }
 function fmtTok(v){v=v||0;return v>=10000?(v/1000).toFixed(1)+'k':String(v)}
 function fmtMoney(v){if(!v)return '¥0';return '¥'+(v<0.01?v.toFixed(4):v.toFixed(3))}
-const DEF={settings:{apiKey:'',theme:'auto',think:false,search:false,model:'deepseek-flash',memoryOn:true,personalOn:true,autoMem:true,lang:'zh',fsMsg:13.5,fsCode:11.5},convs:[],current:null,memories:[],personal:''};
+const DEF={settings:{apiKey:'',theme:'auto',think:false,search:false,model:'deepseek-flash',memoryOn:true,personalOn:true,autoMem:true,lang:'zh',fsMsg:13.5,fsCode:11.5,name:'',onboarded:false},convs:[],current:null,memories:[],personal:''};
 let S=load();
 let streamAbort=null,streaming=false,pending=[],pendingFiles=[],selectMode=false,selected=new Set();
 function load(){
@@ -929,24 +994,52 @@ function renderChips(){const m=modelOf(S.settings.model);$('#chipModel').textCon
 function renderList(){
   const box=$('#convlist');box.innerHTML='';
   if(!S.convs.length){box.innerHTML='<div style="padding:20px 12px;color:var(--muted);font-size:13px">'+esc(t('chatsEmpty'))+'</div>';updateSelbar();return}
-  const sorted=[...S.convs].sort((a,b)=>b.updatedAt-a.updatedAt);
+  const sorted=[...S.convs].sort((a,b)=>{
+    const pa=a.pinned?1:0,pb=b.pinned?1:0;
+    if(pa!==pb)return pb-pa;
+    return b.updatedAt-a.updatedAt;
+  });
   let last='';
   for(const c of sorted){
-    const g=groupOf(c.updatedAt);
+    const g=c.pinned?t('pin'):groupOf(c.updatedAt);
     if(g!==last){last=g;const d=document.createElement('div');d.className='group';d.textContent=g;box.appendChild(d)}
     const row=document.createElement('div');
     row.className='conv'+(c.id===S.current&&!selectMode?' on':'')+(selectMode?' sel':'')+(selected.has(c.id)?' on':'');
-    row.innerHTML='<span class="ck"></span><span class="t"></span><button class="del" aria-label="删除">×</button>';
-    row.querySelector('.t').textContent=c.title||'新对话';
+    row.innerHTML='<span class="ck"></span><span class="t"></span><button class="more" aria-label="more">⋯</button>';
+    row.querySelector('.t').textContent=c.title||t('newTitle');
+    if(c.pinned){const b=document.createElement('span');b.className='tag';b.textContent=t('tagPin');row.insertBefore(b,row.querySelector('.more'))}
+    if(c.locked){const b=document.createElement('span');b.className='tag';b.textContent=t('tagLock');row.insertBefore(b,row.querySelector('.more'))}
     row.onclick=()=>{
       if(selectMode){selected.has(c.id)?selected.delete(c.id):selected.add(c.id);renderList();updateSelbar();return}
       S.current=c.id;save(true);renderAll();closeAll();
     };
-    row.querySelector('.del').onclick=e=>{e.stopPropagation();if(confirm(t('delOne'))){S.convs=S.convs.filter(x=>x.id!==c.id);selected.delete(c.id);if(S.current===c.id)S.current=S.convs[0]?S.convs[0].id:null;save(true);renderAll();updateSelbar()}};
+    row.querySelector('.more').onclick=e=>{e.stopPropagation();openConvMenu(c)};
     box.appendChild(row);
   }
   updateSelbar();
 }
+let menuConv=null;
+function openConvMenu(c){
+  menuConv=c;closeAll();
+  $('#convSheetTitle').textContent=c.title||t('newTitle');
+  $('#csPin').textContent=c.pinned?t('unpin'):t('pin');
+  $('#csLock').textContent=c.locked?t('unlock'):t('lock');
+  const del=$('#csDel'),prot=!!(c.pinned||c.locked);
+  del.style.opacity=prot?'.45':'1';
+  del.textContent=prot?t('protectedHint'):t('delChat');
+  $('#convSheet').classList.add('show');$('#mask').classList.add('show');
+}
+$('#csPin').onclick=()=>{if(!menuConv)return;menuConv.pinned=!menuConv.pinned;save(true);renderList();closeAll();toast(menuConv.pinned?t('pin'):t('unpin'))};
+$('#csLock').onclick=()=>{if(!menuConv)return;menuConv.locked=!menuConv.locked;save(true);renderList();closeAll();toast(menuConv.locked?t('lock'):t('unlock'))};
+$('#csDel').onclick=()=>{
+  if(!menuConv)return;
+  if(menuConv.pinned||menuConv.locked){toast(t('protectedHint'));return}
+  if(!confirm(t('delOne')))return;
+  const id=menuConv.id;
+  S.convs=S.convs.filter(x=>x.id!==id);selected.delete(id);
+  if(S.current===id)S.current=S.convs[0]?S.convs[0].id:null;
+  menuConv=null;save(true);renderAll();updateSelbar();closeAll();
+};
 function updateSelbar(){
   const bar=$('#selbar');if(!bar)return;
   bar.classList.toggle('show',selectMode);
@@ -955,15 +1048,61 @@ function updateSelbar(){
   $('#selDel').style.opacity=selected.size?'1':'.45';
 }
 $('#btnSelect').onclick=()=>{selectMode=!selectMode;if(!selectMode)selected.clear();renderList();updateSelbar()};
-$('#selAll').onclick=()=>{if(selected.size===S.convs.length)selected.clear();else S.convs.forEach(c=>selected.add(c.id));renderList();updateSelbar()};
+$('#selAll').onclick=()=>{
+  const list=S.convs.filter(c=>!c.pinned&&!c.locked);
+  if(selected.size===list.length)selected.clear();else{selected.clear();list.forEach(c=>selected.add(c.id))}
+  renderList();updateSelbar();
+};
 $('#selDel').onclick=()=>{
   if(!selected.size)return;
-  if(!confirm(t('delMany')+selected.size+t('items')))return;
-  S.convs=S.convs.filter(c=>!selected.has(c.id));
+  const targets=S.convs.filter(c=>selected.has(c.id)&&!c.pinned&&!c.locked);
+  if(!targets.length){toast(t('protectedHint'));return}
+  if(!confirm(t('delMany')+targets.length+t('items')))return;
+  const ids=new Set(targets.map(c=>c.id));
+  S.convs=S.convs.filter(c=>!ids.has(c.id));
   if(S.current&&!S.convs.some(c=>c.id===S.current))S.current=S.convs[0]?S.convs[0].id:null;
   selected.clear();selectMode=false;save(true);renderAll();updateSelbar();
 };
 
+let exportMsg=null;
+function openExport(m){exportMsg=m;closeAll();$('#exportSheet').classList.add('show');$('#mask').classList.add('show')}
+function exportName(m){
+  const first=(m.content||'').split('\n').map(x=>x.trim()).find(Boolean)||'';
+  let base=first.replace(/^#+\s*/,'').replace(/[*`>#]/g,'').replace(/[\\/:*?"<>|]/g,'').trim().slice(0,24);
+  if(!base)base='answer';
+  const d=new Date(),p=n=>String(n).padStart(2,'0');
+  return base+'-'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes());
+}
+function saveBlob(name,text,type){
+  const blob=new Blob([text],{type});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=name;a.style.display='none';
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},1500);
+}
+function exportMarkdown(){
+  if(!exportMsg)return;
+  saveBlob(exportName(exportMsg)+'.md',exportMsg.content||'','text/markdown;charset=utf-8');
+  closeAll();toast(t('exported'));
+}
+function exportText(){
+  if(!exportMsg)return;
+  let out=plainText(exportMsg.content||'');
+  if(exportMsg.sources&&exportMsg.sources.length)out+='\n\n'+t('sources')+':\n'+exportMsg.sources.map((x,i)=>(i+1)+'. '+x.title+' '+x.url).join('\n');
+  saveBlob(exportName(exportMsg)+'.txt',out,'text/plain;charset=utf-8');
+  closeAll();toast(t('exported'));
+}
+function exportPdf(){
+  if(!exportMsg)return;
+  const m=exportMsg;closeAll();
+  const root=document.createElement('div');root.id='printRoot';
+  try{root.innerHTML='<h1>'+esc(exportName(m))+'</h1>'+md(m.content||'').html}
+  catch(e){root.innerHTML='<pre>'+esc(m.content||'')+'</pre>'}
+  document.body.appendChild(root);
+  const cleanup=()=>{try{root.remove()}catch(e){};window.removeEventListener('afterprint',cleanup)};
+  window.addEventListener('afterprint',cleanup);
+  setTimeout(()=>{try{window.print()}catch(e){};setTimeout(cleanup,10000)},80);
+}
 function openMemory(){
   $('#memOn').checked=!!S.settings.memoryOn;
   $('#autoMem').checked=!!S.settings.autoMem;
@@ -1093,8 +1232,11 @@ function renderMsgs(){
     const h=new Date().getHours();
     const hi=h<6?t('greetingLate'):h<11?t('greetingMorning'):h<13?t('greetingNoon'):h<18?t('greetingAfternoon'):t('greetingEvening');
     const sep=S.settings.lang==='en'?', ':'，';
+    const nm=(S.settings.name||'').trim();
+    const greet=nm?(hi+sep+nm):hi;
     box.innerHTML='<div class="empty"><div class="avatar"><img src="icon-192.png" alt=""></div>'+
-      '<h1>'+esc(hi+sep+t('userName'))+'</h1><p>'+esc(t('greetSub'))+'</p></div>';
+      '<h1>'+esc(greet)+'</h1><p>'+esc(t('greetSub'))+'</p>'+
+      '</div>';
     return
   }
   for(const m of c.msgs)box.appendChild(msgEl(m));
@@ -1120,44 +1262,119 @@ function msgEl(m){
   }else paintAssistant(b,m,false);
   d.appendChild(b);return d;
 }
+function streamSplit(content){
+  const s=String(content||'');
+  const last=s.lastIndexOf('```');
+  if(last>=0){
+    const before=s.slice(0,last);
+    const fences=(before.match(/```/g)||[]).length;
+    if(fences%2===0){
+      const rest=s.slice(last);
+      const nl=rest.indexOf('\n');
+      const lang=nl>=0?rest.slice(3,nl).trim():'';
+      const code=nl>=0?rest.slice(nl+1):'';
+      return {head:before,code:{lang,text:code}};
+    }
+  }
+  const cut=s.lastIndexOf('\n\n');
+  if(cut>0)return {head:s.slice(0,cut),tail:s.slice(cut)};
+  return {head:'',tail:s};
+}
+function paintStreamBody(body,m){
+  const parts=streamSplit(m.content||'');
+  let pre=body.querySelector('.s-prefix');
+  if(!pre){
+    body.innerHTML='<div class="s-prefix"></div><div class="s-tail"></div>';
+    pre=body.querySelector('.s-prefix');
+  }
+  if(pre.dataset.src!==parts.head){
+    pre.innerHTML=md(parts.head).html;
+    pre.dataset.src=parts.head;
+  }
+  const tail=body.querySelector('.s-tail');
+  if(parts.code){
+    let block=tail.querySelector('.codeblock');
+    if(!block){
+      tail.innerHTML='<div class="codeblock"><div class="codehead"><span></span></div><pre><code></code></pre></div>';
+      block=tail.querySelector('.codeblock');
+      block.querySelector('.codehead span').textContent=parts.code.lang||'text';
+    }
+    block.querySelector('pre code').textContent=parts.code.text;
+  }else{
+    let t=tail.querySelector('.tailtext');
+    if(!t){tail.innerHTML='<div class="tailtext"></div>';t=tail.querySelector('.tailtext')}
+    t.textContent=parts.tail;
+  }
+  let caret=tail.querySelector('.typing');
+  if(!caret){caret=document.createElement('span');caret.className='typing';tail.appendChild(caret)}
+}
+function paintStreaming(b,m){
+  let think=b.querySelector('details.think');
+  if(m.reasoning){
+    if(!think){
+      think=document.createElement('details');think.className='think';think.open=true;
+      think.innerHTML='<summary></summary><div class="tcontent"></div>';
+      b.insertBefore(think,b.firstChild);
+    }
+    think.querySelector('summary').textContent=t('thinking');
+    const tc=think.querySelector('.tcontent');
+    if(tc.textContent!==m.reasoning)tc.textContent=m.reasoning;
+  }else if(think){think.remove()}
+  const sig=(m.tools||[]).map(x=>x.label+':'+(x.done?1:0)).join('|');
+  let tw=b.querySelector('.tools');
+  if(m.tools&&m.tools.length){
+    if(!tw||tw.dataset.sig!==sig){
+      if(tw)tw.remove();
+      tw=document.createElement('div');tw.className='tools';tw.dataset.sig=sig;
+      for(const it of m.tools){
+        const d=document.createElement('div');d.className='tool'+(it.done?' done':'');
+        const sp=document.createElement('span');sp.className='spin';
+        const tt=document.createElement('span');tt.className='tt';tt.textContent=it.label;
+        d.appendChild(sp);d.appendChild(tt);tw.appendChild(d);
+      }
+      b.insertBefore(tw,b.querySelector('.md')||null);
+    }
+  }else if(tw){tw.remove()}
+  let body=b.querySelector('.md');
+  if(!body){body=document.createElement('div');body.className='md';b.appendChild(body)}
+  paintStreamBody(body,m);
+  if(mathNeeded)scheduleKatex();
+}
 function paintAssistant(b,m,streamingNow){
+  if(streamingNow){paintStreaming(b,m);return}
   b.innerHTML='';
   if(m.reasoning){
-    const det=document.createElement('details');det.className='think';if(streamingNow)det.open=true;
-    const sum=document.createElement('summary');sum.textContent=(streamingNow?t('thinking'):t('thought'))+(m.thinkMs&&m.thinkMs>=1000?'（'+Math.round(m.thinkMs/1000)+(S.settings.lang==='en'?'s':' 秒')+'）':'');
+    const det=document.createElement('details');det.className='think';
+    const sum=document.createElement('summary');sum.textContent=t('thought')+(m.thinkMs&&m.thinkMs>=1000?'（'+Math.round(m.thinkMs/1000)+(S.settings.lang==='en'?'s':' 秒')+'）':'');
     const tc=document.createElement('div');tc.className='tcontent';tc.textContent=m.reasoning;
     det.appendChild(sum);det.appendChild(tc);b.appendChild(det);
   }
   if(m.tools&&m.tools.length){
     const wrap=document.createElement('div');wrap.className='tools';
-    for(const t of m.tools){
-      const d=document.createElement('div');d.className='tool'+(t.done?' done':'');
+    for(const it of m.tools){
+      const d=document.createElement('div');d.className='tool'+(it.done?' done':'');
       const sp=document.createElement('span');sp.className='spin';
-      const tt=document.createElement('span');tt.className='tt';tt.textContent=t.label;
+      const tt=document.createElement('span');tt.className='tt';tt.textContent=it.label;
       d.appendChild(sp);d.appendChild(tt);wrap.appendChild(d);
     }
     b.appendChild(wrap);
   }
   const body=document.createElement('div');body.className='md';
   const r=md(m.content||'');body.innerHTML=r.html;bindCopy(body,r.codes);
-  if(streamingNow){
-    if(!m.content&&!m.reasoning)body.innerHTML='<span class="typing"></span>';
-    else{const c=document.createElement('span');c.className='typing';body.appendChild(c)}
-  }
   if(m.error&&!m.content)body.innerHTML='<p style="color:#e5484d">'+esc(m.error)+'</p>';
   b.appendChild(body);
-  if(m.content&&!streamingNow){
+  if(m.content){
     const act=document.createElement('div');act.className='actions';
     const cb=document.createElement('button');cb.className='cbtn';
     cb.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>'+t('copyAll');
     cb.onclick=()=>{copyText(plainText(m.content));cb.classList.add('ok');toast(t('copiedAll'));setTimeout(()=>cb.classList.remove('ok'),1200)};
     act.appendChild(cb);
-    const mb=document.createElement('button');mb.className='cbtn';mb.textContent='Markdown';mb.title=t('copyMd');
-    mb.onclick=()=>{copyText(m.content);toast(t('copiedMd'))};act.appendChild(mb);
+    const eb=document.createElement('button');eb.className='cbtn';eb.textContent=t('exportShare');
+    eb.onclick=()=>openExport(m);act.appendChild(eb);
     const rb=document.createElement('button');rb.className='cbtn';rb.textContent=t('regen');rb.onclick=()=>regenerate(m);act.appendChild(rb);
     b.appendChild(act);
   }
-  if(m.usage&&!streamingNow){
+  if(m.usage){
     const u=m.usage,hit=u.prompt_cache_hit_tokens||0,rt=(u.completion_tokens_details&&u.completion_tokens_details.reasoning_tokens)||0;
     const meta=document.createElement('div');meta.className='meta';
     const parts=[t('metaIn')+' '+fmtTok(u.prompt_tokens||0)];
@@ -1168,12 +1385,12 @@ function paintAssistant(b,m,streamingNow){
     meta.innerHTML=esc(parts.join(' · '))+' · <b>'+fmtMoney(m.cost||0)+'</b>';
     b.appendChild(meta);
   }
-  if(m.memSaved&&!streamingNow){
+  if(m.memSaved){
     const d=document.createElement('div');d.className='memsaved';d.textContent=t('memSaved')+m.memSaved;
     b.appendChild(d);
   }
   if(mathNeeded)scheduleKatex();
-  if(m.sources&&m.sources.length&&!streamingNow){
+  if(m.sources&&m.sources.length){
     const sd=document.createElement('details');sd.className='sources';
     const sum=document.createElement('summary');
     sum.innerHTML='<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg><span>'+t('sources')+'</span><em>'+m.sources.length+'</em>';
@@ -1466,7 +1683,7 @@ function renderInstallGuide(){
   const el=$('#installGuide');if(!el)return;
   el.innerHTML=esc(t_('install1'))+' <span id="curUrl">'+esc(location.href)+'</span><br>'+esc(t_('install2'))+'<br>'+esc(t_('install3'))+'<br>'+esc(t_('install4'));
 }
-function openSettings(){$('#inKey').value=S.settings.apiKey;renderInstallGuide();$('#sheet').classList.add('show');$('#mask').classList.add('show')}
+function openSettings(){$('#inKey').value=S.settings.apiKey;$('#inName').value=S.settings.name||'';renderInstallGuide();$('#sheet').classList.add('show');$('#mask').classList.add('show')}
 function openModels(){
   const box=$('#modelList');box.innerHTML='';
   for(const m of MODELS){
@@ -1493,12 +1710,21 @@ function openAppear(){
 }
 $('#btnAppearance').onclick=()=>{closeAll();openAppear()};
 $('#btnHelp').onclick=()=>{closeAll();$('#helpSheet').classList.add('show');$('#mask').classList.add('show')};
+$('#expMd').onclick=exportMarkdown;
+$('#expTxt').onclick=exportText;
+$('#expPdf').onclick=exportPdf;
 $('#btnAbout').onclick=()=>{closeAll();$('#aboutVer').textContent='v'+APP_VER;$('#bootInfo').textContent=(window.__bootMs?('启动 '+window.__bootMs+' ms'):'');$('#aboutSheet').classList.add('show');$('#mask').classList.add('show')};
 $('#btnForceUpdate').onclick=async()=>{
   if(!confirm(t('forceAsk')))return;
+  toast(t('updating'),4000);
   try{const rs=await navigator.serviceWorker.getRegistrations();for(const r of rs)await r.unregister()}catch(e){}
   try{const ks=await caches.keys();for(const k of ks)await caches.delete(k)}catch(e){}
-  location.reload();
+  try{sessionStorage.setItem('qianliao.justUpdated','1')}catch(e){}
+  setTimeout(()=>{
+    const url=location.pathname+'?v='+Date.now();
+    try{location.replace(url)}catch(e){location.href=url}
+    setTimeout(()=>{if(!document.hidden)location.reload()},1500);
+  },200);
 };
 $('#copyMail').onclick=()=>{copyText('suxiangyu_dev@foxmail.com');toast(t('copied'))};
 $('#fsMsg').oninput=e=>{S.settings.fsMsg=Number(e.target.value);$('#fsMsgOut').textContent=S.settings.fsMsg+'px';applyFonts();save()};
@@ -1603,7 +1829,14 @@ function shrink(file,maxSide,quality){
     img.src=url;
   });
 }
-$('#btnSave').onclick=()=>{S.settings.apiKey=$('#inKey').value.trim();save(true);closeAll();toast(t('saved'))};
+function finishWelcome(letName){
+  if(letName)S.settings.name=($('#welcomeName').value||'').trim().slice(0,16);
+  S.settings.onboarded=true;save(true);closeAll();renderAll();
+  if(!S.settings.apiKey)setTimeout(openSettings,180);
+}
+$('#wlStart').onclick=()=>finishWelcome(true);
+$('#wlSkip').onclick=()=>finishWelcome(false);
+$('#btnSave').onclick=()=>{S.settings.name=($('#inName').value||'').trim().slice(0,16);S.settings.apiKey=$('#inKey').value.trim();save(true);closeAll();renderAll();toast(t('saved'))};
 async function testKey(){
   const k=$('#inKey').value.trim();
   const st=$('#keyStatus');
@@ -1640,7 +1873,7 @@ $('#chipThink').onclick=()=>{S.settings.think=!S.settings.think;save(true);rende
 $('#chipSearch').onclick=()=>{S.settings.search=!S.settings.search;save(true);renderChips();if(S.settings.search)toast(t('searchBill'),2600)};
 $('#btnSend').onclick=()=>{if(streaming){if(streamAbort)streamAbort.abort();return}send()};
 $('#input').addEventListener('input',e=>{const t=e.target;t.style.height='auto';t.style.height=Math.min(t.scrollHeight,132)+'px'});
-$('#input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();send()}});
+$('#input').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)&&!e.isComposing){e.preventDefault();send()}});
 $('#msgs').addEventListener('scroll',()=>{$('.top').classList.toggle('scrolled',$('#msgs').scrollTop>4)});
 $('#msgs').addEventListener('click',e=>{
   const a=e.target.closest('a');if(a&&a.href&&a.target==='_blank'){e.preventDefault();window.open(a.href,'_blank')}});
@@ -1677,6 +1910,13 @@ if(window.visualViewport)window.visualViewport.addEventListener('resize',setVh);
 
 /* ---------- boot ---------- */
 $('#verLabel').textContent='v'+APP_VER;
+$('#topVer').textContent='v'+APP_VER;
+try{
+  if(sessionStorage.getItem('qianliao.justUpdated')==='1'){
+    sessionStorage.removeItem('qianliao.justUpdated');
+    setTimeout(()=>toast(t('updatedTo')+'v'+APP_VER,3000),500);
+  }
+}catch(e){}
 applyLang();
 window.__bootMs=Math.round(performance.now()-T_BOOT);
 try{sessionStorage.removeItem('qianliao.bootretry')}catch(e){}
@@ -1688,7 +1928,13 @@ requestAnimationFrame(()=>requestAnimationFrame(()=>{
 }));
 if(mathNeeded)scheduleKatex();
 if(!S.convs.length){newConv()}else{startFresh();renderAll()}
-if(S.settings.apiKey)setTimeout(()=>loadBalance(false),600);else setTimeout(openSettings,300);
+if(!S.settings.onboarded&&S.convs.some(c=>c.msgs&&c.msgs.length)){S.settings.onboarded=true;save(true)}
+if(!S.settings.onboarded){
+  setTimeout(()=>{$('#welcomeSheet').classList.add('show');$('#mask').classList.add('show')},350);
+}else if(!S.settings.apiKey){
+  setTimeout(openSettings,300);
+}
+if(S.settings.apiKey)setTimeout(()=>loadBalance(false),600);
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(S.settings.theme==='auto')applyTheme()});
 window.addEventListener('beforeunload',()=>save(true));
 window.addEventListener('pagehide',()=>save(true));

@@ -1,6 +1,6 @@
 {
-  "name": "苏巷雨的DeepSeek",
-  "short_name": "苏巷雨的DeepSeek",
+  "name": "DeepSeek_sxy",
+  "short_name": "DeepSeek_sxy",
   "description": "轻量对话客户端，打开即用，不启动本地引擎",
   "start_url": "./",
   "scope": "./",
