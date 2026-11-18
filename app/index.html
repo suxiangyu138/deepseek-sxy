@@ -153,6 +153,7 @@ td{min-width:72px;max-width:280px;white-space:normal}
 .memsaved::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--muted)}
 .tailtext{white-space:pre-wrap}
 .s-tail .codeblock{margin-top:8px}
+.loadmore{display:block;margin:4px auto 14px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--muted);font-size:11px}
 .typing{display:inline-block;width:6px;height:14px;background:var(--fg);vertical-align:-3px;animation:blink 1s steps(2) infinite;border-radius:2px}
 @keyframes blink{50%{opacity:0}}
 .tobottom{position:absolute;right:14px;bottom:118px;width:34px;height:34px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);box-shadow:var(--shadow-sm);display:none;place-items:center;z-index:6;color:var(--fg)}
@@ -279,9 +280,17 @@ a.tile{text-decoration:none}
 .sliderrow output{font-size:11px;color:var(--muted);width:38px;text-align:right;font-variant-numeric:tabular-nums}
 .toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,10px);color:#fff;padding:8px 14px;border-radius:11px;font-size:11.5px;opacity:0;pointer-events:none;transition:.2s;z-index:60;max-width:86vw;text-align:center;background:rgba(20,20,22,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 .toast.show{opacity:1;transform:translate(-50%,0)}
+.imgview{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;touch-action:none}
+.imgview.show{display:flex}
+.imgview img{max-width:100%;max-height:100%;transition:transform .1s;will-change:transform}
+.ivbar{position:absolute;top:calc(12px + env(safe-area-inset-top));left:12px;right:12px;display:flex;justify-content:space-between;z-index:2}
+.ivbar button{color:#fff;font-size:12.5px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.16);backdrop-filter:blur(8px)}
 .install{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));color:#fff;border-radius:13px;padding:11px 13px;display:none;align-items:center;justify-content:space-between;gap:10px;z-index:50;font-size:12px;background:rgba(20,20,22,.92);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:var(--shadow)}
 .install.show{display:flex}
 .install button{background:rgba(255,255,255,.16);padding:6px 12px;border-radius:9px;font-size:11.5px}
+.storagebox{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--soft)}
+.srow{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);padding:3px 0}
+.srow b{color:var(--fg);font-weight:500}
 .keystatus{font-size:10.5px;color:var(--muted);margin-top:7px;line-height:1.5;word-break:break-all}
 .keystatus.ok{color:var(--fg)}
 .keystatus.bad{color:#c0392b}
@@ -347,7 +356,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">DeepSeek_sxy</span><span class="tsub" id="topVer">v1.7.1</span></div>
+    <div class="title"><span id="chatTitle">DeepSeek_sxy</span><span class="tsub" id="topVer">v1.8.1</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -423,7 +432,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">作者 苏巷雨</span> · <span id="verLabel">v1.7.1</span></div>
+    <div class="author"><span data-i18n="author">作者 苏巷雨</span> · <span id="verLabel">v1.8.1</span></div>
   </div>
 </aside>
 
@@ -452,6 +461,14 @@ a.tile{text-decoration:none}
   </div>
   <div class="field">
     <button class="mini" id="btnAppearance" style="width:100%" data-i18n="appearance">外观</button>
+  </div>
+  <div class="field">
+    <label data-i18n="storage">存储</label>
+    <div class="storagebox">
+      <div class="srow"><span data-i18n="storageText">文本数据</span><b id="stText">—</b></div>
+      <div class="srow"><span data-i18n="storageImg">图片缓存</span><b id="stImg">—</b></div>
+      <button class="mini" id="btnClearImg" style="width:100%;margin-top:8px" data-i18n="clearImg">清理图片缓存</button>
+    </div>
   </div>
   <div class="field">
     <label data-i18n="backup">导出备份</label>
@@ -597,10 +614,15 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.7.1</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.8.1</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">有问题、建议或者想反馈，直接发邮件，或者在仓库里提 issue。</div>
+</div>
+
+<div class="imgview" id="imgView">
+  <div class="ivbar"><button id="ivClose">关闭</button><button id="ivSave" data-i18n="saveImg">保存图片</button></div>
+  <img id="ivImg" alt="">
 </div>
 
 <div class="toast" id="toast"></div>
@@ -613,7 +635,7 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='1.7.1';
+const APP_VER='1.8.1';
 const T_BOOT=performance.now();
 const I18N={
 zh:{
@@ -631,7 +653,7 @@ zh:{
   greetSub:'今天想聊点什么',userName:'苏巷雨',chatsEmpty:'还没有对话',
   gToday:'今天',gYesterday:'昨天',gWeek:'7 天内',gEarlier:'更早',
   metaIn:'输入',metaHit:'缓存命中',metaOut:'输出',metaThink:'思考',thisChat:'本对话',
-  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',importTitle:'导入对话',importZip:'这是压缩包，请先解压再选择里面的 json 文件',importDone:'导入完成：新增 ',importSkip:'，跳过 ',importHelp:'支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）',deleted:'已删除',msgMenu:'这条回答',delMsg:'删除这条',backup:'导出备份',restore:'导入备份',restoreAsk:'导入会覆盖当前全部对话与设置，确定继续？',restored:'已恢复',backupDone:'备份已导出',backupFail:'备份文件解析失败',searchPh:'搜索对话',noResult:'没有匹配的对话',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thought:'已深度思考',
+  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',cont:'继续',provider:'服务商',custom:'自定义',baseUrl:'接口地址',modelName:'模型名',providerKey:'该服务商 Key（留空用上面那把）',storage:'存储',storageText:'文本数据',storageImg:'图片缓存',storageFiles:'张图片',clearImg:'清理图片缓存',cleared:'已清理',loadMore:'加载更早的消息',saveImg:'保存图片',importTitle:'导入对话',importZip:'这是压缩包，请先解压再选择里面的 json 文件',importDone:'导入完成：新增 ',importSkip:'，跳过 ',importHelp:'支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）',deleted:'已删除',msgMenu:'这条回答',delMsg:'删除这条',backup:'导出备份',restore:'导入备份',restoreAsk:'导入会覆盖当前全部对话与设置，确定继续？',restored:'已恢复',backupDone:'备份已导出',backupFail:'备份文件解析失败',searchPh:'搜索对话',noResult:'没有匹配的对话',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thought:'已深度思考',
   searchNow:'正在联网搜索：',openNow:'正在打开网页：',findNow:'正在网页内查找：',readNow:'正在阅读链接：',toolNow:'正在调用联网能力…',
   stopped:'（已停止）',netErr:'网络错误，请重试',reqFail:'请求失败（',keyBad:'API Key 无效或已过期',noBalance:'账户余额不足',
   tooOften:'请求太频繁或并发超限，稍后再试',genFail:'生成失败',
@@ -674,7 +696,7 @@ en:{
   greetSub:"What's on your mind",userName:'Suxiangyu',chatsEmpty:'No chats yet',
   gToday:'Today',gYesterday:'Yesterday',gWeek:'Previous 7 days',gEarlier:'Earlier',
   metaIn:'In',metaHit:'cached',metaOut:'Out',metaThink:'Thinking',thisChat:'This chat',
-  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',exportTitle:'Export this answer',exportTxt:'Plain text',exported:'Exported',exportShare:'Export',exportHint:'Markdown keeps formatting; plain text strips markers; PDF uses the system print dialog and pick Save as PDF.',pin:'Pin',importTitle:'Imported chat',importZip:'That is a zip file. Unzip it and pick the json files inside.',importDone:'Imported: ',importSkip:', skipped ',importHelp:'Supports this app backup JSON, or chat_sessions/*.json exported from DeepSeek (multi-select)',deleted:'Deleted',msgMenu:'This answer',delMsg:'Delete this',backup:'Export backup',restore:'Import backup',restoreAsk:'Importing replaces all chats and settings. Continue?',restored:'Restored',backupDone:'Backup exported',backupFail:'Invalid backup file',searchPh:'Search chats',noResult:'No matching chats',updating:'Clearing cache…',updatedTo:'Updated to ',unpin:'Unpin',lock:'Lock',unlock:'Unlock',delChat:'Delete chat',protectedHint:'Pinned or locked chats cannot be deleted',tagPin:'Pinned',tagLock:'Locked',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thought:'Thought',
+  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',exportTitle:'Export this answer',exportTxt:'Plain text',exported:'Exported',exportShare:'Export',exportHint:'Markdown keeps formatting; plain text strips markers; PDF uses the system print dialog and pick Save as PDF.',pin:'Pin',cont:'Continue',provider:'Provider',custom:'Custom',baseUrl:'Base URL',modelName:'Model',providerKey:'Provider key (blank = above)',storage:'Storage',storageText:'Text data',storageImg:'Image cache',storageFiles:' images',clearImg:'Clear image cache',cleared:'Cleared',loadMore:'Load earlier messages',saveImg:'Save image',importTitle:'Imported chat',importZip:'That is a zip file. Unzip it and pick the json files inside.',importDone:'Imported: ',importSkip:', skipped ',importHelp:'Supports this app backup JSON, or chat_sessions/*.json exported from DeepSeek (multi-select)',deleted:'Deleted',msgMenu:'This answer',delMsg:'Delete this',backup:'Export backup',restore:'Import backup',restoreAsk:'Importing replaces all chats and settings. Continue?',restored:'Restored',backupDone:'Backup exported',backupFail:'Invalid backup file',searchPh:'Search chats',noResult:'No matching chats',updating:'Clearing cache…',updatedTo:'Updated to ',unpin:'Unpin',lock:'Lock',unlock:'Unlock',delChat:'Delete chat',protectedHint:'Pinned or locked chats cannot be deleted',tagPin:'Pinned',tagLock:'Locked',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thought:'Thought',
   searchNow:'Search: ',openNow:'Open: ',findNow:'Find: ',readNow:'Read: ',toolNow:'Web tools…',
   stopped:'(stopped)',netErr:'Network error, please retry',reqFail:'Request failed (',keyBad:'Invalid or expired API key',noBalance:'Insufficient balance',
   tooOften:'Too many requests, try again later',genFail:'Generation failed',
@@ -1364,6 +1386,7 @@ function openPersonal(){
   $('#perSheet').classList.add('show');$('#mask').classList.add('show');
 }
 
+const pageLimit={};
 function renderMsgs(){
   const box=$('#msgs');box.innerHTML='';
   const c=cur();
@@ -1378,7 +1401,20 @@ function renderMsgs(){
       '</div>';
     return
   }
-  for(const m of c.msgs)box.appendChild(msgEl(m));
+  const lim=pageLimit[c.id]||40;
+  const start=Math.max(0,c.msgs.length-lim);
+  if(start>0){
+    const more=document.createElement('button');
+    more.className='loadmore';
+    more.textContent=t('loadMore')+'（'+start+'）';
+    more.onclick=()=>{
+      const el=$('#msgs');const prevH=el.scrollHeight,prevT=el.scrollTop;
+      pageLimit[c.id]=lim+40;renderMsgs();
+      el.scrollTop=prevT+(el.scrollHeight-prevH);
+    };
+    box.appendChild(more);
+  }
+  for(let i=start;i<c.msgs.length;i++)box.appendChild(msgEl(c.msgs[i]));
   scrollBottom(true);
 }
 function msgEl(m){
@@ -1517,6 +1553,7 @@ function paintAssistant(b,m,streamingNow){
     const eb=document.createElement('button');eb.className='cbtn';eb.textContent=t('exportShare');
     eb.onclick=()=>openExport(m);act.appendChild(eb);
     const rb=document.createElement('button');rb.className='cbtn';rb.textContent=t('regen');rb.onclick=()=>regenerate(m);act.appendChild(rb);
+    const ct=document.createElement('button');ct.className='cbtn';ct.textContent=t('cont');ct.onclick=()=>continueGen(m);act.appendChild(ct);
     b.appendChild(act);
   }
   if(m.usage){
@@ -1583,6 +1620,47 @@ async function send(){
   c.msgs.push(am);
   const el=msgEl(am);box.appendChild(el);
   await run(c,am,el.querySelector('.bubble'));
+}
+async function continueGen(m){
+  if(streaming)return;
+  const c=cur();if(!c)return;
+  const msgs=await buildMessages(c);
+  while(msgs.length&&msgs[msgs.length-1].role==='assistant')msgs.pop();
+  msgs.push({role:'assistant',content:m.content||'',prefix:true});
+  const idx=(()=>{let k=0;for(const x of c.msgs){if(x===m)break;if(x.role==='assistant')k++}return k})();
+  const bubble=document.querySelectorAll('.msg.assistant .bubble')[idx];
+  if(!bubble)return;
+  setBusy(true);streamAbort=new AbortController();
+  const body={model:S.settings.model,messages:msgs,stream:true,stream_options:{include_usage:true},max_tokens:8192,
+    thinking:{type:S.settings.think?'enabled':'disabled'},tools:toolsList()};
+  const url='https://api.deepseek.com/beta/chat/completions';
+  try{
+    const resp=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.settings.apiKey},body:JSON.stringify(body),signal:streamAbort.signal});
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    const reader=resp.body.getReader();const dec=new TextDecoder();let buf='';
+    while(true){
+      const {done,value}=await reader.read();if(done)break;
+      buf+=dec.decode(value,{stream:true});
+      let k;
+      while((k=buf.indexOf('\n'))>=0){
+        const line=buf.slice(0,k).trim();buf=buf.slice(k+1);
+        if(!line.startsWith('data:'))continue;
+        const dstr=line.slice(5).trim();
+        if(dstr==='[DONE]')return;
+        try{
+          const j=JSON.parse(dstr);
+          if(j.usage)m.usage=j.usage;
+          const d=j.choices&&j.choices[0]&&j.choices[0].delta;
+          if(d&&d.content){m.content=(m.content||'')+d.content;paintAssistant(bubble,m,true)}
+        }catch(e){}
+      }
+    }
+  }catch(e){if(e&&e.name!=='AbortError')toast(e.message||t('netErr'))}
+  finally{
+    setBusy(false);streamAbort=null;
+    if(m.usage)m.cost=calcCost(S.settings.model,m.usage);
+    save(true);paintAssistant(bubble,m,false);renderTotal();
+  }
 }
 async function regenerate(m){
   if(streaming)return;
@@ -1655,15 +1733,8 @@ async function run(c,am,bubble){
     const hasImg=(c.msgs||[]).some(m=>m.role==='user'&&m.images&&m.images.length);
     let model=S.settings.model||'deepseek-flash';
     if(hasImg&&model!=='deepseek-flash'){model='deepseek-flash';S.settings.model=model;renderChips()}
-    const body={
-      model:model,
-      messages:await buildMessages(c),
-      stream:true,
-      stream_options:{include_usage:true},
-      thinking:{type:S.settings.think?'enabled':'disabled'},
-      tools:toolsList(),
-      max_tokens:8192
-    };
+    const body={model:model,messages:await buildMessages(c),stream:true,stream_options:{include_usage:true},max_tokens:8192,
+      thinking:{type:S.settings.think?'enabled':'disabled'},tools:toolsList()};
     const fetchRetry=async(url,opts)=>{try{return await fetch(url,opts)}catch(err){if(err&&err.name==='AbortError')throw err;await new Promise(r=>setTimeout(r,700));return fetch(url,opts)}};
     const resp=await fetchRetry('https://api.deepseek.com/chat/completions',{
       method:'POST',
@@ -1834,11 +1905,41 @@ function closeSheets(){
   if($('#drawer').classList.contains('show'))$('#mask').classList.add('show');
   else $('#mask').classList.remove('show');
 }
+function fmtBytes(n){if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';return (n/1048576).toFixed(1)+' MB'}
+async function updateStorage(){
+  try{const t=document.querySelector('#stText');if(t)t.textContent=fmtBytes(new Blob([localStorage.getItem(KEY)||'']).size)}catch(e){}
+  try{
+    const c=await caches.open(IMG_CACHE);const keys=await c.keys();let total=0;
+    for(const req of keys){const r=await c.match(req);if(r){total+=(await r.blob()).size}}
+    const el=document.querySelector('#stImg');if(el)el.textContent=fmtBytes(total)+' · '+keys.length+t('storageFiles');
+  }catch(e){const el=document.querySelector('#stImg');if(el)el.textContent='—'}
+}
+let ivScale=1,ivX=0,ivY=0;
+function openImageView(src){
+  const v=$('#imgView'),img=$('#ivImg');
+  img.src=src;ivScale=1;ivX=0;ivY=0;img.style.transform='translate(0,0) scale(1)';
+  img.dataset.src=src;
+  v.classList.add('show');
+}
+function closeImageView(){$('#imgView').classList.remove('show');$('#ivImg').src=''}
+$('#ivClose').onclick=closeImageView;
+$('#ivSave').onclick=async()=>{
+  const src=$('#ivImg').dataset.src||$('#ivImg').src;
+  try{
+    const blob=await (await fetch(src)).blob();
+    const a=document.createElement('a');const url=URL.createObjectURL(blob);
+    a.href=url;a.download='image-'+Date.now()+'.jpg';document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},1500);
+    toast(t('saved')||'已保存');
+  }catch(e){toast(t('imgFail'))}
+};
 function renderInstallGuide(){
   const el=$('#installGuide');if(!el)return;
   el.innerHTML=esc(t_('install1'))+' <span id="curUrl">'+esc(location.href)+'</span><br>'+esc(t_('install2'))+'<br>'+esc(t_('install3'))+'<br>'+esc(t_('install4'));
 }
-function openSettings(){$('#inKey').value=S.settings.apiKey;$('#inName').value=S.settings.name||'';renderInstallGuide();$('#sheet').classList.add('show');$('#mask').classList.add('show')}
+function openSettings(){
+  $('#inKey').value=S.settings.apiKey;
+  updateStorage();$('#inName').value=S.settings.name||'';renderInstallGuide();$('#sheet').classList.add('show');$('#mask').classList.add('show')}
 function openModels(){
   const box=$('#modelList');box.innerHTML='';
   for(const m of MODELS){
@@ -1930,6 +2031,10 @@ function convertSession(j){
   return {id:'ds_'+j.id,title:j.title||t('importTitle'),pinned:!!j.pinned,
     createdAt:Date.parse(j.inserted_at||'')||Date.now(),updatedAt:Date.parse(j.updated_at||'')||Date.now(),msgs};
 }
+$('#btnClearImg').onclick=async()=>{
+  try{await caches.delete(IMG_CACHE);imgUrlCache.clear()}catch(e){}
+  updateStorage();toast(t('cleared'));
+};
 $('#btnRestore').onclick=()=>$('#restoreFile').click();
 $('#restoreFile').onchange=async e=>{
   const files=[...(e.target.files||[])];e.target.value='';
@@ -2067,7 +2172,8 @@ function finishWelcome(letName){
 }
 $('#wlStart').onclick=()=>finishWelcome(true);
 $('#wlSkip').onclick=()=>finishWelcome(false);
-$('#btnSave').onclick=()=>{S.settings.name=($('#inName').value||'').trim().slice(0,16);S.settings.apiKey=$('#inKey').value.trim();save(true);closeAll();renderAll();toast(t('saved'))};
+$('#btnSave').onclick=()=>{S.settings.name=($('#inName').value||'').trim().slice(0,16);S.settings.apiKey=$('#inKey').value.trim();
+  save(true);closeAll();renderAll();toast(t('saved'))};
 async function testKey(){
   const k=$('#inKey').value.trim();
   const st=$('#keyStatus');
@@ -2110,9 +2216,33 @@ $('#msgs').addEventListener('scroll',()=>{
   const el=$('#msgs');
   $('#toBottom').classList.toggle('show',el.scrollHeight-el.scrollTop-el.clientHeight>500);
 });
+(()=>{
+  const v=$('#imgView'),img=$('#ivImg');
+  let pinch=false,d0=0,s0=1;
+  v.addEventListener('touchstart',e=>{
+    if(e.target===v){closeImageView();return}
+    if(e.touches.length===2){pinch=true;d0=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);s0=ivScale}
+  },{passive:true});
+  v.addEventListener('touchmove',e=>{
+    if(pinch&&e.touches.length===2){
+      const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+      ivScale=Math.max(1,Math.min(4,s0*(d/(d0||1))));
+      img.style.transform='scale('+ivScale+')';
+    }
+  },{passive:true});
+  v.addEventListener('touchend',()=>{pinch=false});
+  let lastTap=0;
+  v.addEventListener('click',e=>{
+    if(e.target===v)return;
+    const now=Date.now();
+    if(now-lastTap<280){ivScale=ivScale>1?1:2;img.style.transform='scale('+ivScale+')'}
+    lastTap=now;
+  });
+})();
 $('#toBottom').onclick=()=>{const el=$('#msgs');el.scrollTo({top:el.scrollHeight,behavior:'smooth'});};
 $('#convSearch').addEventListener('input',()=>renderList());
 $('#msgs').addEventListener('click',e=>{
+  if(e.target.tagName==='IMG'){e.preventDefault();openImageView(e.target.src);return}
   const a=e.target.closest('a');if(a&&a.href&&a.target==='_blank'){e.preventDefault();window.open(a.href,'_blank')}});
 
 /* ---------- pwa ---------- */
