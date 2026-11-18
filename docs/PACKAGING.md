@@ -52,21 +52,22 @@
 
 ### 2.2 目标架构
 
-```
-┌──────────────────────────────────────────┐
-│  Android APK                             │
-│  ┌────────────────────────────────────┐  │
-│  │ Capacitor WebView                  │  │
-│  │  https://localhost                 │  │
-│  │  ├─ index.html（现有全部逻辑）       │  │
-│  │  ├─ vendor/katex（本地字体与脚本）    │  │
-│  │  └─ localStorage（用户数据）         │  │
-│  └────────────────────────────────────┘  │
-│  原生层：签名、图标、启动屏、返回键         │
-└───────────────┬──────────────────────────┘
-                │ HTTPS 直连
-                ▼
-        api.deepseek.com
+```mermaid
+flowchart TB
+    subgraph APK["Android APK"]
+        direction TB
+        subgraph WV["Capacitor WebView · https://localhost"]
+            direction TB
+            A["index.html：现有全部逻辑"]
+            B["vendor/katex：本地脚本与字体"]
+            C["localStorage：用户数据"]
+        end
+        N["原生层：签名 · 图标 · 启动屏 · 返回键"]
+    end
+
+    API["api.deepseek.com"]
+
+    WV -->|"HTTPS 直连"| API
 ```
 
 没有中转层，没有服务端密钥，没有域名依赖。

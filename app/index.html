@@ -214,7 +214,7 @@ a.tile{text-decoration:none}
 .dfoot .tile:active{background:var(--line)}
 
 .author{font-size:10px;color:var(--muted);opacity:.75}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:40;border-radius:20px 20px 0 0;transform:translateY(102%);transition:transform .3s cubic-bezier(.2,.85,.25,1);max-height:88dvh;overflow-y:auto;padding:8px 18px calc(24px + env(safe-area-inset-bottom));background:var(--panel-2);-webkit-backdrop-filter:blur(28px) saturate(150%);backdrop-filter:blur(28px) saturate(150%);border-top:1px solid var(--line);box-shadow:var(--shadow)}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:40;border-radius:20px 20px 0 0;transform:translateY(102%);transition:transform .3s cubic-bezier(.2,.85,.25,1);max-height:92dvh;overflow-y:auto;padding:8px 18px calc(24px + env(safe-area-inset-bottom));background:var(--panel-2);-webkit-backdrop-filter:blur(28px) saturate(150%);backdrop-filter:blur(28px) saturate(150%);border-top:1px solid var(--line);box-shadow:var(--shadow)}
 .sheet.show{transform:none}
 .sheet .bar{width:34px;height:4px;border-radius:2px;background:var(--line);margin:6px auto 14px}
 .sheet h2{margin:0 0 14px;font-size:14px;letter-spacing:.2px}
@@ -229,6 +229,7 @@ a.tile{text-decoration:none}
 .mini{height:42px;padding:0 13px;border-radius:10px;border:1px solid var(--line);font-size:11.5px;color:var(--fg);background:transparent;white-space:nowrap}
 .mini:active{background:var(--soft)}
 .danger{color:#c0392b}
+.sheetfoot{position:sticky;bottom:-24px;margin:4px -18px -24px;padding:10px 18px calc(18px + env(safe-area-inset-bottom));background:var(--panel-2);border-top:1px solid var(--line)}
 .primary{width:100%;height:44px;border-radius:12px;background:var(--ink);color:var(--bg);font-size:12.5px;font-weight:600;letter-spacing:.2px}
 .primary:active{opacity:.9}
 .mrow{display:flex;align-items:center;gap:12px;padding:13px 4px;border-bottom:1px solid var(--line)}
@@ -420,7 +421,7 @@ a.tile{text-decoration:none}
     <button class="mini" id="btnCopyUrl" style="width:100%;margin-top:10px" data-i18n="copyUrl">复制本页地址</button>
   </div>
   <div class="field" style="color:var(--muted);font-size:12px;line-height:1.7" data-i18n="note">联网搜索、阅读链接、深度思考都由 DeepSeek 官方接口完成，不需要别的 Key。Key 和对话只存在本机浏览器，不经过任何第三方服务器。</div>
-  <button class="primary" id="btnSave" data-i18n="save">保存</button>
+  <div class="sheetfoot"><button class="primary" id="btnSave" data-i18n="save">保存</button></div>
 </div>
 
 <div class="sheet" id="modelSheet">
@@ -533,7 +534,7 @@ zh:{
   greetSub:'今天想聊点什么',userName:'苏巷雨',chatsEmpty:'还没有对话',
   gToday:'今天',gYesterday:'昨天',gWeek:'7 天内',gEarlier:'更早',
   metaIn:'输入',metaHit:'缓存命中',metaOut:'输出',metaThink:'思考',thisChat:'本对话',
-  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'清掉界面缓存并重新加载？对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thought:'已深度思考',
+  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thought:'已深度思考',
   searchNow:'正在联网搜索：',openNow:'正在打开网页：',findNow:'正在网页内查找：',readNow:'正在阅读链接：',toolNow:'正在调用联网能力…',
   stopped:'（已停止）',netErr:'网络错误，请重试',reqFail:'请求失败（',keyBad:'API Key 无效或已过期',noBalance:'账户余额不足',
   tooOften:'请求太频繁或并发超限，稍后再试',genFail:'生成失败',
@@ -576,7 +577,7 @@ en:{
   greetSub:"What's on your mind",userName:'Suxiangyu',chatsEmpty:'No chats yet',
   gToday:'Today',gYesterday:'Yesterday',gWeek:'Previous 7 days',gEarlier:'Earlier',
   metaIn:'In',metaHit:'cached',metaOut:'Out',metaThink:'Thinking',thisChat:'This chat',
-  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clear UI cache and reload? Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thought:'Thought',
+  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thought:'Thought',
   searchNow:'Search: ',openNow:'Open: ',findNow:'Find: ',readNow:'Read: ',toolNow:'Web tools…',
   stopped:'(stopped)',netErr:'Network error, please retry',reqFail:'Request failed (',keyBad:'Invalid or expired API key',noBalance:'Insufficient balance',
   tooOften:'Too many requests, try again later',genFail:'Generation failed',
@@ -652,7 +653,21 @@ function save(now){if(now){persist();return}clearTimeout(saveTimer);saveTimer=se
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 function cur(){return S.convs.find(c=>c.id===S.current)||null}
 function modelOf(id){return MODELS.find(m=>m.id===id)||MODELS[0]}
-function newConv(){const c={id:uid(),title:t('newTitle'),createdAt:Date.now(),updatedAt:Date.now(),msgs:[]};S.convs.unshift(c);S.current=c.id;save(true);renderAll();closeAll();return c}
+function newConv(){
+  const exist=cur();
+  if(exist&&(!exist.msgs||!exist.msgs.length)){closeAll();return exist}
+  const c={id:uid(),title:t('newTitle'),createdAt:Date.now(),updatedAt:Date.now(),msgs:[]};
+  S.convs.unshift(c);S.current=c.id;save(true);renderAll();closeAll();return c
+}
+function startFresh(){
+  const empty=S.convs.find(c=>!c.msgs||!c.msgs.length);
+  if(empty){S.current=empty.id;empty.updatedAt=Date.now()}
+  else{
+    const c={id:uid(),title:t('newTitle'),createdAt:Date.now(),updatedAt:Date.now(),msgs:[]};
+    S.convs.unshift(c);S.current=c.id;
+  }
+  save(true);
+}
 function toast(t,ms){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),ms||2200)}
 function applyFonts(){
   const m=S.settings.fsMsg||13.5,c=S.settings.fsCode||11.5;
@@ -1672,10 +1687,12 @@ requestAnimationFrame(()=>requestAnimationFrame(()=>{
   setTimeout(()=>b.remove(),320);
 }));
 if(mathNeeded)scheduleKatex();
-if(!S.convs.length){newConv()}else{if(!S.current||!cur())S.current=S.convs[0].id;renderAll()}
+if(!S.convs.length){newConv()}else{startFresh();renderAll()}
 if(S.settings.apiKey)setTimeout(()=>loadBalance(false),600);else setTimeout(openSettings,300);
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(S.settings.theme==='auto')applyTheme()});
 window.addEventListener('beforeunload',()=>save(true));
+window.addEventListener('pagehide',()=>save(true));
+document.addEventListener('visibilitychange',()=>{if(document.hidden)save(true)});
 })();
 </script>
 </body>
