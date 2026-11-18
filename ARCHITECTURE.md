@@ -2,26 +2,31 @@
 
 ## 1. 总体结构
 
-```
-┌──────────────────────────────────────────────┐
-│  手机 Chrome（PWA，安装到桌面）                 │
-│  ┌────────────────────────────────────────┐  │
-│  │ index.html                             │  │
-│  │  ├─ 视图层：会话列表 / 消息流 / 输入区     │  │
-│  │  ├─ 渲染层：自写 Markdown → HTML          │  │
-│  │  ├─ 状态层：S（localStorage 单一状态树）   │  │
-│  │  ├─ 网络层：fetch + ReadableStream(SSE)   │  │
-│  │  └─ 计费层：usage → 价格表 → 单条/累计费用  │  │
-│  └────────────────────────────────────────┘  │
-│  sw.js  预缓存外壳，离线启动                    │
-│  manifest.json  名称/图标/standalone            │
-└───────────────┬──────────────────────────────┘
-                │ HTTPS（CORS 已开放，允许任意 Origin）
-                ▼
-       api.deepseek.com/chat/completions
-        ├─ deepseek-flash / deepseek-v4-pro
-        ├─ thinking: enabled/disabled
-        └─ tools: deepseek_web_search / deepseek_read_url（服务端执行）
+```mermaid
+flowchart TB
+    subgraph PWA["手机浏览器 · PWA 安装到桌面"]
+        direction TB
+        subgraph HTML["index.html"]
+            direction TB
+            V["视图层：会话列表 / 消息流 / 输入区"]
+            R["渲染层：自写 Markdown → HTML"]
+            S["状态层：localStorage 单一状态树"]
+            N["网络层：fetch + ReadableStream（SSE）"]
+            C["计费层：usage → 价格表 → 单条 / 累计费用"]
+        end
+        SW["sw.js：预缓存外壳，离线启动"]
+        MF["manifest.json：名称 / 图标 / standalone"]
+    end
+
+    API["api.deepseek.com/chat/completions"]
+    M1["deepseek-flash / deepseek-v4-pro"]
+    M2["thinking: enabled / disabled"]
+    M3["tools: deepseek_web_search / deepseek_read_url"]
+
+    HTML -->|"HTTPS 直连，CORS 已开放"| API
+    API --- M1
+    API --- M2
+    API --- M3
 ```
 
 没有本地引擎、没有 Node 进程、没有 proot。
