@@ -219,6 +219,16 @@ a{color:var(--blue);text-decoration:none}
       <button class="mini danger" id="btnClear" style="flex:1">清空全部会话</button>
     </div>
   </div>
+  <div class="field" style="background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:13px 14px">
+    <div style="font-size:13px;font-weight:600;margin-bottom:6px">装到桌面</div>
+    <div style="font-size:12.5px;color:var(--muted);line-height:1.8">
+      1. 用 Chrome 打开 <span id="curUrl">本页地址</span><br>
+      2. 右上角 ⋮ →「安装应用」，没有就选「添加到主屏幕」<br>
+      3. 桌面出现「苏巷雨的DeepSeek」，点开即用<br>
+      必须用 Chrome 打开，微信/QQ 里的内置浏览器装不了。
+    </div>
+    <button class="mini" id="btnCopyUrl" style="width:100%;margin-top:10px">复制本页地址</button>
+  </div>
   <div class="field" style="color:var(--muted);font-size:12px;line-height:1.7">
     联网搜索、阅读链接、深度思考都由 DeepSeek 官方接口完成，不需要别的 Key。<br>
     Key 和对话只存在本机浏览器，不经过任何第三方服务器。
@@ -620,7 +630,8 @@ $('#btnMenu').onclick=openDrawer;
 $('#btnNew').onclick=()=>newConv();
 $('#btnNew2').onclick=()=>newConv();
 $('#mask').onclick=closeAll;
-$('#btnSettings').onclick=()=>{closeAll();openSettings()};
+$('#btnSettings').onclick=()=>{closeAll();openSettings();$('#curUrl').textContent=location.href};
+$('#btnCopyUrl').onclick=()=>{copyText(location.href);toast('地址已复制，粘贴到 Chrome 打开')};
 $('#chipModel').onclick=openModels;
 $('#btnAttach').onclick=()=>$('#fileInput').click();
 $('#fileInput').onchange=async e=>{
