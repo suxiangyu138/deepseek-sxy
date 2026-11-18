@@ -29,15 +29,15 @@
 | 版本信息 | `release.json`，供页面与应用内检查更新 |
 | 变更说明 | 每个版本一段更新日志 |
 
-命名规则：`qianliao-1.7.0.apk`，与 `versionName` 一致。
+命名规则：Release 附件与站点文件统一用 `DeepSeek_sxy-X.Y.Z.apk`，站点上另存一份 `app-X.Y.Z.apk` 供下载页引用，`versionName` 必须与文件名一致。
 
 ---
 
 ## 3. 版本号规则
 
 - `versionName`：语义化，主版本.次版本.修订号
-- `versionCode`：主×10000 + 次×100 + 修订，例如 1.7.0 → 10700
-- 每次发版两者同时递增，`versionCode` 必须严格递增
+- `versionCode`：严格递增即可。当前 APK 工程用简单计数（1.8.7 → 6），不强制套公式
+- 每次发版必须递增，否则覆盖安装会失败
 
 发布节奏：
 
@@ -52,15 +52,20 @@
 ### 4.1 目录
 
 ```
-/var/www/dl/
-├─ index.html
-├─ privacy.html
-├─ release.json
-├─ icon.png
-├─ app-latest.apk
-└─ archive/
-   ├─ qianliao-1.6.0.apk
-   └─ qianliao-1.7.0.apk
+/var/www/html/
+├─ app/                 网页版，iOS 添加到主屏幕用
+│  ├─ index.html
+│  ├─ sw.js
+│  ├─ manifest.json
+│  └─ vendor/
+└─ download/
+   ├─ index.html
+   ├─ privacy.html
+   ├─ release.json
+   ├─ icon.png
+   ├─ app-1.8.7.apk    当前版本，release.json 指向它
+   ├─ app-latest.apk   固定入口，可选保留
+   └─ archive/
 ```
 
 ### 4.2 Nginx 关键配置
@@ -78,8 +83,12 @@ server {
     location ~ \.apk$ {
         default_type application/vnd.android.package-archive;
         add_header Content-Disposition "attachment";
-        add_header Cache-Control "public, max-age=300";
+        add_header Cache-Control "public, max-age=86400";
     }
+
+    location = /app/index.html { add_header Cache-Control "no-store" always; }
+    location = /app/sw.js { types { } default_type text/javascript;
+                            add_header Cache-Control "no-store" always; }
 
     gzip on;
     gzip_types text/html text/css application/json;
@@ -89,15 +98,16 @@ server {
 要点：
 
 - APK 的 MIME 必须是 `application/vnd.android.package-archive`
-- 不要给 APK 设长缓存，避免用户下到旧包
-- 开启 gzip 只对 HTML/CSS/JSON 有意义，APK 本身已压缩
+- APK 用版本化文件名，可以放心设长缓存，因为换版本就是换路径
+- `index.html`、`sw.js` 必须 no-store，避免 CDN 缓存旧页面
+- 需要 CSP 时，至少放行 `connect-src 'self' https://api.deepseek.com data: blob:`，并允许内联脚本与样式
 
 ### 4.3 更新流程
 
-1. 上传新 APK 到 `app-latest.apk`
-2. 旧包移到 `archive/`
-3. 修改 `release.json` 的版本号、大小、日期
-4. 刷新下载页
+1. 上传新 APK 为 `app-X.Y.Z.apk`，同时更新 `app-latest.apk`
+2. 修改 `release.json`：version、url 指向 `app-X.Y.Z.apk`、size、updated
+3. 覆盖 `/app/` 与 `/download/` 下的页面文件
+4. 旧包移入 `archive/`
 
 ---
 
