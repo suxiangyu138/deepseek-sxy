@@ -1,12 +1,49 @@
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>隐私说明</title>
-<style>body{margin:0;background:#f5f5f7;color:#1d1d1f;font:15px/1.75 -apple-system,"PingFang SC",sans-serif}.wrap{max-width:620px;margin:0 auto;padding:48px 22px}h1{font-size:20px;margin:0 0 18px}h2{font-size:14px;margin:24px 0 8px}p{font-size:13.5px;color:#3a3a3c;margin:0 0 10px}a{color:#1d1d1f}</style></head>
-<body><div class="wrap">
-<h1>隐私说明</h1>
-<h2>收集什么</h2><p>本应用不收集任何个人数据，没有账号体系，没有统计埋点。</p>
-<h2>数据存在哪</h2><p>API Key、对话记录、记忆、个性化设置全部保存在你手机上的应用私有目录，不会上传到任何服务器。</p>
-<h2>请求发往哪</h2><p>唯一的网络请求是发往 DeepSeek 官方接口 api.deepseek.com，用于生成回答。费用按你的 API 账户结算。</p>
-<h2>卸载</h2><p>卸载应用会同时删除本地数据，删除后无法恢复。</p>
-<h2>联系</h2><p>suxiangyu_dev@foxmail.com</p>
-<p style="margin-top:28px"><a href="./">返回下载页</a></p>
-</div></body></html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>隐私说明 · DeepSeek_sxy</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#f5f5f7;--fg:#1d1d1f;--muted:#6e6e73;--line:rgba(0,0,0,.09);--card:rgba(255,255,255,.72)}
+@media (prefers-color-scheme:dark){:root{--bg:#0b0b0c;--fg:#f5f5f7;--muted:#98989d;--line:rgba(255,255,255,.12);--card:rgba(28,28,30,.72)}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans SC",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:56px 22px 72px}
+a{color:var(--fg)}
+h1{font-size:28px;letter-spacing:-.4px;margin:0 0 8px}
+.lead{color:var(--muted);font-size:13.5px;margin:0 0 34px}
+h2{font-size:14px;margin:28px 0 8px;letter-spacing:.2px}
+p{margin:0 0 10px;color:var(--muted);font-size:13.5px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:22px 0}
+.back{display:inline-flex;gap:6px;align-items:center;color:var(--muted);text-decoration:none;font-size:13px;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>隐私说明</h1>
+  <p class="lead">DeepSeek_sxy · 最后更新 2026-11-19</p>
+
+  <h2>我们收集什么</h2>
+  <p>什么都不收集。没有账号体系，没有统计埋点，没有崩溃上报，没有广告 SDK。</p>
+
+  <h2>数据存在哪里</h2>
+  <p>API Key、对话记录、记忆、个性化设置全部保存在你设备上的应用私有目录。图片缓存在应用缓存里。卸载应用会一并删除，删除后无法恢复。</p>
+
+  <h2>请求发往哪里</h2>
+  <p>唯一的外部请求是 DeepSeek 官方接口 <code>api.deepseek.com</code>，用于生成回答、联网搜索、解析文档与查询余额。请求由你的设备直接发出，不经过任何中转服务器。</p>
+
+  <h2>费用</h2>
+  <p>所有 Token 消耗按你自己的 DeepSeek API 账户结算，本项目不代收费用，也不共享密钥。</p>
+
+  <h2>你的权利</h2>
+  <p>随时可以在应用内导出全部数据为 JSON，或直接卸载删除。没有需要向开发者申请删除的云端数据，因为不存在云端数据。</p>
+
+  <div class="box">
+    <p style="margin:0">问题、建议或漏洞反馈：suxiangyu_dev@foxmail.com</p>
+  </div>
+
+  <a class="back" href="./">← 返回下载页</a>
+</div>
+</body>
+</html>
