@@ -1,4 +1,5 @@
-const CACHE = 'qianliao-v6';
+// 固定缓存名：更新不再依赖版本号，静态资源走 stale-while-revalidate
+const CACHE = 'qianliao';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
@@ -13,29 +14,34 @@ self.addEventListener('activate', (e) => {
   );
 });
 
+async function fresh(req) {
+  const res = await fetch(req, { cache: 'no-cache' });
+  if (res && res.ok) {
+    const box = await caches.open(CACHE);
+    box.put(req, res.clone()).catch(() => {});
+  }
+  return res;
+}
+
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  if (url.origin !== location.origin) return; // 只接管本应用的静态资源，API 请求直连
+  if (url.origin !== location.origin) return; // API 直连，不缓存
 
   if (req.mode === 'navigate') {
-    // 本地服务已停（关了 dsh-go / 重启手机）时，直接用缓存的外壳启动
-    e.respondWith(
-      fetch(req).then((res) => {
-        const copy = res.clone();
-        caches.open(CACHE).then((c) => c.put('./index.html', copy)).catch(() => {});
-        return res;
-      }).catch(() => caches.match('./index.html').then((hit) => hit || caches.match('./')))
-    );
+    e.respondWith(fresh(req).catch(async () =>
+      (await caches.match('./index.html')) || (await caches.match('./')) || Response.error()
+    ));
     return;
   }
 
-  e.respondWith(
-    caches.match(req).then((hit) => hit || fetch(req).then((res) => {
-      const copy = res.clone();
-      caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
-      return res;
-    }).catch(() => caches.match('./index.html')))
-  );
+  e.respondWith((async () => {
+    const hit = await caches.match(req);
+    if (hit) {
+      fresh(req).catch(() => {}); // 后台更新，下次生效
+      return hit;
+    }
+    return (await fresh(req).catch(() => null)) || (await caches.match('./index.html')) || Response.error();
+  })());
 });

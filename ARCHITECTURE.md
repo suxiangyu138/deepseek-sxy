@@ -81,7 +81,9 @@ data: [DONE]
 
 ```js
 {
-  settings: { apiKey, theme, think, search, model },
+  settings: { apiKey, theme, think, search, model, memoryOn, personalOn },
+  memories: [{ id, text, ts }],   // 最多 60 条，每条 ≤200 字
+  personal: "个性化模板文本",
   convs: [{
     id, title, createdAt, updatedAt,
     msgs: [{ role, content, images?, reasoning?, usage?, cost?, sources?, tools?, ts }]
@@ -93,6 +95,34 @@ data: [DONE]
 - 单一 localStorage 键 `qianliao.v2`，整体序列化
 - 超配额时先丢弃历史图片再重试，避免写失败
 - 图片前端压缩：最长边 1600px，JPEG 0.86
+
+## 5.1 上下文注入顺序
+
+1. system：人设 + 当前时间
+2. system 追加：个性化要求（`personalOn` 时）
+3. system 追加：长期记忆（`memoryOn` 时，取最近 30 条）
+4. 每一轮：`latest_reminder` + user（+ 图片块）
+
+记忆写入有三条路径：
+
+1. 手动在「记忆」面板添加
+2. 自动识别命令式说法（`MEM_CMD`：帮我记住、记一下、添加记忆、保存到记忆、备忘…）
+3. 自动识别偏好陈述（`MEM_PREF`：我喜欢、我的专业、以后…）
+
+判定分两层：
+
+- `parseMemCommand`：命令词（记住/记一下/添加记忆/存一下/备忘/别忘了/记我…）出现在句中任意位置，取命令词之后的内容；之后内容不足 2 字时取命令词之前的部分
+- `looksPersonal`：以「我是/我叫/我住/我喜欢/我习惯/以后/别再…」开头的自我陈述
+
+命令里直接带了内容（如「添加记忆我是安徽人」）会立刻写入并渲染「已存入记忆」标记，不等待 AI 回复；没有内容的（「记住这个」）或自我陈述，则在回复结束后把上下文交给 `deepseek-flash` 抽取，返回 NONE 则不写。写入前用归一化字符重叠度做去重。
+
+## 5.2 国际化
+
+`I18N.zh / I18N.en` 两套文案，`t(key)` 取当前语言；静态节点用 `data-i18n` / `data-i18n-ph` 标记，`applyLang()` 统一刷新并重绘。系统提示词、`latest_reminder`、记忆抽取提示同样按语言切换，因此模型回复语言与界面一致（个性化模板可覆盖）。
+
+## 5.3 主题与排版
+
+CSS 变量集中控制配色与字号：`--fs-msg`、`--fs-code` 由设置里的滑块写入 `document.documentElement`，主题只有墨色/纸色两套，无彩色主色。代码高亮用单次正则扫描（注释、字符串、数字、标识符）生成 `tk-*` 类，不做完整语法分析。
 
 ## 6. 渲染
 
