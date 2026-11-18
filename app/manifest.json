@@ -1,0 +1,31 @@
+{
+  "name": "苏巷雨的DeepSeek",
+  "short_name": "苏巷雨的DeepSeek",
+  "description": "轻量对话客户端，打开即用，不启动本地引擎",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0e17",
+  "theme_color": "#0b0e17",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "id": "./",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ]
+}
