@@ -165,7 +165,9 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
 </div>
 
 <script>
-var IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+var FORCE_IOS=/[?&]ios=1/.test(location.search);
+var IS_IOS=FORCE_IOS||/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+if(FORCE_IOS){var b=document.getElementById('badge');if(b)b.innerHTML='<span class="dot"></span>iOS 预览模式';}
 if(IS_IOS){
   document.getElementById('androidActions').style.display='none';
   document.getElementById('iosActions').style.display='flex';
