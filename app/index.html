@@ -155,6 +155,8 @@ td{min-width:72px;max-width:280px;white-space:normal}
 .s-tail .codeblock{margin-top:8px}
 .typing{display:inline-block;width:6px;height:14px;background:var(--fg);vertical-align:-3px;animation:blink 1s steps(2) infinite;border-radius:2px}
 @keyframes blink{50%{opacity:0}}
+.tobottom{position:absolute;right:14px;bottom:118px;width:34px;height:34px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);box-shadow:var(--shadow-sm);display:none;place-items:center;z-index:6;color:var(--fg)}
+.tobottom.show{display:grid}
 .composer{flex:0 0 auto;padding:6px 12px calc(10px + env(safe-area-inset-bottom));position:relative;z-index:4}
 .chips{display:flex;gap:6px;margin-bottom:7px;padding-left:2px;overflow-x:auto;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
@@ -197,6 +199,9 @@ td{min-width:72px;max-width:280px;white-space:normal}
 .mod b{display:block;font-size:11.5px;font-weight:600;color:var(--fg)}
 .mod em{display:block;font-style:normal;font-size:10px;color:var(--muted);margin-top:1px}
 .mod.off em{color:var(--muted);opacity:.6}
+.searchwrap{padding:0 14px 6px}
+#convSearch{width:100%;height:32px;border-radius:9px;border:1px solid var(--line);background:var(--soft);color:var(--fg);padding:0 10px;font:inherit;font-size:11.5px;outline:0}
+#convSearch:focus{border-color:var(--ink-soft)}
 .convhead{display:flex;align-items:center;padding:10px 18px 2px;font-size:10px;color:var(--muted);letter-spacing:.6px;text-transform:uppercase}
 .convhead button{margin-left:auto;font-size:10.5px;color:var(--muted);letter-spacing:0;text-transform:none}
 .selbar{display:none;align-items:center;gap:10px;padding:7px 12px;margin:0 8px 6px;border-radius:10px;border:1px solid var(--line);font-size:11px;color:var(--muted)}
@@ -342,7 +347,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">DeepSeek_sxy</span><span class="tsub" id="topVer">v1.6.7</span></div>
+    <div class="title"><span id="chatTitle">DeepSeek_sxy</span><span class="tsub" id="topVer">v1.7.1</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -350,6 +355,9 @@ a.tile{text-decoration:none}
   </header>
   <div class="usagebar" id="usageBar"><span id="usageText"></span><div class="ctxline"><i id="ctxFill"></i></div></div>
   <main class="msgs" id="msgs"></main>
+  <button class="tobottom" id="toBottom" aria-label="bottom">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </button>
   <footer class="composer">
     <div class="chips">
       <button class="chip model" id="chipModel">V4.1 Flash ▾</button>
@@ -392,6 +400,7 @@ a.tile{text-decoration:none}
     </button>
   </div>
   <div class="convhead"><span data-i18n="chats">对话</span><button id="btnSelect">管理</button></div>
+  <div class="searchwrap"><input id="convSearch" autocomplete="off" data-i18n-ph="searchPh" placeholder="搜索对话"></div>
   <div class="selbar" id="selbar"><button id="selAll" data-i18n="selectAll">全选</button><span id="selCount">已选 0</span><button class="danger" id="selDel" data-i18n="delete">删除</button></div>
   <div class="convlist" id="convlist"></div>
   <div class="dfoot">
@@ -414,7 +423,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">作者 苏巷雨</span> · <span id="verLabel">v1.6.7</span></div>
+    <div class="author"><span data-i18n="author">作者 苏巷雨</span> · <span id="verLabel">v1.7.1</span></div>
   </div>
 </aside>
 
@@ -443,6 +452,15 @@ a.tile{text-decoration:none}
   </div>
   <div class="field">
     <button class="mini" id="btnAppearance" style="width:100%" data-i18n="appearance">外观</button>
+  </div>
+  <div class="field">
+    <label data-i18n="backup">导出备份</label>
+    <div class="row">
+      <button class="mini" id="btnBackup" style="flex:1" data-i18n="backup">导出备份</button>
+      <button class="mini" id="btnRestore" style="flex:1" data-i18n="restore">导入备份</button>
+    </div>
+    <input type="file" id="restoreFile" accept="application/json,.json,.zip" multiple hidden>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.6" data-i18n="importHelp">支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）</div>
   </div>
   <div class="field">
     <label data-i18n="language">语言</label>
@@ -495,6 +513,15 @@ a.tile{text-decoration:none}
       <span data-i18n="optFile">文件</span>
     </button>
   </div>
+</div>
+
+<div class="sheet" id="msgMenu">
+  <div class="bar"></div>
+  <h2 data-i18n="msgMenu">这条回答</h2>
+  <button class="tile" id="mmCopy" style="margin-bottom:8px">复制全文</button>
+  <button class="tile" id="mmExport" style="margin-bottom:8px">导出</button>
+  <button class="tile" id="mmRegen" style="margin-bottom:8px">重新生成</button>
+  <button class="tile danger" id="mmDel">删除这条</button>
 </div>
 
 <div class="sheet" id="welcomeSheet">
@@ -570,7 +597,7 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.6.7</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.7.1</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">有问题、建议或者想反馈，直接发邮件，或者在仓库里提 issue。</div>
@@ -586,7 +613,7 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='1.6.7';
+const APP_VER='1.7.1';
 const T_BOOT=performance.now();
 const I18N={
 zh:{
@@ -604,7 +631,7 @@ zh:{
   greetSub:'今天想聊点什么',userName:'苏巷雨',chatsEmpty:'还没有对话',
   gToday:'今天',gYesterday:'昨天',gWeek:'7 天内',gEarlier:'更早',
   metaIn:'输入',metaHit:'缓存命中',metaOut:'输出',metaThink:'思考',thisChat:'本对话',
-  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thought:'已深度思考',
+  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',importTitle:'导入对话',importZip:'这是压缩包，请先解压再选择里面的 json 文件',importDone:'导入完成：新增 ',importSkip:'，跳过 ',importHelp:'支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）',deleted:'已删除',msgMenu:'这条回答',delMsg:'删除这条',backup:'导出备份',restore:'导入备份',restoreAsk:'导入会覆盖当前全部对话与设置，确定继续？',restored:'已恢复',backupDone:'备份已导出',backupFail:'备份文件解析失败',searchPh:'搜索对话',noResult:'没有匹配的对话',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thought:'已深度思考',
   searchNow:'正在联网搜索：',openNow:'正在打开网页：',findNow:'正在网页内查找：',readNow:'正在阅读链接：',toolNow:'正在调用联网能力…',
   stopped:'（已停止）',netErr:'网络错误，请重试',reqFail:'请求失败（',keyBad:'API Key 无效或已过期',noBalance:'账户余额不足',
   tooOften:'请求太频繁或并发超限，稍后再试',genFail:'生成失败',
@@ -647,7 +674,7 @@ en:{
   greetSub:"What's on your mind",userName:'Suxiangyu',chatsEmpty:'No chats yet',
   gToday:'Today',gYesterday:'Yesterday',gWeek:'Previous 7 days',gEarlier:'Earlier',
   metaIn:'In',metaHit:'cached',metaOut:'Out',metaThink:'Thinking',thisChat:'This chat',
-  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',exportTitle:'Export this answer',exportTxt:'Plain text',exported:'Exported',exportShare:'Export',exportHint:'Markdown keeps formatting; plain text strips markers; PDF uses the system print dialog and pick Save as PDF.',pin:'Pin',updating:'Clearing cache…',updatedTo:'Updated to ',unpin:'Unpin',lock:'Lock',unlock:'Unlock',delChat:'Delete chat',protectedHint:'Pinned or locked chats cannot be deleted',tagPin:'Pinned',tagLock:'Locked',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thought:'Thought',
+  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',exportTitle:'Export this answer',exportTxt:'Plain text',exported:'Exported',exportShare:'Export',exportHint:'Markdown keeps formatting; plain text strips markers; PDF uses the system print dialog and pick Save as PDF.',pin:'Pin',importTitle:'Imported chat',importZip:'That is a zip file. Unzip it and pick the json files inside.',importDone:'Imported: ',importSkip:', skipped ',importHelp:'Supports this app backup JSON, or chat_sessions/*.json exported from DeepSeek (multi-select)',deleted:'Deleted',msgMenu:'This answer',delMsg:'Delete this',backup:'Export backup',restore:'Import backup',restoreAsk:'Importing replaces all chats and settings. Continue?',restored:'Restored',backupDone:'Backup exported',backupFail:'Invalid backup file',searchPh:'Search chats',noResult:'No matching chats',updating:'Clearing cache…',updatedTo:'Updated to ',unpin:'Unpin',lock:'Lock',unlock:'Unlock',delChat:'Delete chat',protectedHint:'Pinned or locked chats cannot be deleted',tagPin:'Pinned',tagLock:'Locked',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thought:'Thought',
   searchNow:'Search: ',openNow:'Open: ',findNow:'Find: ',readNow:'Read: ',toolNow:'Web tools…',
   stopped:'(stopped)',netErr:'Network error, please retry',reqFail:'Request failed (',keyBad:'Invalid or expired API key',noBalance:'Insufficient balance',
   tooOften:'Too many requests, try again later',genFail:'Generation failed',
@@ -723,11 +750,23 @@ function save(now){if(now){persist();return}clearTimeout(saveTimer);saveTimer=se
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 function cur(){return S.convs.find(c=>c.id===S.current)||null}
 function modelOf(id){return MODELS.find(m=>m.id===id)||MODELS[0]}
+function saveDraft(){
+  const c=cur();if(!c)return;
+  S.drafts=S.drafts||{};
+  const v=$('#input').value;
+  if(v.trim())S.drafts[c.id]=v;else delete S.drafts[c.id];
+  save();
+}
+function restoreDraft(){
+  const c=cur();if(!c)return;
+  const d=(S.drafts||{})[c.id]||'';
+  const ta=$('#input');ta.value=d;ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,116)+'px';
+}
 function newConv(){
   const exist=cur();
   if(exist&&(!exist.msgs||!exist.msgs.length)){closeAll();return exist}
   const c={id:uid(),title:t('newTitle'),createdAt:Date.now(),updatedAt:Date.now(),msgs:[]};
-  S.convs.unshift(c);S.current=c.id;save(true);renderAll();closeAll();return c
+  saveDraft();S.convs.unshift(c);S.current=c.id;save(true);renderAll();closeAll();restoreDraft();return c
 }
 function startFresh(){
   const empty=S.convs.find(c=>!c.msgs||!c.msgs.length);
@@ -998,8 +1037,14 @@ function renderTitle(){const c=cur();$('#chatTitle').textContent=c?(c.title||t('
 function renderChips(){const m=modelOf(S.settings.model);$('#chipModel').textContent=m.short+' ▾';$('#chipThink').classList.toggle('on',!!S.settings.think);$('#chipSearch').classList.toggle('on',!!S.settings.search)}
 function renderList(){
   const box=$('#convlist');box.innerHTML='';
+  const q=($('#convSearch')&&$('#convSearch').value||'').trim().toLowerCase();
+  let pool=S.convs;
+  if(q){
+    pool=S.convs.filter(c=>(c.title||'').toLowerCase().includes(q)||(c.msgs||[]).some(m=>(m.content||'').toLowerCase().includes(q)));
+    if(!pool.length){box.innerHTML='<div style="padding:20px 12px;color:var(--muted);font-size:12.5px">'+esc(t('noResult'))+'</div>';updateSelbar();return}
+  }
   if(!S.convs.length){box.innerHTML='<div style="padding:20px 12px;color:var(--muted);font-size:13px">'+esc(t('chatsEmpty'))+'</div>';updateSelbar();return}
-  const sorted=[...S.convs].sort((a,b)=>{
+  const sorted=[...pool].sort((a,b)=>{
     const pa=a.pinned?1:0,pb=b.pinned?1:0;
     if(pa!==pb)return pb-pa;
     return b.updatedAt-a.updatedAt;
@@ -1016,7 +1061,7 @@ function renderList(){
     if(c.locked){const b=document.createElement('span');b.className='tag';b.textContent=t('tagLock');row.insertBefore(b,row.querySelector('.more'))}
     row.onclick=()=>{
       if(selectMode){selected.has(c.id)?selected.delete(c.id):selected.add(c.id);renderList();updateSelbar();return}
-      S.current=c.id;save(true);renderAll();closeAll();
+      saveDraft();S.current=c.id;save(true);renderAll();closeAll();restoreDraft();
     };
     row.querySelector('.more').onclick=e=>{e.stopPropagation();c._open=!c._open;renderList()};
     box.appendChild(row);
@@ -1089,7 +1134,76 @@ $('#selDel').onclick=()=>{
   selected.clear();selectMode=false;save(true);renderAll();updateSelbar();
 };
 
+const IMG_CACHE='qianliao-img';
+const imgUrlCache=new Map();
+function blobToDataURL(blob){
+  return new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result||'');fr.onerror=()=>res('');fr.readAsDataURL(blob)});
+}
+async function storeImage(dataUrl){
+  if(!('caches' in window))return dataUrl;
+  try{
+    const res=await fetch(dataUrl);
+    const blob=await res.blob();
+    const id='img_'+uid();
+    const c=await caches.open(IMG_CACHE);
+    await c.put('/'+id,new Response(blob,{headers:{'Content-Type':blob.type||'image/jpeg'}}));
+    return id;
+  }catch(e){return dataUrl}
+}
+async function imageUrl(ref){
+  if(!ref)return '';
+  if(ref.startsWith('data:'))return ref;
+  if(imgUrlCache.has(ref))return imgUrlCache.get(ref);
+  try{
+    const c=await caches.open(IMG_CACHE);
+    const r=await c.match('/'+ref);
+    if(!r)return '';
+    const url=URL.createObjectURL(await r.blob());
+    imgUrlCache.set(ref,url);
+    return url;
+  }catch(e){return ''}
+}
+async function imageData(ref){
+  if(!ref)return '';
+  if(ref.startsWith('data:'))return ref;
+  try{
+    const c=await caches.open(IMG_CACHE);
+    const r=await c.match('/'+ref);
+    if(!r)return '';
+    return await blobToDataURL(await r.blob());
+  }catch(e){return ''}
+}
+async function migrateImages(){
+  let changed=false;
+  for(const c of S.convs)for(const m of c.msgs){
+    if(!m.images||!m.images.length)continue;
+    const out=[];
+    for(const ref of m.images){
+      if(typeof ref==='string'&&ref.startsWith('data:')){
+        const id=await storeImage(ref);
+        out.push(id);if(id!==ref)changed=true;
+      }else out.push(ref);
+    }
+    m.images=out;
+  }
+  if(changed)save(true);
+}
 let exportMsg=null;
+let msgTarget=null;
+function openMsgMenu(m){
+  if(streaming)return;
+  msgTarget=m;closeAll();
+  $('#msgMenu').classList.add('show');$('#mask').classList.add('show');
+}
+$('#mmCopy').onclick=()=>{if(!msgTarget)return;copyText(plainText(msgTarget.content));toast(t('copiedAll'));closeAll()};
+$('#mmExport').onclick=()=>{const m=msgTarget;if(!m)return;closeAll();openExport(m)};
+$('#mmRegen').onclick=()=>{const m=msgTarget;if(!m)return;closeAll();regenerate(m)};
+$('#mmDel').onclick=()=>{
+  const m=msgTarget;if(!m)return;
+  const c=cur();if(!c)return;
+  const i=c.msgs.indexOf(m);if(i<0){closeAll();return}
+  c.msgs.splice(i,1);save(true);renderMsgs();closeAll();toast(t('deleted')||'已删除');
+};
 function openExport(m){exportMsg=m;closeAll();$('#exportSheet').classList.add('show');$('#mask').classList.add('show')}
 function exportName(m){
   const first=(m.content||'').split('\n').map(x=>x.trim()).find(Boolean)||'';
@@ -1272,7 +1386,7 @@ function msgEl(m){
   const b=document.createElement('div');b.className='bubble';
   if(m.role==='user'){
     if(m.files&&m.files.length){const fg=document.createElement('div');fg.style.marginBottom='5px';for(const f of m.files){const d=document.createElement('span');d.className='filechip';const nm=document.createElement('span');nm.className='nm';nm.textContent=f.name||'file';d.appendChild(nm);fg.appendChild(d)}b.appendChild(fg)}
-    if(m.images&&m.images.length){const g=document.createElement('div');g.className='imgs';for(const u of m.images){const im=document.createElement('img');im.src=u;im.loading='lazy';im.decoding='async';g.appendChild(im)}b.appendChild(g)}
+    if(m.images&&m.images.length){const g=document.createElement('div');g.className='imgs';for(const ref of m.images){const im=document.createElement('img');im.loading='lazy';im.decoding='async';if(ref.startsWith('data:'))im.src=ref;else imageUrl(ref).then(u=>{if(u)im.src=u});g.appendChild(im)}b.appendChild(g)}
     if(m.content)b.appendChild(document.createTextNode(m.content));
     if(m.memSaved){const tag=document.createElement('div');tag.className='memsaved';tag.textContent=t('memSaved')+m.memSaved;b.appendChild(tag)}
     if(m.content){
@@ -1284,7 +1398,13 @@ function msgEl(m){
       eb.onclick=()=>editMessage(m);ua.appendChild(eb);
       b.appendChild(ua);
     }
-  }else paintAssistant(b,m,false);
+  }else{
+    paintAssistant(b,m,false);
+    let lp=null;
+    d.addEventListener('touchstart',()=>{lp=setTimeout(()=>openMsgMenu(m),520)},{passive:true});
+    ['touchend','touchmove','touchcancel'].forEach(ev=>d.addEventListener(ev,()=>{if(lp){clearTimeout(lp);lp=null}}));
+    d.addEventListener('contextmenu',ev=>{ev.preventDefault();openMsgMenu(m)});
+  }
   d.appendChild(b);return d;
 }
 function streamSplit(content){
@@ -1445,11 +1565,14 @@ async function send(){
   if(!S.settings.apiKey){toast(t('needKey'));openSettings();return}
   let c=cur();if(!c)c=newConv();
   ta.value='';ta.style.height='auto';
+  const imgRefs=[];
+  for(const u of pending){imgRefs.push(await storeImage(u))}
   if((pending.length||pendingFiles.length)&&S.settings.model!=='deepseek-flash'){S.settings.model='deepseek-flash';renderChips();toast(t('imgFlash'))}
-  const user={role:'user',content:text,images:pending.slice(),files:pendingFiles.filter(f=>f.id).map(f=>({id:f.id,name:f.name})),ts:Date.now()};
+  const user={role:'user',content:text,images:imgRefs.slice(),files:pendingFiles.filter(f=>f.id).map(f=>({id:f.id,name:f.name})),ts:Date.now()};
   const pc=parseMemCommand(text);
   if(S.settings.autoMem&&pc&&pc.hasContent){const sv=addMemory(pc.content);if(sv)user.memSaved=sv}
   pending=[];pendingFiles=[];renderPending();
+  if(S.drafts&&S.drafts[c.id])delete S.drafts[c.id];
   c.msgs.push(user);
   if(c.msgs.filter(m=>m.role==='user').length===1)c.title=text.slice(0,20)||t('imgOnly');
   c.updatedAt=Date.now();save(true);
@@ -1476,7 +1599,7 @@ function lastUserText(c){
   for(let i=c.msgs.length-1;i>=0;i--)if(c.msgs[i].role==='user')return c.msgs[i].content||'';
   return '';
 }
-function buildMessages(c){
+async function buildMessages(c){
   const en=S.settings.lang==='en';
   let sys=en
     ? 'You are DeepSeek, an AI assistant created by DeepSeek. Be accurate and concise, format with Markdown, label code blocks. The current time is '+nowText()+'. Use it when the user asks about date, weekday or time.'
@@ -1498,7 +1621,7 @@ function buildMessages(c){
       if((m.images&&m.images.length)||(m.files&&m.files.length)){
         const blocks=[];
         for(const f of (m.files||[]))blocks.push({type:'file',file_id:f.id});
-        for(const u of (m.images||[]))blocks.push({type:'image_url',image_url:{url:u,detail:'auto'}});
+        for(const ref of (m.images||[])){const d=await imageData(ref);if(d)blocks.push({type:'image_url',image_url:{url:d,detail:'auto'}})}
         blocks.push({type:'text',text:m.content||((m.files&&m.files.length)?t('fileAsk'):t('imgAsk'))});
         out.push({role:'user',content:blocks});
       }else out.push({role:'user',content:m.content});
@@ -1534,14 +1657,15 @@ async function run(c,am,bubble){
     if(hasImg&&model!=='deepseek-flash'){model='deepseek-flash';S.settings.model=model;renderChips()}
     const body={
       model:model,
-      messages:buildMessages(c),
+      messages:await buildMessages(c),
       stream:true,
       stream_options:{include_usage:true},
       thinking:{type:S.settings.think?'enabled':'disabled'},
       tools:toolsList(),
       max_tokens:8192
     };
-    const resp=await fetch('https://api.deepseek.com/chat/completions',{
+    const fetchRetry=async(url,opts)=>{try{return await fetch(url,opts)}catch(err){if(err&&err.name==='AbortError')throw err;await new Promise(r=>setTimeout(r,700));return fetch(url,opts)}};
+    const resp=await fetchRetry('https://api.deepseek.com/chat/completions',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.settings.apiKey},
       body:JSON.stringify(body),
@@ -1767,6 +1891,78 @@ $('#fsCode').oninput=e=>{S.settings.fsCode=Number(e.target.value);$('#fsCodeOut'
 $('#editCancel').onclick=()=>{editing=null;closeAll()};
 $('#editSend').onclick=submitEdit;
 $('#btnSettings').onclick=()=>{closeAll();openSettings();$('#curUrl').textContent=location.href};
+$('#btnBackup').onclick=async()=>{
+  toast(t('backup')+'…',1500);
+  const convs=[];
+  for(const c of S.convs){
+    const msgs=[];
+    for(const m of c.msgs){
+      const copy=Object.assign({},m);
+      if(m.images&&m.images.length){
+        const arr=[];
+        for(const ref of m.images){const d=await imageData(ref);if(d)arr.push(d)}
+        copy.images=arr;
+      }
+      delete copy._open;
+      msgs.push(copy);
+    }
+    convs.push(Object.assign({},c,{msgs}));
+  }
+  const data={app:'DeepSeek_sxy',version:1,exportedAt:new Date().toISOString(),
+    settings:Object.assign({},S.settings,{apiKey:''}),
+    convs,memories:S.memories,personal:S.personal,drafts:S.drafts||{}};
+  saveBlob('DeepSeek_sxy-backup-'+Date.now()+'.json',JSON.stringify(data),'application/json');
+  toast(t('backupDone'));
+};
+function convertSession(j){
+  const msgs=[];
+  for(const m of (j.messages||[])){
+    const role=m.role==='USER'?'user':'assistant';
+    const frs=m.fragments||[];
+    const body=frs.filter(f=>f.type==='REQUEST'||f.type==='RESPONSE').map(f=>f.content||'').filter(Boolean).join('\n\n');
+    const think=frs.filter(f=>f.type==='THINKING'||f.type==='THINK').map(f=>f.content||'').filter(Boolean).join('\n\n');
+    if(!body&&!think)continue;
+    const ts=Date.parse(m.inserted_at||'')||Date.now();
+    const msg={role,content:body,ts};
+    if(think)msg.reasoning=think;
+    msgs.push(msg);
+  }
+  return {id:'ds_'+j.id,title:j.title||t('importTitle'),pinned:!!j.pinned,
+    createdAt:Date.parse(j.inserted_at||'')||Date.now(),updatedAt:Date.parse(j.updated_at||'')||Date.now(),msgs};
+}
+$('#btnRestore').onclick=()=>$('#restoreFile').click();
+$('#restoreFile').onchange=async e=>{
+  const files=[...(e.target.files||[])];e.target.value='';
+  if(!files.length)return;
+  let added=0,skipped=0,failed=0;
+  const existing=new Set(S.convs.map(c=>c.id));
+  for(const f of files){
+    if(/\.zip$/i.test(f.name)){toast(t('importZip'),3500);failed++;continue}
+    try{
+      const d=JSON.parse(await f.text());
+      if(d&&d.app==='DeepSeek_sxy'&&Array.isArray(d.convs)){
+        if(!confirm(t('restoreAsk')))return;
+        S.settings=Object.assign({},S.settings,d.settings||{});
+        S.convs=d.convs;S.memories=d.memories||[];S.personal=d.personal||'';S.drafts=d.drafts||{};
+        S.current=S.convs[0]?S.convs[0].id:null;
+        save(true);renderAll();closeAll();toast(t('restored'));
+        setTimeout(()=>migrateImages().catch(()=>{}),400);
+        return;
+      }
+      if(d&&Array.isArray(d.messages)){
+        const conv=convertSession(d);
+        if(conv.msgs.length&&!existing.has(conv.id)){
+          S.convs.push(conv);existing.add(conv.id);added++;
+        }else skipped++;
+      }else failed++;
+    }catch(err){failed++}
+    try{save(true)}catch(err){failed++;break}
+  }
+  const lastDs=[...S.convs].reverse().find(c=>String(c.id).startsWith('ds_'));
+  S.current=lastDs?lastDs.id:(S.convs[0]?S.convs[0].id:null);
+  save(true);renderAll();closeAll();
+  toast(t('importDone')+added+t('importSkip')+(skipped+failed),3500);
+};
 $('#btnCopyUrl').onclick=()=>{copyText(location.href);toast(t('openInBrowser'))};
 $('#chipModel').onclick=openModels;
 $('#modMemory').onclick=()=>{closeAll();openMemory()};
@@ -1907,9 +2103,15 @@ $('#btnClear').onclick=()=>{if(confirm(t('clearAsk'))){S.convs=[];S.current=null
 $('#chipThink').onclick=()=>{S.settings.think=!S.settings.think;save(true);renderChips()};
 $('#chipSearch').onclick=()=>{S.settings.search=!S.settings.search;save(true);renderChips();if(S.settings.search)toast(t('searchBill'),2600)};
 $('#btnSend').onclick=()=>{if(streaming){if(streamAbort)streamAbort.abort();return}send()};
-$('#input').addEventListener('input',e=>{const t=e.target;t.style.height='auto';t.style.height=Math.min(t.scrollHeight,132)+'px'});
+$('#input').addEventListener('input',e=>{const t=e.target;t.style.height='auto';t.style.height=Math.min(t.scrollHeight,116)+'px';saveDraft()});
 $('#input').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)&&!e.isComposing){e.preventDefault();send()}});
-$('#msgs').addEventListener('scroll',()=>{$('.top').classList.toggle('scrolled',$('#msgs').scrollTop>4)});
+$('#msgs').addEventListener('scroll',()=>{
+  $('.top').classList.toggle('scrolled',$('#msgs').scrollTop>4);
+  const el=$('#msgs');
+  $('#toBottom').classList.toggle('show',el.scrollHeight-el.scrollTop-el.clientHeight>500);
+});
+$('#toBottom').onclick=()=>{const el=$('#msgs');el.scrollTo({top:el.scrollHeight,behavior:'smooth'});};
+$('#convSearch').addEventListener('input',()=>renderList());
 $('#msgs').addEventListener('click',e=>{
   const a=e.target.closest('a');if(a&&a.href&&a.target==='_blank'){e.preventDefault();window.open(a.href,'_blank')}});
 
@@ -1969,6 +2171,7 @@ if(!S.settings.onboarded){
 }else if(!S.settings.apiKey){
   setTimeout(openSettings,300);
 }
+setTimeout(()=>migrateImages().catch(()=>{}),1500);
 if(S.settings.apiKey)setTimeout(()=>loadBalance(false),600);
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(S.settings.theme==='auto')applyTheme()});
 window.addEventListener('beforeunload',()=>save(true));
