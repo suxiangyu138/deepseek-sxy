@@ -73,7 +73,7 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
 <div class="bg"><i></i><i></i></div>
 <div class="wrap">
 
-  <span class="badge" id="badge"><span class="dot"></span>v1.8.6 · 开源 · 长期可用</span>
+  <span class="badge" id="badge"><span class="dot"></span>v1.8.7 · 开源 · 长期可用</span>
 
   <div class="hero">
     <div>
@@ -94,13 +94,13 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
 
     <div class="panel">
       <h2>版本信息</h2>
-      <div class="row"><span>版本</span><b id="pVer">1.8.6</b></div>
+      <div class="row"><span>版本</span><b id="pVer">1.8.7</b></div>
       <div class="row"><span>大小</span><b id="pSize">约 1.2 MB</b></div>
       <div class="row"><span>系统</span><b id="pReq">Android 8.0+</b></div>
       <div class="row"><span>更新</span><b id="pDate">2026-11-19</b></div>
       <div class="row" style="border-bottom:0;padding-bottom:4px"><span>SHA-256</span><b>校验</b></div>
       <div class="sha">
-        <code id="sha">07e4fc7c…b6f728f</code>
+        <code id="sha">59f707c1…d73408ea</code>
         <button class="copy" id="copySha">复制</button>
       </div>
     </div>
@@ -181,7 +181,7 @@ document.getElementById('copyApp').addEventListener('click',function(){
   if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(u).then(ok).catch(fb)}else fb();
   function fb(){var a=document.createElement('textarea');a.value=u;a.style.position='fixed';a.style.opacity=0;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}a.remove()}
 });
-var FULL_SHA='07e4fc7cabd117b4248d04849d03601d7104f8671f7fdd4c72ba059cdb6f728f';
+var FULL_SHA='59f707c1f134818ff598c2c87b536beff979d1beb49c288df1745667d73408ea';
 function shortSha(s){return s.slice(0,8)+'…'+s.slice(-8)}
 document.getElementById('sha').textContent=shortSha(FULL_SHA);
 document.getElementById('copySha').addEventListener('click',function(){
