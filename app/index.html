@@ -40,7 +40,6 @@ button:active{transform:scale(.98)}
 a{color:inherit;text-decoration:none}
 .bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .bg i{position:absolute;display:block;border-radius:50%;filter:blur(44px);opacity:.28}
-body.scrolling .top{-webkit-backdrop-filter:none;backdrop-filter:none}
 body.busy .bg i{animation-play-state:paused}
 html.ios .bg i{animation:none}
 html.ios #input,html.ios #perText,html.ios #editText,html.ios .field input,html.ios .mini{font-size:16px}
@@ -87,7 +86,8 @@ html[data-theme="dark"] .bg i:nth-child(3){background:radial-gradient(circle,#13
 .empty h1{font-size:16px;margin:10px 0 0;font-weight:600;letter-spacing:.2px}
 .empty p{margin:0;font-size:11.5px;color:var(--muted)}
 .homever{margin-top:16px;font-size:10px;letter-spacing:.6px;color:var(--muted);opacity:.55}
-.msg{display:flex;margin:0 0 16px;font-size:var(--fs-msg);animation:rise .24s cubic-bezier(.2,.8,.2,1);content-visibility:auto;contain-intrinsic-size:auto 72px}
+.msg.streaming{content-visibility:visible;contain:none}
+.msg{display:flex;margin:0 0 16px;font-size:var(--fs-msg);animation:rise .24s cubic-bezier(.2,.8,.2,1)}
 @keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .msg.user{justify-content:flex-end}
 .msg .bubble{max-width:88%;word-break:break-word}
@@ -159,6 +159,14 @@ td{min-width:72px;max-width:280px;white-space:normal}
 .memsaved::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--muted)}
 .tailtext{white-space:pre-wrap}
 .s-tail .codeblock{margin-top:8px}
+.mermaid-block{margin:10px 0;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);overflow:auto}
+.mermaid-block svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.mermaid-hint{font-size:11.5px;color:var(--muted)}
+.mermaid-block.fail{background:rgba(229,72,77,.06)}
+.diffpre .dl{display:block;padding:0 6px;border-radius:3px}
+.diffpre .add{background:rgba(46,160,67,.13);color:#2ea043}
+.diffpre .del{background:rgba(229,72,77,.12);color:#e5484d}
+.diffpre .ctx{opacity:.75}
 .loadmore{display:block;margin:4px auto 14px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--muted);font-size:11px}
 .typing{display:inline-block;width:6px;height:14px;background:var(--fg);vertical-align:-3px;animation:blink 1s steps(2) infinite;border-radius:2px}
 @keyframes blink{50%{opacity:0}}
@@ -291,6 +299,17 @@ a.tile{text-decoration:none}
 .imgview img{max-width:100%;max-height:100%;transition:transform .1s;will-change:transform}
 .ivbar{position:absolute;top:calc(12px + env(safe-area-inset-top));left:12px;right:12px;display:flex;justify-content:space-between;z-index:2}
 .ivbar button{color:#fff;font-size:12.5px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.16);backdrop-filter:blur(8px)}
+.uhead{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.ucell{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--soft);text-align:center}
+.ucell span{display:block;font-size:10.5px;color:var(--muted);margin-bottom:4px}
+.ucell b{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.ulist{max-height:44vh;overflow:auto;border:1px solid var(--line);border-radius:12px}
+.urow{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);font-size:12.5px}
+.urow:last-child{border-bottom:0}
+.urow .ud{color:var(--muted)}
+.urow b{font-variant-numeric:tabular-nums}
+.udetail{padding:8px 12px 10px;background:var(--soft);font-size:11px;color:var(--muted);line-height:1.8}
+.unote{font-size:10px;color:var(--muted);margin-top:8px;line-height:1.6}
 .install{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));color:#fff;border-radius:13px;padding:11px 13px;display:none;align-items:center;justify-content:space-between;gap:10px;z-index:50;font-size:12px;background:rgba(20,20,22,.92);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:var(--shadow)}
 .install.show{display:flex}
 .install button{background:rgba(255,255,255,.16);padding:6px 12px;border-radius:9px;font-size:11.5px}
@@ -363,7 +382,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v1.9.5</span></div>
+    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.0.0</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -420,6 +439,11 @@ a.tile{text-decoration:none}
   <div class="selbar" id="selbar"><button id="selAll" data-i18n="selectAll">全选</button><span id="selCount">已选 0</span><button class="danger" id="selDel" data-i18n="delete">删除</button></div>
   <div class="convlist" id="convlist"></div>
   <div class="dfoot">
+    <button class="tile" id="btnUsage">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+      <span data-i18n="usage">用量</span>
+      <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
     <button class="tile" id="btnSettings">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
       <span data-i18n="settings">设置</span>
@@ -439,7 +463,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v1.9.5</span></div>
+    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.0.0</span></div>
   </div>
 </aside>
 
@@ -539,6 +563,19 @@ a.tile{text-decoration:none}
   </div>
 </div>
 
+<div class="sheet" id="usageSheet">
+  <div class="bar"></div>
+  <h2 data-i18n="usage">用量</h2>
+  <div class="uhead">
+    <div class="ucell"><span data-i18n="uToday">今日</span><b id="uToday">—</b></div>
+    <div class="ucell"><span data-i18n="uMonth">本月</span><b id="uMonth">—</b></div>
+    <div class="ucell"><span data-i18n="uBal">余额</span><b id="uBal">—</b></div>
+  </div>
+  <div class="ulist" id="usageList"></div>
+  <div class="unote" data-i18n="usageNote">仅统计本机记录，金额按接口返回的用量估算，以官方账单为准。</div>
+  <button class="mini" id="uExport" style="width:100%;margin-top:10px" data-i18n="uExport">导出 CSV</button>
+</div>
+
 <div class="sheet" id="welcomeSheet">
   <div class="bar"></div>
   <div class="about-head" style="margin-bottom:6px">
@@ -613,7 +650,7 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.9.5</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.0.0</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。</div>
@@ -635,7 +672,7 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='1.9.5';
+const APP_VER='2.0.0';
 const T_BOOT=performance.now();
 const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 if(IS_IOS)document.documentElement.classList.add('ios');
@@ -655,7 +692,7 @@ zh:{
   greetSub:'今天想聊点什么',userName:'朋友',chatsEmpty:'还没有对话',
   gToday:'今天',gYesterday:'昨天',gWeek:'7 天内',gEarlier:'更早',
   metaIn:'输入',metaHit:'缓存命中',metaOut:'输出',metaThink:'思考',thisChat:'本对话',
-  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',uiScale:'界面缩放',cont:'继续',provider:'服务商',custom:'自定义',baseUrl:'接口地址',modelName:'模型名',providerKey:'该服务商 Key（留空用上面那把）',storage:'存储',storageText:'文本数据',storageImg:'图片缓存',storageFiles:'张图片',clearImg:'清理图片缓存',cleared:'已清理',loadMore:'加载更早的消息',saveImg:'保存图片',importTitle:'导入对话',importZip:'这是压缩包，请先解压再选择里面的 json 文件',importDone:'导入完成：新增 ',importSkip:'，跳过 ',importHelp:'支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）',deleted:'已删除',backup:'导出备份',restore:'导入备份',restoreAsk:'导入会覆盖当前全部对话与设置，确定继续？',restored:'已恢复',backupDone:'备份已导出',backupFail:'备份文件解析失败',searchPh:'搜索对话',noResult:'没有匹配的对话',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thought:'已深度思考',
+  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',usage:'用量',uToday:'今日',uMonth:'本月',uBal:'余额',uExport:'导出 CSV',usageNote:'仅统计本机记录，金额按接口返回的用量估算，以官方账单为准。',uEmpty:'还没有可统计的记录',uiScale:'界面缩放',cont:'继续',provider:'服务商',custom:'自定义',baseUrl:'接口地址',modelName:'模型名',providerKey:'该服务商 Key（留空用上面那把）',storage:'存储',storageText:'文本数据',storageImg:'图片缓存',storageFiles:'张图片',clearImg:'清理图片缓存',cleared:'已清理',loadMore:'加载更早的消息',saveImg:'保存图片',importTitle:'导入对话',importZip:'这是压缩包，请先解压再选择里面的 json 文件',importDone:'导入完成：新增 ',importSkip:'，跳过 ',importHelp:'支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）',deleted:'已删除',backup:'导出备份',restore:'导入备份',restoreAsk:'导入会覆盖当前全部对话与设置，确定继续？',restored:'已恢复',backupDone:'备份已导出',backupFail:'备份文件解析失败',searchPh:'搜索对话',noResult:'没有匹配的对话',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thought:'已深度思考',
   searchNow:'正在联网搜索：',openNow:'正在打开网页：',findNow:'正在网页内查找：',readNow:'正在阅读链接：',toolNow:'正在调用联网能力…',
   stopped:'（已停止）',netErr:'网络错误，请重试',reqFail:'请求失败（',keyBad:'API Key 无效或已过期',noBalance:'账户余额不足',
   tooOften:'请求太频繁或并发超限，稍后再试',genFail:'生成失败',
@@ -698,7 +735,7 @@ en:{
   greetSub:"What's on your mind",userName:'Suxiangyu',chatsEmpty:'No chats yet',
   gToday:'Today',gYesterday:'Yesterday',gWeek:'Previous 7 days',gEarlier:'Earlier',
   metaIn:'In',metaHit:'cached',metaOut:'Out',metaThink:'Thinking',thisChat:'This chat',
-  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',exportTitle:'Export this answer',exportTxt:'Plain text',exported:'Exported',exportShare:'Export',exportHint:'Markdown keeps formatting; plain text strips markers; PDF uses the system print dialog and pick Save as PDF.',pin:'Pin',uiScale:'UI scale',cont:'Continue',provider:'Provider',custom:'Custom',baseUrl:'Base URL',modelName:'Model',providerKey:'Provider key (blank = above)',storage:'Storage',storageText:'Text data',storageImg:'Image cache',storageFiles:' images',clearImg:'Clear image cache',cleared:'Cleared',loadMore:'Load earlier messages',saveImg:'Save image',importTitle:'Imported chat',importZip:'That is a zip file. Unzip it and pick the json files inside.',importDone:'Imported: ',importSkip:', skipped ',importHelp:'Supports this app backup JSON, or chat_sessions/*.json exported from DeepSeek (multi-select)',deleted:'Deleted',backup:'Export backup',restore:'Import backup',restoreAsk:'Importing replaces all chats and settings. Continue?',restored:'Restored',backupDone:'Backup exported',backupFail:'Invalid backup file',searchPh:'Search chats',noResult:'No matching chats',updating:'Clearing cache…',updatedTo:'Updated to ',unpin:'Unpin',lock:'Lock',unlock:'Unlock',delChat:'Delete chat',protectedHint:'Pinned or locked chats cannot be deleted',tagPin:'Pinned',tagLock:'Locked',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thought:'Thought',
+  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',exportTitle:'Export this answer',exportTxt:'Plain text',exported:'Exported',exportShare:'Export',exportHint:'Markdown keeps formatting; plain text strips markers; PDF uses the system print dialog and pick Save as PDF.',pin:'Pin',usage:'Usage',uToday:'Today',uMonth:'Month',uBal:'Balance',uExport:'Export CSV',usageNote:'Local records only. Amounts are estimated from returned usage; the official bill prevails.',uEmpty:'No usage recorded yet',uiScale:'UI scale',cont:'Continue',provider:'Provider',custom:'Custom',baseUrl:'Base URL',modelName:'Model',providerKey:'Provider key (blank = above)',storage:'Storage',storageText:'Text data',storageImg:'Image cache',storageFiles:' images',clearImg:'Clear image cache',cleared:'Cleared',loadMore:'Load earlier messages',saveImg:'Save image',importTitle:'Imported chat',importZip:'That is a zip file. Unzip it and pick the json files inside.',importDone:'Imported: ',importSkip:', skipped ',importHelp:'Supports this app backup JSON, or chat_sessions/*.json exported from DeepSeek (multi-select)',deleted:'Deleted',backup:'Export backup',restore:'Import backup',restoreAsk:'Importing replaces all chats and settings. Continue?',restored:'Restored',backupDone:'Backup exported',backupFail:'Invalid backup file',searchPh:'Search chats',noResult:'No matching chats',updating:'Clearing cache…',updatedTo:'Updated to ',unpin:'Unpin',lock:'Lock',unlock:'Unlock',delChat:'Delete chat',protectedHint:'Pinned or locked chats cannot be deleted',tagPin:'Pinned',tagLock:'Locked',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thought:'Thought',
   searchNow:'Search: ',openNow:'Open: ',findNow:'Find: ',readNow:'Read: ',toolNow:'Web tools…',
   stopped:'(stopped)',netErr:'Network error, please retry',reqFail:'Request failed (',keyBad:'Invalid or expired API key',noBalance:'Insufficient balance',
   tooOften:'Too many requests, try again later',genFail:'Generation failed',
@@ -852,7 +889,13 @@ function ensureKatex(){
   katexLoading=new Promise(res=>{
     const el=document.createElement('script');
     el.src='vendor/katex/katex.min.js';
-    el.onload=()=>{mathCache.clear();res(true)};
+    el.onload=()=>{
+      const mh=document.createElement('script');
+      mh.src='vendor/katex/contrib/mhchem.min.js';
+      mh.onload=()=>{mathCache.clear();res(true)};
+      mh.onerror=()=>{mathCache.clear();res(true)};
+      document.head.appendChild(mh);
+    };
     el.onerror=()=>res(false);
     document.head.appendChild(el);
   });
@@ -862,6 +905,42 @@ let kxTimer=null;
 function scheduleKatex(){
   if(kxTimer)return;
   kxTimer=setTimeout(()=>{kxTimer=null;ensureKatex().then(ok=>{if(ok){mathNeeded=false;upgradeMath()}})},180);
+}
+let mermaidLoading=null;
+function ensureMermaid(){
+  if(window.mermaid)return Promise.resolve(true);
+  if(mermaidLoading)return mermaidLoading;
+  mermaidLoading=new Promise(res=>{
+    const el=document.createElement('script');
+    el.src='vendor/mermaid/mermaid.min.js';
+    el.onload=()=>{
+      try{
+        const dark=document.documentElement.getAttribute('data-theme')==='dark'||(!document.documentElement.getAttribute('data-theme')&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);
+        mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:dark?'dark':'default',fontFamily:'inherit'});
+      }catch(e){}
+      res(true);
+    };
+    el.onerror=()=>res(false);
+    document.head.appendChild(el);
+  });
+  return mermaidLoading;
+}
+function renderMermaid(scope){
+  const nodes=[...(scope||document).querySelectorAll('.mermaid-block:not([data-done])')];
+  if(!nodes.length)return;
+  nodes.forEach(n=>n.setAttribute('data-done','1'));
+  ensureMermaid().then(ok=>{
+    if(!ok){nodes.forEach(n=>n.classList.add('fail'));return}
+    nodes.forEach(async n=>{
+      const src=n.getAttribute('data-src')||'';
+      try{
+        const r=await mermaid.render('mm'+Math.random().toString(36).slice(2,9),src);
+        n.innerHTML=r.svg;n.classList.add('ok');
+      }catch(e){
+        n.innerHTML='<pre>'+esc(src)+'</pre>';n.classList.add('fail');
+      }
+    });
+  });
 }
 function upgradeMath(){
   document.querySelectorAll('.math-raw[data-tex]').forEach(el=>{
@@ -877,7 +956,7 @@ function renderMath(tex,display){
   let html='';
   if(window.katex&&window.katex.renderToString){
     try{
-      html=katex.renderToString(tex,{displayMode:display,throwOnError:false,strict:'ignore',trust:false,output:'html'});
+      html=katex.renderToString(tex,{displayMode:display,throwOnError:true,strict:'ignore',trust:false,output:'html'});
     }catch(e){html='';}
   }
   if(!html){mathNeeded=true;return '<span class="math-raw" data-tex="'+esc(tex)+'" data-disp="'+(display?1:0)+'">'+esc(display?'$$'+tex+'$$':'$'+tex+'$')+'</span>';}
@@ -944,8 +1023,28 @@ function parseList(lines,i){
     j++;
   }
   const tag=ordered?'ol':'ul';
-  const html='<'+tag+'>'+items.map(it=>'<li>'+it.text+it.children.join('')+'</li>').join('')+'</'+tag+'>';
+  const startNum=ordered?(parseInt((first[2].match(/\d+/)||['1'])[0],10)||1):1;
+  const startAttr=(ordered&&startNum>1)?' start="'+startNum+'"':'';
+  const html='<'+tag+startAttr+'>'+items.map(it=>'<li>'+it.text+it.children.join('')+'</li>').join('')+'</'+tag+'>';
   return {html,next:j};
+}
+function wrapTexMacro(str,name,push){
+  const tag='\\'+name+'{';
+  let i=0,out='';
+  while(i<str.length){
+    const k=str.indexOf(tag,i);
+    if(k<0){out+=str.slice(i);break}
+    out+=str.slice(i,k);
+    let depth=0,j=k+tag.length-1;
+    for(;j<str.length;j++){
+      if(str[j]==='{')depth++;
+      else if(str[j]==='}'){depth--;if(depth===0)break}
+    }
+    if(j>=str.length){out+=str.slice(k);break}
+    out+=push(str.slice(k,j+1),false);
+    i=j+1;
+  }
+  return out;
 }
 function md(src){
   const codes=[],maths=[];
@@ -953,16 +1052,21 @@ function md(src){
   s=s.replace(/```([A-Za-z0-9+#.\-]*)[ \t]*\n?([\s\S]*?)```/g,(m,lang,code)=>{codes.push({lang:lang||'text',code:code.replace(/\n$/,'')});return '\u0000C'+(codes.length-1)+'\u0000'});
   s=s.replace(/`([^`\n]+)`/g,(m,c)=>{codes.push({lang:'',code:c,inline:true});return '\u0000C'+(codes.length-1)+'\u0000'});
   const pushMath=(tex,disp)=>{maths.push({tex,disp});return '\u0000M'+(maths.length-1)+'\u0000'};
-  s=s.replace(/\$\$([\s\S]+?)\$\$/g,(m,t)=>pushMath(t.trim(),true));
+  s=s.replace(/(^|\n)[ \t]*\$\$([\s\S]+?)\$\$[ \t]*(?=\n|$)/g,(m,pre,t)=>pre+pushMath(t.trim(),true));
+  s=s.replace(/\$\$([^\n$]+?)\$\$/g,(m,t)=>pushMath(t.trim(),true));
   s=s.replace(/\\\[([\s\S]+?)\\\]/g,(m,t)=>pushMath(t.trim(),true));
   s=s.replace(/\\\(([\s\S]+?)\\\)/g,(m,t)=>pushMath(t.trim(),false));
   s=s.replace(/\$(?![\s$])([^\n$]+?)(?<![\s\\])\$/g,(m,t)=>pushMath(t,false));
+  s=wrapTexMacro(s,'ce',pushMath);
+  s=wrapTexMacro(s,'pu',pushMath);
   s=esc(s);
   s=s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g,(m,alt,u)=>{const url=safeUrl(u);return url?'<figure class="imgfig"><img src="'+esc(url)+'" alt="'+esc(alt)+'" loading="lazy"></figure>':m});
   s=s.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
   s=s.replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>');
   s=s.replace(/(^|[^*])\*([^*\n]+)\*/g,'$1<em>$2</em>');
   s=s.replace(/~~([^~\n]+)~~/g,'<del>$1</del>');
+  s=s.replace(/&lt;(\/?)(sub|sup|mark|kbd|u|small)&gt;/gi,'<$1$2>');
+  s=s.replace(/&lt;br\s*\/?&gt;/gi,'<br>');
   s=s.replace(/(^|[\s(（])(https?:\/\/[^\s<)）]+)/g,(m,p,u)=>p+'<a href="'+u+'" target="_blank" rel="noopener noreferrer">'+u+'</a>');
   const lines=s.split('\n'),out=[];
   let para=[];
@@ -974,7 +1078,7 @@ function md(src){
       const tb=parseTable(lines,i);
       if(tb){fp();out.push(tb.html);i=tb.next-1;continue}
     }
-    const h=line.match(/^(#{1,4})\s+(.*)$/);
+    const h=line.match(/^(#{1,6})\s+(.*)$/);
     if(h){fp();const n=h[1].length;out.push('<h'+n+'>'+h[2]+'</h'+n+'>');continue}
     if(/^(-{3,}|\*{3,}|_{3,})$/.test(line.trim())){fp();out.push('<hr>');continue}
     if(/^\s*([-*+]|\d+[.)])\s+/.test(line)){
@@ -982,12 +1086,32 @@ function md(src){
       if(ls){fp();out.push(ls.html);i=ls.next-1;continue}
     }
     if(/^\u0000[CM]\d+\u0000$/.test(line.trim())){fp();out.push(line.trim());continue}
-    if(/^(&gt;|>)\s?/.test(line)){fp();out.push('<blockquote>'+line.replace(/^(&gt;|>)\s?/,'')+'</blockquote>');continue}
+    if(/^(&gt;|>)\s?/.test(line)){
+      fp();
+      const q=[];
+      while(i<lines.length&&/^(&gt;|>)\s?/.test(lines[i])){
+        q.push(lines[i].replace(/^(&gt;|>)\s?/,''));
+        i++;
+      }
+      i--;
+      out.push('<blockquote>'+q.join('<br>')+'</blockquote>');
+      continue;
+    }
     para.push(line);
   }
   fp();
   let html=out.join('');
-  html=html.replace(/\u0000C(\d+)\u0000/g,(m,i)=>{const c=codes[+i];if(c.inline)return '<code>'+esc(c.code)+'</code>';return '<div class="codeblock"><div class="codehead"><span>'+esc(c.lang)+'</span><button class="copybtn" data-i="'+i+'">'+esc(copyLabel())+'</button></div><pre><code>'+highlight(c.code)+'</code></pre></div>'});
+  html=html.replace(/\u0000C(\d+)\u0000/g,(m,i)=>{const c=codes[+i];if(c.inline)return '<code>'+esc(c.code)+'</code>';
+    if(c.lang==='mermaid')return '<div class="mermaid-block" data-src="'+esc(c.code)+'"><div class="mermaid-hint">正在绘制图表…</div></div>';
+    if(c.lang==='math'||c.lang==='latex'||c.lang==='tex')return '<div class="math disp">'+renderMath(c.code,true)+'</div>';
+    if(c.lang==='diff'){
+      const body=c.code.split('\n').map(l=>{
+        const cls=l.startsWith('+')?'add':l.startsWith('-')?'del':'ctx';
+        return '<span class="dl '+cls+'">'+esc(l||' ')+'</span>';
+      }).join('\n');
+      return '<div class="codeblock"><div class="codehead"><span>diff</span><button class="copybtn" data-i="'+i+'">'+esc(copyLabel())+'</button></div><pre class="diffpre"><code>'+body+'</code></pre></div>';
+    }
+    return '<div class="codeblock"><div class="codehead"><span>'+esc(c.lang)+'</span><button class="copybtn" data-i="'+i+'">'+esc(copyLabel())+'</button></div><pre><code>'+highlight(c.code)+'</code></pre></div>'});
   html=html.replace(/\u0000M(\d+)\u0000/g,(m,i)=>{const x=maths[+i];return '<span class="math'+(x.disp?' disp':'')+'">'+renderMath(x.tex,x.disp)+'</span>'});
   return {html,codes};
 }
@@ -1456,6 +1580,7 @@ function renderMsgs(){
     box.appendChild(more);
   }
   for(let i=start;i<c.msgs.length;i++)box.appendChild(msgEl(c.msgs[i]));
+  renderMermaid(box);
   box.querySelectorAll('img').forEach(im=>{if(!im.complete)im.addEventListener('load',()=>scrollBottom(false),{once:true})});
   scrollBottom(true);
 }
@@ -1506,8 +1631,22 @@ function paintStreamBody(body,m){
     body.innerHTML='<div class="s-prefix"></div><div class="s-tail"></div>';
     pre=body.querySelector('.s-prefix');
   }
-  if(pre.dataset.src!==parts.head){
-    pre.innerHTML=md(parts.head).html;
+  const oldSrc=pre.dataset.src||'';
+  if(oldSrc!==parts.head){
+    let added='';
+    if(oldSrc&&parts.head.startsWith(oldSrc)){
+      added=md(parts.head.slice(oldSrc.length)).html;
+    }else{
+      pre.innerHTML='';
+      added=md(parts.head).html;
+    }
+    if(added){
+      const tmp=document.createElement('div');
+      tmp.innerHTML=added;
+      const frag=document.createDocumentFragment();
+      while(tmp.firstChild)frag.appendChild(tmp.firstChild);
+      pre.appendChild(frag);
+    }
     pre.dataset.src=parts.head;
   }
   const tail=body.querySelector('.s-tail');
@@ -1528,6 +1667,7 @@ function paintStreamBody(body,m){
   if(!caret){caret=document.createElement('span');caret.className='typing';tail.appendChild(caret)}
 }
 function paintStreaming(b,m){
+  b.classList.add('streaming');
   let think=b.querySelector('details.think');
   if(m.reasoning){
     if(!think){
@@ -1561,6 +1701,9 @@ function paintStreaming(b,m){
 }
 function paintAssistant(b,m,streamingNow){
   if(streamingNow){paintStreaming(b,m);return}
+  b.classList.remove('streaming');
+  const msgsEl=$('#msgs');
+  const keepTop=(!followBottom&&msgsEl)?msgsEl.scrollTop:null;
   b.innerHTML='';
   if(m.reasoning){
     const det=document.createElement('details');det.className='think';
@@ -1582,6 +1725,8 @@ function paintAssistant(b,m,streamingNow){
   const r=md(m.content||'');body.innerHTML=r.html;bindCopy(body,r.codes);
   if(m.error&&!m.content)body.innerHTML='<p style="color:#e5484d">'+esc(m.error)+'</p>';
   b.appendChild(body);
+  renderMermaid(b);
+  if(keepTop!=null&&msgsEl)requestAnimationFrame(()=>{msgsEl.scrollTop=keepTop});
   if(m.content){
     const act=document.createElement('div');act.className='actions';
     const cb=document.createElement('button');cb.className='cbtn';
@@ -1627,16 +1772,19 @@ function paintAssistant(b,m,streamingNow){
   }
 }
 let stickUntil=0;
+let followBottom=true;
 function scrollBottom(force){
   const el=$('#msgs');
   if(!el)return;
-  const near=el.scrollHeight-el.scrollTop-el.clientHeight<160;
-  if(!(force||near))return;
+  if(force)followBottom=true;
+  if(!force&&!followBottom)return;
+  const near=el.scrollHeight-el.scrollTop-el.clientHeight<120;
+  if(!near){return}
   stickUntil=Date.now()+900;
   const go=()=>{if(Date.now()>stickUntil)return;el.scrollTop=el.scrollHeight};
   go();
   requestAnimationFrame(()=>{go();requestAnimationFrame(go)});
-  [60,180,400,700].forEach(t=>setTimeout(go,t));
+  if(!streaming)[60,180,400,700].forEach(t=>setTimeout(go,t));
 }
 ['touchstart','wheel','mousedown'].forEach(ev=>$('#msgs').addEventListener(ev,()=>{stickUntil=0},{passive:true}));
 
@@ -1731,8 +1879,8 @@ function lastUserText(c){
 async function buildMessages(c){
   const en=S.settings.lang==='en';
   let sys=en
-    ? 'You are DeepSeek, an AI assistant created by DeepSeek. Be accurate and concise, format with Markdown, label code blocks. The current time is '+nowText()+'. Use it when the user asks about date, weekday or time.'
-    : '你是 DeepSeek，由深度求索（DeepSeek）创造的 AI 助手。回答准确、简洁，用 Markdown 排版，代码块标注语言。现在是'+nowText()+'。用户问日期、星期、时间时以此为准。';
+    ? 'You are DeepSeek, an AI assistant created by DeepSeek. Be accurate and concise, format with Markdown, label code blocks. The current time is '+nowText()+'. Use it when the user asks about date, weekday or time.\n\nFormatting rule: whenever a math or physics formula appears, write it in LaTeX. Inline math uses $...$, a standalone formula uses $$...$$ on its own line. Do not build formulas from Unicode superscripts, subscripts, √, ∫ or Σ characters. Chemical equations use \\ce{...}, units use \\pu{...}.'
+    : '你是 DeepSeek，由深度求索（DeepSeek）创造的 AI 助手。回答准确、简洁，用 Markdown 排版，代码块标注语言。现在是'+nowText()+'。用户问日期、星期、时间时以此为准。\n\n排版规则：凡是数学、物理公式，一律用 LaTeX 书写。行内公式用 $...$，独立成行的公式用 $$...$$ 单独占一行。不要用 Unicode 上下标、√、∫、Σ 等符号拼公式。化学方程式用 \\ce{...}，单位用 \\pu{...}。';
   if(S.settings.personalOn&&S.personal.trim()){
     sys+=en?('\n\n[User persona — takes precedence over the default style]\n'+S.personal.trim().slice(0,4000))
            :('\n\n【用户的个性化要求，优先于默认风格】\n'+S.personal.trim().slice(0,4000));
@@ -1779,7 +1927,17 @@ async function run(c,am,bubble){
   const _ut=lastUserText(c);
   const _pc=parseMemCommand(_ut);
   const wantSave=!!(S.settings.autoMem&&!(_pc&&_pc.hasContent)&&(_pc||looksPersonal(_ut)));
-  const paint=()=>{try{paintAssistant(bubble,am,true);scrollBottom(false)}catch(err){console.error('paint',err)}};
+  let paintQueued=false,finished=false;
+  const paint=()=>{
+    if(finished||paintQueued)return;
+    paintQueued=true;
+    requestAnimationFrame(()=>{
+      paintQueued=false;
+      if(finished)return;
+      if(!followBottom)return;
+      try{paintAssistant(bubble,am,true);scrollBottom(false)}catch(err){console.error('paint',err)}
+    });
+  };
   try{
     const hasImg=(c.msgs||[]).some(m=>m.role==='user'&&m.images&&m.images.length);
     let model=S.settings.model||'deepseek-flash';
@@ -1872,6 +2030,7 @@ async function run(c,am,bubble){
       saveMemory(c,lastUserText(c),am.content).then(m=>{if(m){am.memSaved=m;save(true);paintAssistant(bubble,am,false)}});
     }
     am.ts=Date.now();c.updatedAt=Date.now();save(true);
+    finished=true;
     try{paintAssistant(bubble,am,false);renderTotal();scrollBottom(false)}
     catch(err){
       console.error('final paint',err);
@@ -1920,6 +2079,57 @@ async function submitEdit(){
   await run(c,am,el.querySelector('.bubble'));
 }
 function openDrawer(){$('#drawer').classList.add('show');$('#mask').classList.add('show');loadBalance(false)}
+function pad2(n){return String(n).padStart(2,'0')}
+function dayKey(ts){const d=new Date(ts||Date.now());return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())}
+function usageDays(){
+  const map=new Map();
+  for(const c of (S.convs||[]))for(const m of (c.msgs||[])){
+    if(m.role!=='assistant'||!m.ts)continue;
+    const k=dayKey(m.ts);
+    let e=map.get(k);
+    if(!e){e={date:k,cost:0,n:0,tin:0,tout:0,cache:0,nocost:0};map.set(k,e)}
+    e.n++;
+    if(typeof m.cost==='number'&&isFinite(m.cost))e.cost+=m.cost;else e.nocost++;
+    const u=m.usage||{};
+    e.tin+=u.prompt_tokens||0;e.tout+=u.completion_tokens||0;e.cache+=u.prompt_cache_hit_tokens||0;
+  }
+  return [...map.values()].sort((a,b)=>a.date<b.date?1:-1);
+}
+function money(v){return '¥'+(v<0.1?v.toFixed(4):v<1?v.toFixed(3):v.toFixed(2))}
+function renderUsage(){
+  const days=usageDays();
+  const today=dayKey(Date.now()),month=today.slice(0,7);
+  let tc=0,mc=0;
+  for(const d of days){if(d.date===today)tc+=d.cost;if(d.date.slice(0,7)===month)mc+=d.cost}
+  $('#uToday').textContent=money(tc);
+  $('#uMonth').textContent=money(mc);
+  const bal=S.settings.balance;
+  $('#uBal').textContent=bal&&bal.amount!=null?((bal.currency==='USD'?'$':'¥')+Number(bal.amount).toFixed(2)):'—';
+  const box=$('#usageList');box.innerHTML='';
+  if(!days.length){
+    const e=document.createElement('div');e.style.cssText='padding:16px;color:var(--muted);font-size:12px';
+    e.textContent=t('uEmpty');box.appendChild(e);return;
+  }
+  for(const d of days){
+    const row=document.createElement('div');row.className='urow';
+    const left=document.createElement('span');left.className='ud';
+    left.textContent=d.date===today?('今天 '+d.date):d.date;
+    const right=document.createElement('span');
+    right.innerHTML='<b>'+money(d.cost)+'</b> <span class="ud">'+d.n+' 条</span>';
+    row.appendChild(left);row.appendChild(right);
+    const det=document.createElement('div');det.className='udetail';det.style.display='none';
+    det.textContent='输入 '+d.tin+' · 输出 '+d.tout+' · 缓存命中 '+d.cache+(d.nocost?(' · 未计费 '+d.nocost+' 条'):'');
+    row.onclick=()=>{det.style.display=det.style.display==='none'?'block':'none'};
+    box.appendChild(row);box.appendChild(det);
+  }
+}
+$('#btnUsage').onclick=()=>{closeAll();renderUsage();loadBalance(false);$('#usageSheet').classList.add('show');$('#mask').classList.add('show')};
+$('#uExport').onclick=()=>{
+  const days=usageDays();
+  const rows=['date,cost_cny,messages,input_tokens,output_tokens,cache_hit_tokens,nocost'];
+  for(const d of days)rows.push([d.date,d.cost.toFixed(6),d.n,d.tin,d.tout,d.cache,d.nocost].join(','));
+  saveBlob('Pico-usage-'+dayKey(Date.now())+'.csv',rows.join('\n'),'text/csv;charset=utf-8');
+};
 async function loadBalance(force){
   const el=$('#balance');if(!el)return;
   el.title=t('balanceHint');
@@ -2264,9 +2474,17 @@ $('#btnSend').onclick=()=>{if(streaming){if(streamAbort)streamAbort.abort();retu
 $('#input').addEventListener('input',e=>{const t=e.target;t.style.height='auto';t.style.height=Math.min(t.scrollHeight,116)+'px';saveDraft()});
 $('#input').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)&&!e.isComposing){e.preventDefault();send()}});
 let scrollTimer=null;
+let lastScrollTop=0;
 $('#msgs').addEventListener('scroll',()=>{
   document.body.classList.add('scrolling');
   clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>document.body.classList.remove('scrolling'),160);
+  {
+    const el=$('#msgs');
+    const dist=el.scrollHeight-el.scrollTop-el.clientHeight;
+    if(dist<40)followBottom=true;
+    else if(el.scrollTop<lastScrollTop-8)followBottom=false;
+    lastScrollTop=el.scrollTop;
+  }
   $('.top').classList.toggle('scrolled',$('#msgs').scrollTop>4);
   const el=$('#msgs');
   $('#toBottom').classList.toggle('show',el.scrollHeight-el.scrollTop-el.clientHeight>500);
@@ -2294,7 +2512,7 @@ $('#msgs').addEventListener('scroll',()=>{
     lastTap=now;
   });
 })();
-$('#toBottom').onclick=()=>{const el=$('#msgs');el.scrollTo({top:el.scrollHeight,behavior:'smooth'});};
+$('#toBottom').onclick=()=>{followBottom=true;const el=$('#msgs');el.scrollTo({top:el.scrollHeight,behavior:'smooth'});};
 let searchTimer=null;
 $('#convSearch').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>renderList(),160)});
 $('#msgs').addEventListener('click',e=>{
@@ -2362,6 +2580,7 @@ if(!S.settings.onboarded){
 }
 setTimeout(()=>migrateImages().catch(()=>{}),1500);
 if(S.settings.apiKey)setTimeout(()=>loadBalance(false),600);
+setTimeout(()=>{ensureKatex()},900);
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(S.settings.theme==='auto')applyTheme()});
 window.addEventListener('beforeunload',()=>save(true));
 window.addEventListener('pagehide',()=>save(true));
