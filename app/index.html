@@ -11,9 +11,9 @@
 <title>轻言 · Pico</title>
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png?v=1.9.5">
+<link rel="apple-touch-icon" href="icon-192.png?v=1.9.5">
+<link rel="icon" href="icon-192.png?v=1.9.5">
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
@@ -334,7 +334,7 @@ a.tile{text-decoration:none}
 <body>
 <div id="root">
 <div class="boot" id="boot">
-  <div class="boot-avatar"><img src="icon-192.png" alt=""></div>
+  <div class="boot-avatar"><img src="icon-192.png?v=1.9.5" alt=""></div>
   <div class="boot-text" data-i18n="loading">加载中…</div>
   <div class="boot-bar"><i></i></div>
 </div>
@@ -542,7 +542,7 @@ a.tile{text-decoration:none}
 <div class="sheet" id="welcomeSheet">
   <div class="bar"></div>
   <div class="about-head" style="margin-bottom:6px">
-    <img class="about-avatar" src="icon-192.png" alt="">
+    <img class="about-avatar" src="icon-192.png?v=1.9.5" alt="">
     <div>
       <div class="about-name" data-i18n="welcomeTitle">你好，我是 DeepSeek</div>
       <div class="about-sub" data-i18n="welcomeSub">先告诉我怎么称呼你，之后都可以在设置里改</div>
@@ -607,7 +607,7 @@ a.tile{text-decoration:none}
 <div class="sheet" id="aboutSheet">
   <div class="bar"></div>
   <div class="about-head">
-    <img class="about-avatar" src="icon-192.png" alt="">
+    <img class="about-avatar" src="icon-192.png?v=1.9.5" alt="">
     <div><div class="about-name">轻言 Pico</div><div class="about-sub" data-i18n="aboutSub">一个人写的小工具</div></div>
   </div>
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
@@ -1437,7 +1437,7 @@ function renderMsgs(){
     const sep=S.settings.lang==='en'?', ':'，';
     const nm=(S.settings.name||'').trim();
     const greet=nm?(hi+sep+nm):hi;
-    box.innerHTML='<div class="empty"><div class="avatar"><img src="icon-192.png" alt=""></div>'+
+    box.innerHTML='<div class="empty"><div class="avatar"><img src="icon-192.png?v=1.9.5" alt=""></div>'+
       '<h1>'+esc(greet)+'</h1><p>'+esc(t('greetSub'))+'</p>'+
       '</div>';
     return
