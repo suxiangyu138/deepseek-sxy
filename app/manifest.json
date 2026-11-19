@@ -1,7 +1,7 @@
 {
-  "name": "DeepSeek_sxy",
-  "short_name": "DeepSeek_sxy",
-  "description": "轻量对话客户端，打开即用，不启动本地引擎",
+  "name": "轻言 Pico",
+  "short_name": "轻言",
+  "description": "轻言 Pico：1.2MB 的 DeepSeek 轻客户端，自带 API Key，数据只存本机。个人开发版本，与官方无关。",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

@@ -1,13 +1,15 @@
-# DeepSeek_sxy
+# 轻言 Pico
 
-> 一个自带 API Key、数据只存本机的 DeepSeek 客户端。
+> 1.2MB 的 DeepSeek 轻客户端。自带 API Key，数据只存本机。
+>
+> 个人开发版本，与 DeepSeek 官方无关，也不代表官方立场，仅供社区自用与学习参考。
 > 针对 2026 年 11 月 DeepSeek C 端限额政策重新设计：不再受每日对话额度、4 万字单次输入、7 天闲置会话失效的限制。
 
-**下载**：[官方下载页](https://suxiangyu.top/download/) · [Gitee Release](https://gitee.com/suxiangyu138/deepseek-sxy/releases) · [GitHub Release](https://github.com/suxiangyu138/deepseek-sxy/releases)
+**下载**：[下载页](https://suxiangyu.top/download/) · [Gitee Release](https://gitee.com/suxiangyu138/deepseek-sxy/releases) · [GitHub Release](https://github.com/suxiangyu138/deepseek-sxy/releases)
 
 **源码**：[Gitee](https://gitee.com/suxiangyu138/deepseek-sxy) · [GitHub](https://github.com/suxiangyu138/deepseek-sxy)
 
-![version](https://img.shields.io/badge/version-1.8.7-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B-black)
+![version](https://img.shields.io/badge/version-1.9.3-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B-black)
 
 ---
 
@@ -195,7 +197,7 @@ Nginx 需要处理四件事：
 
 ## 十、版本与发布
 
-当前 v1.8.7，versionCode 6。
+当前 v1.9.3，versionCode 12。
 
 - 下载页：[suxiangyu.top/download](https://suxiangyu.top/download/)
 - Gitee Release：[releases](https://gitee.com/suxiangyu138/deepseek-sxy/releases)
@@ -203,7 +205,7 @@ Nginx 需要处理四件事：
 
 每次发布在 Release 附 APK 与 SHA-256，变更记录见 [CHANGELOG.md](CHANGELOG.md)。
 
-APK 命名约定为 `DeepSeek_sxy-X.Y.Z.apk`，站点上另存一份 `app-X.Y.Z.apk` 供下载页引用。
+APK 命名约定为 `Pico-X.Y.Z.apk`，站点上另存一份 `app-X.Y.Z.apk` 供下载页引用。
 
 ---
 

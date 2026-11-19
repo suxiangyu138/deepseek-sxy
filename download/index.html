@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DeepSeek_sxy · 下载与开源</title>
-<meta name="description" content="自带 API Key、数据只存本机的 DeepSeek 客户端，绕开 C 端每日额度，安卓安装包与开源仓库。">
+<title>轻言 Pico · 下载与开源</title>
+<meta name="description" content="轻言 Pico：1.2MB 的 DeepSeek 轻客户端，自带 API Key，数据只存本机。个人开发版本，与官方无关。">
 <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b0b0c" media="(prefers-color-scheme: dark)">
 <style>
@@ -73,15 +73,15 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
 <div class="bg"><i></i><i></i></div>
 <div class="wrap">
 
-  <span class="badge" id="badge"><span class="dot"></span>v1.8.7 · 开源 · 长期可用</span>
+  <span class="badge" id="badge"><span class="dot"></span>v1.9.3 · 开源 · 长期可用</span>
 
   <div class="hero">
     <div>
       <div class="brand">
-        <img class="icon" src="icon.png" alt="DeepSeek_sxy" onerror="this.style.display='none'">
-        <h1>DeepSeek_sxy</h1>
+        <img class="icon" src="icon.png" alt="轻言 Pico" onerror="this.style.display='none'">
+        <h1>轻言 <span style="font-weight:600;font-size:.55em;color:var(--muted);letter-spacing:0">Pico</span></h1>
       </div>
-      <p class="sub">自带 API Key、数据只存本机的 DeepSeek 客户端。绕开 C 端每日对话额度与 4 万字输入限制，上下文 1M，界面与能力对齐官方手机客户端。</p>
+      <p class="sub">1.2MB 的 DeepSeek 轻客户端。自带 API Key，数据只存本机，绕开 C 端每日额度与 4 万字输入限制，上下文 1M。个人开发版本，与 DeepSeek 官方无关。</p>
       <div class="actions" id="androidActions">
         <a class="btn" id="dl" href="app-latest.apk" download>下载 Android 安装包</a>
         <a class="btn ghost" href="#install">安装说明</a>
@@ -94,13 +94,13 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
 
     <div class="panel">
       <h2>版本信息</h2>
-      <div class="row"><span>版本</span><b id="pVer">1.8.7</b></div>
+      <div class="row"><span>版本</span><b id="pVer">1.9.3</b></div>
       <div class="row"><span>大小</span><b id="pSize">约 1.2 MB</b></div>
       <div class="row"><span>系统</span><b id="pReq">Android 8.0+</b></div>
       <div class="row"><span>更新</span><b id="pDate">2026-11-19</b></div>
       <div class="row" style="border-bottom:0;padding-bottom:4px"><span>SHA-256</span><b>校验</b></div>
       <div class="sha">
-        <code id="sha">59f707c1…d73408ea</code>
+        <code id="sha">11f23990…f4663bb2</code>
         <button class="copy" id="copySha">复制</button>
       </div>
     </div>
@@ -155,7 +155,7 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
   </section>
 
   <footer>
-    <div>© 2026 苏巷雨 · suxiangyu_dev@foxmail.com</div>
+    <div>© 2026 苏巷雨 · 轻言 Pico · suxiangyu_dev@foxmail.com</div>
     <div class="foot-links">
       <a href="privacy.html">隐私说明</a>
       <a href="https://gitee.com/suxiangyu138/deepseek-sxy" target="_blank" rel="noopener">Gitee</a>
@@ -181,7 +181,7 @@ document.getElementById('copyApp').addEventListener('click',function(){
   if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(u).then(ok).catch(fb)}else fb();
   function fb(){var a=document.createElement('textarea');a.value=u;a.style.position='fixed';a.style.opacity=0;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}a.remove()}
 });
-var FULL_SHA='59f707c1f134818ff598c2c87b536beff979d1beb49c288df1745667d73408ea';
+var FULL_SHA='11f239903bdf73d10bc094db5f694d93a8046f139c11cd6ca30159abf4663bb2';
 function shortSha(s){return s.slice(0,8)+'…'+s.slice(-8)}
 document.getElementById('sha').textContent=shortSha(FULL_SHA);
 document.getElementById('copySha').addEventListener('click',function(){

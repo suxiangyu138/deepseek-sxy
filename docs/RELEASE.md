@@ -29,7 +29,7 @@
 | 版本信息 | `release.json`，供页面与应用内检查更新 |
 | 变更说明 | 每个版本一段更新日志 |
 
-命名规则：Release 附件与站点文件统一用 `DeepSeek_sxy-X.Y.Z.apk`，站点上另存一份 `app-X.Y.Z.apk` 供下载页引用，`versionName` 必须与文件名一致。
+命名规则：Release 附件与站点文件统一用 `Pico-X.Y.Z.apk`，站点上另存一份 `app-X.Y.Z.apk` 供下载页引用，`versionName` 必须与文件名一致。
 
 ---
 

@@ -6,9 +6,9 @@
 <meta name="theme-color" content="#ffffff">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="DeepSeek_sxy">
+<meta name="apple-mobile-web-app-title" content="轻言">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>DeepSeek_sxy</title>
+<title>轻言 · Pico</title>
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
@@ -363,7 +363,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">DeepSeek_sxy</span><span class="tsub" id="topVer">v1.8.7</span></div>
+    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v1.9.3</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -404,7 +404,7 @@ a.tile{text-decoration:none}
 
 <div class="mask" id="mask"></div>
 <aside class="drawer" id="drawer">
-  <div class="dhead"><span class="dbrand" data-i18n="appName">DeepSeek_sxy</span></div>
+  <div class="dhead"><span class="dbrand" data-i18n="appName">轻言</span></div>
   <div class="modules">
     <button class="mod" id="modMemory">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3a5 5 0 0 0-5 5v1a4 4 0 0 0 0 8v1a3 3 0 0 0 6 0V5a2 2 0 0 0-1-2z"/><path d="M12 3a5 5 0 0 1 5 5v1a4 4 0 0 1 0 8v1a3 3 0 0 1-6 0"/></svg>
@@ -439,7 +439,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">作者 苏巷雨</span> · <span id="verLabel">v1.8.7</span></div>
+    <div class="author"><span data-i18n="author">作者 苏巷雨</span> · <span id="verLabel">v1.9.3</span></div>
   </div>
 </aside>
 
@@ -613,10 +613,10 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.8.7</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.9.3</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
-  <div class="about-note" data-i18n="aboutNote">有问题、建议或者想反馈，直接发邮件，或者在仓库里提 issue。</div>
+  <div class="about-note" data-i18n="aboutNote">个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。</div>
 </div>
 
 <div class="imgview" id="imgView">
@@ -635,13 +635,13 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='1.8.7';
+const APP_VER='1.9.3';
 const T_BOOT=performance.now();
 const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 if(IS_IOS)document.documentElement.classList.add('ios');
 const I18N={
 zh:{
-  appName:'DeepSeek_sxy',newChat:'新建对话',memory:'记忆',personal:'个性化',chats:'对话',manage:'管理',done:'完成',
+  appName:'轻言',newChat:'新建对话',memory:'记忆',personal:'个性化',chats:'对话',manage:'管理',done:'完成',
   selectAll:'全选',selected:'已选 ',delete:'删除',settings:'设置',save:'保存',paste:'粘贴',add:'添加',
   apiKeyLabel:'DeepSeek API Key（一个 Key 就能用全部功能）',theme:'主题',clearAll:'清空全部会话',
   themeAuto:'跟随系统',themeLight:'浅色',themeDark:'深色',language:'语言',
@@ -668,12 +668,12 @@ zh:{
   on:'开启 · ',onSet:'开启 · 已设置',onUnset:'开启 · 未设置',off:'已关闭',count:' 条',sec:' 秒）',
   modelFlash:'日常首选，快、便宜，支持图片',modelPro:'更强推理，复杂问题更稳，略慢略贵',
   installTitle:'装到桌面',install1:'用 Chrome 或 Edge 打开',install2:'右上角 ⋮ 菜单 →「安装应用」；没有这一项就选「添加到主屏幕」',
-  install3:'桌面出现「DeepSeek_sxy」，点开即用',install4:'Chrome、Edge、部分国产浏览器都支持；微信/QQ 的内置浏览器装不了。',
+  install3:'桌面出现「轻言」，点开即用',install4:'Chrome、Edge、部分国产浏览器都支持；微信/QQ 的内置浏览器装不了。',
   balance:'余额',balanceFail:'余额获取失败',balanceHint:'点击刷新余额',
   edit:'编辑',editTitle:'编辑消息',send:'发送',cancel:'取消',
   appearance:'外观',nickname:'称呼（可选）',nicknamePh:'留空就只显示问候语',welcomeTitle:'你好，我是 DeepSeek',welcomeSub:'先告诉我怎么称呼你，之后都可以在设置里改',welcomePh:'你的称呼，可以留空',skip:'跳过',start:'开始使用',fontSize:'正文字号',codeSize:'代码字号',help:'使用说明',repo:'仓库',author:'作者 苏巷雨',about:'关于作者',testConn:'测试连接',testing:'测试中…',keyOk:'连接正常',keyFail:'连接失败',
   aboutSub:'一个人写的小工具',email:'邮箱',version:'版本',copy:'复制',
-  aboutNote:'有问题、建议或者想反馈，直接发邮件，或者在仓库里提 issue。',
+  aboutNote:'个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。',
   chatLabel:'对话',privacyLabel:'隐私',
   helpChat:'直接输入问题，回车发送；回答下方的按钮可以复制、编辑或重新生成。',
   helpMem:'说「记住…」「添加记忆…」会自动存进记忆，之后每次对话都会读。',
@@ -684,7 +684,7 @@ zh:{
   note:'联网搜索、阅读链接、深度思考都由 DeepSeek 官方接口完成，不需要别的 Key。Key 和对话只存在本机浏览器，不经过任何第三方服务器。'
 },
 en:{
-  appName:'DeepSeek_sxy',newChat:'New chat',memory:'Memory',personal:'Persona',chats:'Chats',manage:'Manage',done:'Done',
+  appName:'Pico',newChat:'New chat',memory:'Memory',personal:'Persona',chats:'Chats',manage:'Manage',done:'Done',
   selectAll:'Select all',selected:'Selected ',delete:'Delete',settings:'Settings',save:'Save',paste:'Paste',add:'Add',
   apiKeyLabel:'DeepSeek API Key (one key unlocks everything)',theme:'Theme',clearAll:'Clear all chats',
   themeAuto:'System',themeLight:'Light',themeDark:'Dark',language:'Language',
@@ -716,7 +716,7 @@ en:{
   edit:'Edit',editTitle:'Edit message',send:'Send',cancel:'Cancel',
   appearance:'Appearance',nickname:'Nickname (optional)',nicknamePh:'Leave empty to show greeting only',welcomeTitle:"Hi, I'm DeepSeek",welcomeSub:'Tell me what to call you, you can change it later',welcomePh:'Your name, optional',skip:'Skip',start:'Start',fontSize:'Text size',codeSize:'Code size',help:'Help',repo:'Repo',author:'By Suxiangyu',about:'About',testConn:'Test connection',testing:'Testing…',keyOk:'Connected',keyFail:'Connection failed',
   aboutSub:'A small tool built by one person',email:'Email',version:'Version',copy:'Copy',
-  aboutNote:'Questions, ideas or bugs? Send an email, or open an issue in the repo.',
+  aboutNote:'Personal project, not affiliated with DeepSeek. Feedback: suxiangyu_dev@foxmail.com or open an issue.',
   chatLabel:'Chat',privacyLabel:'Privacy',
   helpChat:'Type a question and press enter. Buttons under each reply copy, edit or regenerate it.',
   helpMem:'Say "remember…" or "add memory…" and it is stored, then read in every chat.',
@@ -1248,7 +1248,21 @@ function downloadBlob(blob,name){
   document.body.appendChild(a);a.click();
   setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},1500);
 }
+function nativeBridge(){try{return !!window.AndroidSaver}catch(e){return false}}
 function saveAny(blob,name){
+  if(nativeBridge()){
+    try{
+      const fr=new FileReader();
+      fr.onload=()=>{
+        try{
+          const b64=String(fr.result||'').split(',')[1]||'';
+          if(b64)AndroidSaver.saveBase64(name,blob.type||'application/octet-stream',b64);
+        }catch(e){}
+      };
+      fr.readAsDataURL(blob);
+      return;
+    }catch(e){}
+  }
   if(IS_IOS&&navigator.canShare&&window.File){
     try{
       const f=new File([blob],name,{type:blob.type||'application/octet-stream'});
@@ -1257,18 +1271,23 @@ function saveAny(blob,name){
   }
   downloadBlob(blob,name);
 }
-function saveBlob(name,text,type){saveAny(new Blob([text],{type}),name)}
+function saveBlob(name,text,type){
+  if(nativeBridge()){
+    try{AndroidSaver.saveText(name,type||'text/plain',text);return}catch(e){}
+  }
+  saveAny(new Blob([text],{type}),name);
+}
 function exportMarkdown(){
   if(!exportMsg)return;
   saveBlob(exportName(exportMsg)+'.md',exportMsg.content||'','text/markdown;charset=utf-8');
-  closeAll();toast(t('exported'));
+  closeAll();if(!nativeBridge())toast(t('exported'));
 }
 function exportText(){
   if(!exportMsg)return;
   let out=plainText(exportMsg.content||'');
   if(exportMsg.sources&&exportMsg.sources.length)out+='\n\n'+t('sources')+':\n'+exportMsg.sources.map((x,i)=>(i+1)+'. '+x.title+' '+x.url).join('\n');
   saveBlob(exportName(exportMsg)+'.txt',out,'text/plain;charset=utf-8');
-  closeAll();toast(t('exported'));
+  closeAll();if(!nativeBridge())toast(t('exported'));
 }
 function exportPdf(){
   if(!exportMsg)return;
@@ -1277,8 +1296,13 @@ function exportPdf(){
   try{root.innerHTML='<h1>'+esc(exportName(m))+'</h1>'+md(m.content||'').html}
   catch(e){root.innerHTML='<pre>'+esc(m.content||'')+'</pre>'}
   document.body.appendChild(root);
-  const cleanup=()=>{try{root.remove()}catch(e){};window.removeEventListener('afterprint',cleanup)};
-  window.addEventListener('afterprint',cleanup);
+  const cleanup=()=>{try{root.remove()}catch(e){}};
+  if(nativeBridge()){
+    setTimeout(()=>{try{AndroidSaver.printPage()}catch(e){}},400);
+    setTimeout(cleanup,12000);
+    return;
+  }
+  window.addEventListener('afterprint',cleanup,{once:true});
   setTimeout(()=>{try{window.print()}catch(e){};setTimeout(cleanup,10000)},80);
 }
 function openMemory(){
@@ -1432,6 +1456,7 @@ function renderMsgs(){
     box.appendChild(more);
   }
   for(let i=start;i<c.msgs.length;i++)box.appendChild(msgEl(c.msgs[i]));
+  box.querySelectorAll('img').forEach(im=>{if(!im.complete)im.addEventListener('load',()=>scrollBottom(false),{once:true})});
   scrollBottom(true);
 }
 function msgEl(m){
@@ -1439,7 +1464,7 @@ function msgEl(m){
   const b=document.createElement('div');b.className='bubble';
   if(m.role==='user'){
     if(m.files&&m.files.length){const fg=document.createElement('div');fg.style.marginBottom='5px';for(const f of m.files){const d=document.createElement('span');d.className='filechip';const nm=document.createElement('span');nm.className='nm';nm.textContent=f.name||'file';d.appendChild(nm);fg.appendChild(d)}b.appendChild(fg)}
-    if(m.images&&m.images.length){const g=document.createElement('div');g.className='imgs';for(const ref of m.images){const im=document.createElement('img');im.loading='lazy';im.decoding='async';if(ref.startsWith('data:'))im.src=ref;else imageUrl(ref).then(u=>{if(u)im.src=u});g.appendChild(im)}b.appendChild(g)}
+    if(m.images&&m.images.length){const g=document.createElement('div');g.className='imgs';for(const ref of m.images){const im=document.createElement('img');im.loading='lazy';im.decoding='async';im.onload=()=>scrollBottom(false);if(ref.startsWith('data:'))im.src=ref;else imageUrl(ref).then(u=>{if(u)im.src=u});g.appendChild(im)}b.appendChild(g)}
     if(m.content)b.appendChild(document.createTextNode(m.content));
     if(m.memSaved){const tag=document.createElement('div');tag.className='memsaved';tag.textContent=t('memSaved')+m.memSaved;b.appendChild(tag)}
     if(m.content){
@@ -1601,7 +1626,19 @@ function paintAssistant(b,m,streamingNow){
     sd.appendChild(list);b.appendChild(sd);
   }
 }
-function scrollBottom(force){const el=$('#msgs');const near=el.scrollHeight-el.scrollTop-el.clientHeight<120;if(force||near)el.scrollTop=el.scrollHeight}
+let stickUntil=0;
+function scrollBottom(force){
+  const el=$('#msgs');
+  if(!el)return;
+  const near=el.scrollHeight-el.scrollTop-el.clientHeight<160;
+  if(!(force||near))return;
+  stickUntil=Date.now()+900;
+  const go=()=>{if(Date.now()>stickUntil)return;el.scrollTop=el.scrollHeight};
+  go();
+  requestAnimationFrame(()=>{go();requestAnimationFrame(go)});
+  [60,180,400,700].forEach(t=>setTimeout(go,t));
+}
+['touchstart','wheel','mousedown'].forEach(ev=>$('#msgs').addEventListener(ev,()=>{stickUntil=0},{passive:true}));
 
 /* ---------- send ---------- */
 function setBusy(on){
@@ -1985,8 +2022,10 @@ $('#btnHelp').onclick=()=>{closeAll();$('#helpSheet').classList.add('show');$('#
 $('#expMd').onclick=exportMarkdown;
 $('#expTxt').onclick=exportText;
 $('#expPdf').onclick=exportPdf;
-$('#btnAbout').onclick=()=>{closeAll();$('#aboutVer').textContent='v'+APP_VER;$('#bootInfo').textContent=(window.__bootMs?('启动 '+window.__bootMs+' ms'):'')+(IS_IOS?' · 建议添加到主屏幕，长期不用可能被系统清缓存':'');$('#aboutSheet').classList.add('show');$('#mask').classList.add('show')};
+$('#btnAbout').onclick=()=>{closeAll();
+  $('#btnForceUpdate').textContent=nativeBridge()?'打开下载页':t('forceUpdate');$('#aboutVer').textContent='v'+APP_VER;$('#bootInfo').textContent=(window.__bootMs?('启动 '+window.__bootMs+' ms'):'')+(IS_IOS?' · 建议添加到主屏幕，长期不用可能被系统清缓存':'');$('#aboutSheet').classList.add('show');$('#mask').classList.add('show')};
 $('#btnForceUpdate').onclick=async()=>{
+  if(nativeBridge()){try{AndroidSaver.openUrl('https://suxiangyu.top/download/');return}catch(e){}}
   if(!confirm(t('forceAsk')))return;
   toast(t('updating'),4000);
   try{const rs=await navigator.serviceWorker.getRegistrations();for(const r of rs)await r.unregister()}catch(e){}
@@ -2022,10 +2061,10 @@ $('#btnBackup').onclick=async()=>{
     }
     convs.push(Object.assign({},c,{msgs}));
   }
-  const data={app:'DeepSeek_sxy',version:1,exportedAt:new Date().toISOString(),
+  const data={app:'Pico',version:1,exportedAt:new Date().toISOString(),
     settings:Object.assign({},S.settings,{apiKey:''}),
     convs,memories:S.memories,personal:S.personal,drafts:S.drafts||{}};
-  saveBlob('DeepSeek_sxy-backup-'+Date.now()+'.json',JSON.stringify(data),'application/json');
+  saveBlob('Pico-backup-'+Date.now()+'.json',JSON.stringify(data),'application/json');
   toast(t('backupDone'));
 };
 function convertSession(j){
@@ -2058,7 +2097,7 @@ $('#restoreFile').onchange=async e=>{
     if(/\.zip$/i.test(f.name)){toast(t('importZip'),3500);failed++;continue}
     try{
       const d=JSON.parse(await f.text());
-      if(d&&d.app==='DeepSeek_sxy'&&Array.isArray(d.convs)){
+      if(d&&(d.app==='Pico'||d.app==='DeepSeek_sxy')&&Array.isArray(d.convs)){
         if(!confirm(t('restoreAsk')))return;
         S.settings=Object.assign({},S.settings,d.settings||{});
         S.convs=d.convs;S.memories=d.memories||[];S.personal=d.personal||'';S.drafts=d.drafts||{};
