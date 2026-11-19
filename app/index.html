@@ -363,7 +363,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v1.9.4</span></div>
+    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v1.9.5</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -439,7 +439,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">作者 苏巷雨</span> · <span id="verLabel">v1.9.4</span></div>
+    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v1.9.5</span></div>
   </div>
 </aside>
 
@@ -608,12 +608,12 @@ a.tile{text-decoration:none}
   <div class="bar"></div>
   <div class="about-head">
     <img class="about-avatar" src="icon-192.png" alt="">
-    <div><div class="about-name">苏巷雨</div><div class="about-sub" data-i18n="aboutSub">一个人写的小工具</div></div>
+    <div><div class="about-name">轻言 Pico</div><div class="about-sub" data-i18n="aboutSub">一个人写的小工具</div></div>
   </div>
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.9.4</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v1.9.5</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。</div>
@@ -635,7 +635,7 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='1.9.4';
+const APP_VER='1.9.5';
 const T_BOOT=performance.now();
 const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 if(IS_IOS)document.documentElement.classList.add('ios');
@@ -652,7 +652,7 @@ zh:{
   chooseModel:'选择模型',installBar:'把它装到桌面，点开就能聊',install:'安装',ph:'给 DeepSeek 发送消息',
   think:'深度思考',search:'联网搜索',copyAll:'复制全文',copyMd:'Markdown',regen:'重新生成',copy:'复制',
   greetingLate:'夜深了',greetingMorning:'早上好',greetingNoon:'中午好',greetingAfternoon:'下午好',greetingEvening:'晚上好',
-  greetSub:'今天想聊点什么',userName:'苏巷雨',chatsEmpty:'还没有对话',
+  greetSub:'今天想聊点什么',userName:'朋友',chatsEmpty:'还没有对话',
   gToday:'今天',gYesterday:'昨天',gWeek:'7 天内',gEarlier:'更早',
   metaIn:'输入',metaHit:'缓存命中',metaOut:'输出',metaThink:'思考',thisChat:'本对话',
   loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',uiScale:'界面缩放',cont:'继续',provider:'服务商',custom:'自定义',baseUrl:'接口地址',modelName:'模型名',providerKey:'该服务商 Key（留空用上面那把）',storage:'存储',storageText:'文本数据',storageImg:'图片缓存',storageFiles:'张图片',clearImg:'清理图片缓存',cleared:'已清理',loadMore:'加载更早的消息',saveImg:'保存图片',importTitle:'导入对话',importZip:'这是压缩包，请先解压再选择里面的 json 文件',importDone:'导入完成：新增 ',importSkip:'，跳过 ',importHelp:'支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）',deleted:'已删除',backup:'导出备份',restore:'导入备份',restoreAsk:'导入会覆盖当前全部对话与设置，确定继续？',restored:'已恢复',backupDone:'备份已导出',backupFail:'备份文件解析失败',searchPh:'搜索对话',noResult:'没有匹配的对话',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thought:'已深度思考',
@@ -671,7 +671,7 @@ zh:{
   install3:'桌面出现「轻言」，点开即用',install4:'Chrome、Edge、部分国产浏览器都支持；微信/QQ 的内置浏览器装不了。',
   balance:'余额',balanceFail:'余额获取失败',balanceHint:'点击刷新余额',
   edit:'编辑',editTitle:'编辑消息',send:'发送',cancel:'取消',
-  appearance:'外观',nickname:'称呼（可选）',nicknamePh:'留空就只显示问候语',welcomeTitle:'你好，我是 DeepSeek',welcomeSub:'先告诉我怎么称呼你，之后都可以在设置里改',welcomePh:'你的称呼，可以留空',skip:'跳过',start:'开始使用',fontSize:'正文字号',codeSize:'代码字号',help:'使用说明',repo:'仓库',author:'作者 苏巷雨',about:'关于作者',testConn:'测试连接',testing:'测试中…',keyOk:'连接正常',keyFail:'连接失败',
+  appearance:'外观',nickname:'称呼（可选）',nicknamePh:'留空就只显示问候语',welcomeTitle:'你好，我是 DeepSeek',welcomeSub:'先告诉我怎么称呼你，之后都可以在设置里改',welcomePh:'你的称呼，可以留空',skip:'跳过',start:'开始使用',fontSize:'正文字号',codeSize:'代码字号',help:'使用说明',repo:'仓库',author:'轻言 Pico',about:'关于作者',testConn:'测试连接',testing:'测试中…',keyOk:'连接正常',keyFail:'连接失败',
   aboutSub:'一个人写的小工具',email:'邮箱',version:'版本',copy:'复制',
   aboutNote:'个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。',
   chatLabel:'对话',privacyLabel:'隐私',

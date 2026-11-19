@@ -1,4 +1,4 @@
-# 轻聊（苏巷雨的DeepSeek）封装与发布技术方案
+# 轻言 Pico封装与发布技术方案
 
 版本：v1.0（草案）
 日期：2026-11-18
@@ -194,7 +194,7 @@ npm init -y
 npm i @capacitor/core
 npm i -D @capacitor/cli
 npm i @capacitor/android
-npx cap init "苏巷雨的DeepSeek" "com.suxiangyu.deepseek" --web-dir=app
+npx cap init "轻言 Pico" "com.suxiangyu.deepseek" --web-dir=app
 npx cap add android
 npx cap sync
 ```

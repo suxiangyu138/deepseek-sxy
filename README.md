@@ -9,7 +9,7 @@
 
 **源码**：[Gitee](https://gitee.com/suxiangyu138/qingyan-pico) · [GitHub](https://github.com/suxiangyu138/qingyan-pico)
 
-![version](https://img.shields.io/badge/version-1.9.4-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B-black)
+![version](https://img.shields.io/badge/version-1.9.5-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B-black)
 
 ---
 
@@ -197,7 +197,7 @@ Nginx 需要处理四件事：
 
 ## 十、版本与发布
 
-当前 v1.9.4，versionCode 13。
+当前 v1.9.5，versionCode 14。
 
 - 下载页：[suxiangyu.top/download](https://suxiangyu.top/download/)
 - Gitee Release：[releases](https://gitee.com/suxiangyu138/qingyan-pico/releases)

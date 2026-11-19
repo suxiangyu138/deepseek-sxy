@@ -100,7 +100,7 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
       <div class="row"><span>更新</span><b id="pDate">2026-11-19</b></div>
       <div class="row" style="border-bottom:0;padding-bottom:4px"><span>SHA-256</span><b>校验</b></div>
       <div class="sha">
-        <code id="sha">11f23990…f4663bb2</code>
+        <code id="sha">df89dfc2…a7b98982</code>
         <button class="copy" id="copySha">复制</button>
       </div>
     </div>
@@ -155,7 +155,7 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
   </section>
 
   <footer>
-    <div>© 2026 苏巷雨 · 轻言 Pico · suxiangyu_dev@foxmail.com</div>
+    <div>© 2026 轻言 Pico · suxiangyu_dev@foxmail.com</div>
     <div class="foot-links">
       <a href="privacy.html">隐私说明</a>
       <a href="https://gitee.com/suxiangyu138/qingyan-pico" target="_blank" rel="noopener">Gitee</a>
@@ -181,7 +181,7 @@ document.getElementById('copyApp').addEventListener('click',function(){
   if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(u).then(ok).catch(fb)}else fb();
   function fb(){var a=document.createElement('textarea');a.value=u;a.style.position='fixed';a.style.opacity=0;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}a.remove()}
 });
-var FULL_SHA='11f239903bdf73d10bc094db5f694d93a8046f139c11cd6ca30159abf4663bb2';
+var FULL_SHA='df89dfc228b1270a52e442209e0e730e907f8911b8175a1dc3daa4f9a7b98982';
 function shortSha(s){return s.slice(0,8)+'…'+s.slice(-8)}
 document.getElementById('sha').textContent=shortSha(FULL_SHA);
 document.getElementById('copySha').addEventListener('click',function(){
