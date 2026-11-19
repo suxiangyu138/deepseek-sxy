@@ -321,7 +321,7 @@ a.tile{text-decoration:none}
 .imgview img{max-width:100%;max-height:100%;transition:transform .1s;will-change:transform}
 .ivbar{position:absolute;top:calc(12px + env(safe-area-inset-top));left:12px;right:12px;display:flex;justify-content:space-between;z-index:2}
 .ivbar button{color:#fff;font-size:12.5px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.16);backdrop-filter:blur(8px)}
-.uhead{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.uhead{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
 .ucell{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--soft);text-align:center}
 .ucell span{display:block;font-size:10.5px;color:var(--muted);margin-bottom:4px}
 .ucell b{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
@@ -424,7 +424,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.20</span></div>
+    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.21</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -505,7 +505,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.1.20</span></div>
+    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.1.21</span></div>
   </div>
 </aside>
 
@@ -630,6 +630,7 @@ a.tile{text-decoration:none}
   <div class="uhead">
     <div class="ucell"><span data-i18n="uToday">今日</span><b id="uToday">—</b></div>
     <div class="ucell"><span data-i18n="uMonth">本月</span><b id="uMonth">—</b></div>
+    <div class="ucell"><span data-i18n="uTotal">总计</span><b id="uTotal">—</b></div>
     <div class="ucell"><span data-i18n="uBal">余额</span><b id="uBal">—</b></div>
   </div>
   <div class="ulist" id="usageList"></div>
@@ -786,7 +787,7 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.1.20</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.1.21</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。</div>
@@ -808,7 +809,7 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='2.1.20';
+const APP_VER='2.1.21';
 const T_BOOT=performance.now();
 const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 if(IS_IOS)document.documentElement.classList.add('ios');
@@ -828,7 +829,7 @@ zh:{
   greetSub:'今天想聊点什么',userName:'朋友',chatsEmpty:'还没有对话',
   gToday:'今天',gYesterday:'昨天',gWeek:'7 天内',gEarlier:'更早',
   metaIn:'输入',metaHit:'缓存命中',metaOut:'输出',metaThink:'思考',thisChat:'本对话',
-  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',usage:'用量',uToday:'今日',uMonth:'本月',uBal:'余额',uExport:'导出 CSV',usageNote:'仅统计本机记录，金额按接口返回的用量估算，以官方账单为准。',uEmpty:'还没有可统计的记录',uiScale:'界面缩放',cont:'继续',provider:'服务商',custom:'自定义',baseUrl:'接口地址',modelName:'模型名',providerKey:'该服务商 Key（留空用上面那把）',storage:'存储',storageText:'文本数据',chatsUnit:' 个会话',storageImg:'图片缓存',storageFiles:'张图片',clearImg:'清理图片缓存',cleared:'已清理',loadMore:'加载更早的消息',saveImg:'保存图片',importTitle:'导入对话',importZip:'这是压缩包，请先解压再选择里面的 json 文件',importZipOld:'当前浏览器版本太旧，无法直接解压，请先解压后再选 JSON',importZipBad:'这个压缩包里没有找到 chat_sessions 会话文件',importZipAsk:'压缩包里有 %s 个会话，解压后约 %s MB。会全部导入，占用的本机空间也是这个量级，导入过程中不要锁屏。继续吗？',importZipBusy:'正在导入 %s / %s',importZipDone:'导入完成：新增 %s，跳过或失败 %s',pasteAdd:'已粘贴 %s 张图片',mmdFail:'这段图表代码 mermaid 解析不了，已按原样显示',mmdRetry:'重新渲染',mmdDrawing:'正在重新绘制…',updLatest:'已是最新版本',updFail:'检查更新失败，请检查网络',updAsk:'发现新版本 %s，当前 %s。立即刷新？',updRefreshing:'正在更新…',importZipRest:'，其余因本地空间不足未导入',importDone:'导入完成：新增 ',importSkip:'，跳过 ',importHelp:'支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）',deleted:'已删除',backup:'导出备份',restore:'导入备份',restoreAsk:'导入会覆盖当前全部对话与设置，确定继续？',restored:'已恢复',backupDone:'备份已导出',backupFail:'备份文件解析失败',searchPh:'搜索对话',noResult:'没有匹配的对话',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thinkTitle:'推理强度',thinkOff:'关闭',thinkOffDesc:'直接回答，最快，适合闲聊和查资料',thinkLow:'低',thinkLowDesc:'简单推理，几秒出结果，最省 token',thinkHigh:'高',thinkHighDesc:'官方默认档，多数问题够用',thinkMax:'最高',thinkMaxDesc:'复杂推导、写代码、算题，更慢但更完整',thinkNote:'官方只有低、高、最高三档，默认高。越高推理 token 越多，费用越高；改完对下一条消息生效。',thought:'已深度思考',
+  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',usage:'用量',uToday:'今日',uMonth:'本月',uTotal:'总计',uBal:'余额',uExport:'导出 CSV',usageNote:'总计为本机累计，删会话、换版本、清缓存都不会清零；金额按接口返回的用量估算，以官方账单为准。',uEmpty:'还没有可统计的记录',uiScale:'界面缩放',cont:'继续',provider:'服务商',custom:'自定义',baseUrl:'接口地址',modelName:'模型名',providerKey:'该服务商 Key（留空用上面那把）',storage:'存储',storageText:'文本数据',chatsUnit:' 个会话',storageImg:'图片缓存',storageFiles:'张图片',clearImg:'清理图片缓存',cleared:'已清理',loadMore:'加载更早的消息',saveImg:'保存图片',importTitle:'导入对话',importZip:'这是压缩包，请先解压再选择里面的 json 文件',importZipOld:'当前浏览器版本太旧，无法直接解压，请先解压后再选 JSON',importZipBad:'这个压缩包里没有找到 chat_sessions 会话文件',importZipAsk:'压缩包里有 %s 个会话，解压后约 %s MB。会全部导入，占用的本机空间也是这个量级，导入过程中不要锁屏。继续吗？',importZipBusy:'正在导入 %s / %s',importZipDone:'导入完成：新增 %s，跳过或失败 %s',pasteAdd:'已粘贴 %s 张图片',mmdFail:'这段图表代码 mermaid 解析不了，已按原样显示',mmdRetry:'重新渲染',mmdDrawing:'正在重新绘制…',updLatest:'已是最新版本',updFail:'检查更新失败，请检查网络',updAsk:'发现新版本 %s，当前 %s。立即刷新？',updRefreshing:'正在更新…',importZipRest:'，其余因本地空间不足未导入',importDone:'导入完成：新增 ',importSkip:'，跳过 ',importHelp:'支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）',deleted:'已删除',backup:'导出备份',restore:'导入备份',restoreAsk:'导入会覆盖当前全部对话与设置，确定继续？',restored:'已恢复',backupDone:'备份已导出',backupFail:'备份文件解析失败',searchPh:'搜索对话',noResult:'没有匹配的对话',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thinkTitle:'推理强度',thinkOff:'关闭',thinkOffDesc:'直接回答，最快，适合闲聊和查资料',thinkLow:'低',thinkLowDesc:'简单推理，几秒出结果，最省 token',thinkHigh:'高',thinkHighDesc:'官方默认档，多数问题够用',thinkMax:'最高',thinkMaxDesc:'复杂推导、写代码、算题，更慢但更完整',thinkNote:'官方只有低、高、最高三档，默认高。越高推理 token 越多，费用越高；改完对下一条消息生效。',thought:'已深度思考',
   searchNow:'正在联网搜索：',openNow:'正在打开网页：',findNow:'正在网页内查找：',readNow:'正在阅读链接：',toolNow:'正在调用联网能力…',
   stopped:'（已停止）',netErr:'网络错误，请重试',reqFail:'请求失败（',keyBad:'API Key 无效或已过期',noBalance:'账户余额不足',
   tooOften:'请求太频繁或并发超限，稍后再试',genFail:'生成失败',
@@ -871,7 +872,7 @@ en:{
   greetSub:"What's on your mind",userName:'Suxiangyu',chatsEmpty:'No chats yet',
   gToday:'Today',gYesterday:'Yesterday',gWeek:'Previous 7 days',gEarlier:'Earlier',
   metaIn:'In',metaHit:'cached',metaOut:'Out',metaThink:'Thinking',thisChat:'This chat',
-  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',exportTitle:'Export this answer',exportTxt:'Plain text',exported:'Exported',exportShare:'Export',exportHint:'Markdown keeps formatting; plain text strips markers; PDF uses the system print dialog and pick Save as PDF.',pin:'Pin',usage:'Usage',uToday:'Today',uMonth:'Month',uBal:'Balance',uExport:'Export CSV',usageNote:'Local records only. Amounts are estimated from returned usage; the official bill prevails.',uEmpty:'No usage recorded yet',uiScale:'UI scale',cont:'Continue',provider:'Provider',custom:'Custom',baseUrl:'Base URL',modelName:'Model',providerKey:'Provider key (blank = above)',storage:'Storage',storageText:'Text data',chatsUnit:' chats',storageImg:'Image cache',storageFiles:' images',clearImg:'Clear image cache',cleared:'Cleared',loadMore:'Load earlier messages',saveImg:'Save image',importTitle:'Imported chat',importZip:'That is a zip file. Unzip it and pick the json files inside.',importZipOld:'This browser cannot unzip. Please unzip and pick the JSON files.',importZipBad:'No chat_sessions JSON found in this zip',importZipAsk:'This zip has %s sessions, about %s MB unpacked. All of them will be imported and take the same amount of local space. Keep the screen on during import. Continue?',importZipBusy:'Importing %s / %s',importZipDone:'Imported %s, skipped or failed %s',pasteAdd:'Pasted %s image(s)',mmdFail:'Mermaid could not parse this diagram, showing the source',mmdRetry:'Render again',mmdDrawing:'Redrawing…',updLatest:'Already up to date',updFail:'Update check failed, check your network',updAsk:'New version %s found, current %s. Refresh now?',updRefreshing:'Updating…',importZipRest:', the rest skipped for lack of space',importDone:'Imported: ',importSkip:', skipped ',importHelp:'Supports this app backup JSON, or chat_sessions/*.json exported from DeepSeek (multi-select)',deleted:'Deleted',backup:'Export backup',restore:'Import backup',restoreAsk:'Importing replaces all chats and settings. Continue?',restored:'Restored',backupDone:'Backup exported',backupFail:'Invalid backup file',searchPh:'Search chats',noResult:'No matching chats',updating:'Clearing cache…',updatedTo:'Updated to ',unpin:'Unpin',lock:'Lock',unlock:'Unlock',delChat:'Delete chat',protectedHint:'Pinned or locked chats cannot be deleted',tagPin:'Pinned',tagLock:'Locked',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thinkTitle:'Reasoning effort',thinkOff:'Off',thinkOffDesc:'Answer directly, fastest for chat and lookups',thinkLow:'Low',thinkLowDesc:'Light reasoning, cheapest',thinkHigh:'High',thinkHighDesc:'API default, enough for most questions',thinkMax:'Max',thinkMaxDesc:'Hard derivations, code, math. Slower but more complete',thinkNote:'The API offers low, high and max only, defaulting to high. Higher effort costs more. Applies to the next message.',thought:'Thought',
+  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',exportTitle:'Export this answer',exportTxt:'Plain text',exported:'Exported',exportShare:'Export',exportHint:'Markdown keeps formatting; plain text strips markers; PDF uses the system print dialog and pick Save as PDF.',pin:'Pin',usage:'Usage',uToday:'Today',uMonth:'Month',uTotal:'All time',uBal:'Balance',uExport:'Export CSV',usageNote:'The all-time total is kept on this device and never resets when chats are deleted. Amounts are estimated from returned usage; the official bill prevails.',uEmpty:'No usage recorded yet',uiScale:'UI scale',cont:'Continue',provider:'Provider',custom:'Custom',baseUrl:'Base URL',modelName:'Model',providerKey:'Provider key (blank = above)',storage:'Storage',storageText:'Text data',chatsUnit:' chats',storageImg:'Image cache',storageFiles:' images',clearImg:'Clear image cache',cleared:'Cleared',loadMore:'Load earlier messages',saveImg:'Save image',importTitle:'Imported chat',importZip:'That is a zip file. Unzip it and pick the json files inside.',importZipOld:'This browser cannot unzip. Please unzip and pick the JSON files.',importZipBad:'No chat_sessions JSON found in this zip',importZipAsk:'This zip has %s sessions, about %s MB unpacked. All of them will be imported and take the same amount of local space. Keep the screen on during import. Continue?',importZipBusy:'Importing %s / %s',importZipDone:'Imported %s, skipped or failed %s',pasteAdd:'Pasted %s image(s)',mmdFail:'Mermaid could not parse this diagram, showing the source',mmdRetry:'Render again',mmdDrawing:'Redrawing…',updLatest:'Already up to date',updFail:'Update check failed, check your network',updAsk:'New version %s found, current %s. Refresh now?',updRefreshing:'Updating…',importZipRest:', the rest skipped for lack of space',importDone:'Imported: ',importSkip:', skipped ',importHelp:'Supports this app backup JSON, or chat_sessions/*.json exported from DeepSeek (multi-select)',deleted:'Deleted',backup:'Export backup',restore:'Import backup',restoreAsk:'Importing replaces all chats and settings. Continue?',restored:'Restored',backupDone:'Backup exported',backupFail:'Invalid backup file',searchPh:'Search chats',noResult:'No matching chats',updating:'Clearing cache…',updatedTo:'Updated to ',unpin:'Unpin',lock:'Lock',unlock:'Unlock',delChat:'Delete chat',protectedHint:'Pinned or locked chats cannot be deleted',tagPin:'Pinned',tagLock:'Locked',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thinkTitle:'Reasoning effort',thinkOff:'Off',thinkOffDesc:'Answer directly, fastest for chat and lookups',thinkLow:'Low',thinkLowDesc:'Light reasoning, cheapest',thinkHigh:'High',thinkHighDesc:'API default, enough for most questions',thinkMax:'Max',thinkMaxDesc:'Hard derivations, code, math. Slower but more complete',thinkNote:'The API offers low, high and max only, defaulting to high. Higher effort costs more. Applies to the next message.',thought:'Thought',
   searchNow:'Search: ',openNow:'Open: ',findNow:'Find: ',readNow:'Read: ',toolNow:'Web tools…',
   stopped:'(stopped)',netErr:'Network error, please retry',reqFail:'Request failed (',keyBad:'Invalid or expired API key',noBalance:'Insufficient balance',
   tooOften:'Too many requests, try again later',genFail:'Generation failed',
@@ -930,7 +931,7 @@ function calcCost(model,u){
 }
 function fmtTok(v){v=v||0;return v>=10000?(v/1000).toFixed(1)+'k':String(v)}
 function fmtMoney(v){if(!v)return '¥0';return '¥'+(v<0.01?v.toFixed(4):v.toFixed(3))}
-const DEF={settings:{apiKey:'',theme:'auto',think:false,thinkLevel:'high',search:false,model:'deepseek-flash',memoryOn:true,personalOn:true,autoMem:true,lang:'zh',fsMsg:13.5,fsCode:12.5,uiScale:1,codeFont:'system',perf:true,name:'',onboarded:false},convs:[],current:null,memories:[],personal:''};
+const DEF={ledger:null,settings:{apiKey:'',theme:'auto',think:false,thinkLevel:'high',search:false,model:'deepseek-flash',memoryOn:true,personalOn:true,autoMem:true,lang:'zh',fsMsg:13.5,fsCode:12.5,uiScale:1,codeFont:'system',perf:true,name:'',onboarded:false},convs:[],current:null,memories:[],personal:''};
 let S=load();
 let streamAbort=null,streaming=false,pending=[],pendingFiles=[],selectMode=false,selected=new Set();
 function load(){
@@ -983,7 +984,7 @@ function idbDelMany(ids){
 }
 function convSig(c){return (c.title||'')+'|'+(c.pinned?1:0)+'|'+(c.locked?1:0)+'|'+(c.updatedAt||0)+'|'+((c.msgs&&c.msgs.length)||0)}
 function metaStore(){
-  return {settings:S.settings,memories:S.memories,personal:S.personal,drafts:S.drafts||{},current:S.current,convs:[]};
+  return {ledger:S.ledger||null,settings:S.settings,memories:S.memories,personal:S.personal,drafts:S.drafts||{},current:S.current,convs:[]};
 }
 function persist(){
   if(!db){
@@ -2166,7 +2167,7 @@ async function continueGen(m){
   }catch(e){if(e&&e.name!=='AbortError')toast(e.message||t('netErr'))}
   finally{
     setBusy(false);streamAbort=null;
-    if(m.usage)m.cost=calcCost(S.settings.model,m.usage);
+    if(m.usage){m.cost=calcCost(S.settings.model,m.usage);ledgerAdd(m)}
     save(true);paintAssistant(bubble,m,false);renderTotal();
   }
 }
@@ -2329,7 +2330,7 @@ async function run(c,am,bubble){
     setBusy(false);streamAbort=null;
     if(am.reasoning)am.thinkMs=am.thinkMs||(Date.now()-started);
     if(am.tools)am.tools.forEach(t=>t.done=true);
-    if(am.usage)am.cost=calcCost(S.settings.model,am.usage);
+    if(am.usage){am.cost=calcCost(S.settings.model,am.usage);ledgerAdd(am)}
     if(am.usage&&tFirst&&tLast>tFirst){
       const rt=(am.usage.completion_tokens_details&&am.usage.completion_tokens_details.reasoning_tokens)||0;
       const out=Math.max(0,(am.usage.completion_tokens||0)-rt);
@@ -2391,19 +2392,40 @@ async function submitEdit(){
 function openDrawer(){$('#drawer').classList.add('show');$('#mask').classList.add('show');loadBalance(false)}
 function pad2(n){return String(n).padStart(2,'0')}
 function dayKey(ts){const d=new Date(ts||Date.now());return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())}
-function usageDays(){
-  const map=new Map();
+function ledgerObj(){
+  if(!S.ledger||typeof S.ledger!=='object'||!S.ledger.days){
+    S.ledger={days:{},total:{cost:0,n:0,tin:0,tout:0,cache:0},seeded:false};
+  }
+  return S.ledger;
+}
+function ledgerSeed(){
+  const L=ledgerObj();
+  if(L.seeded)return;
   for(const c of (S.convs||[]))for(const m of (c.msgs||[])){
     if(m.role!=='assistant'||!m.ts)continue;
     const k=dayKey(m.ts);
-    let e=map.get(k);
-    if(!e){e={date:k,cost:0,n:0,tin:0,tout:0,cache:0,nocost:0};map.set(k,e)}
-    e.n++;
-    if(typeof m.cost==='number'&&isFinite(m.cost))e.cost+=m.cost;else e.nocost++;
+    const e=L.days[k]||(L.days[k]={cost:0,n:0,tin:0,tout:0,cache:0});
     const u=m.usage||{};
-    e.tin+=u.prompt_tokens||0;e.tout+=u.completion_tokens||0;e.cache+=u.prompt_cache_hit_tokens||0;
+    const cost=(typeof m.cost==='number'&&isFinite(m.cost))?m.cost:0;
+    e.cost+=cost;e.n++;e.tin+=u.prompt_tokens||0;e.tout+=u.completion_tokens||0;e.cache+=u.prompt_cache_hit_tokens||0;
+    L.total.cost+=cost;L.total.n++;
+    L.total.tin+=u.prompt_tokens||0;L.total.tout+=u.completion_tokens||0;L.total.cache+=u.prompt_cache_hit_tokens||0;
   }
-  return [...map.values()].sort((a,b)=>a.date<b.date?1:-1);
+  L.seeded=true;
+}
+function ledgerAdd(m){
+  const L=ledgerObj();
+  const k=dayKey(m.ts||Date.now());
+  const u=m.usage||{};
+  const cost=(typeof m.cost==='number'&&isFinite(m.cost))?m.cost:0;
+  const e=L.days[k]||(L.days[k]={cost:0,n:0,tin:0,tout:0,cache:0});
+  e.cost+=cost;e.n++;e.tin+=u.prompt_tokens||0;e.tout+=u.completion_tokens||0;e.cache+=u.prompt_cache_hit_tokens||0;
+  L.total.cost+=cost;L.total.n++;
+  L.total.tin+=u.prompt_tokens||0;L.total.tout+=u.completion_tokens||0;L.total.cache+=u.prompt_cache_hit_tokens||0;
+}
+function usageDays(){
+  const L=ledgerObj();
+  return Object.keys(L.days).sort().reverse().map(k=>Object.assign({date:k,nocost:0},L.days[k]));
 }
 function money(v){return '¥'+(v<0.1?v.toFixed(4):v<1?v.toFixed(3):v.toFixed(2))}
 function renderUsage(){
@@ -2411,8 +2433,10 @@ function renderUsage(){
   const today=dayKey(Date.now()),month=today.slice(0,7);
   let tc=0,mc=0;
   for(const d of days){if(d.date===today)tc+=d.cost;if(d.date.slice(0,7)===month)mc+=d.cost}
+  const L=ledgerObj();
   $('#uToday').textContent=money(tc);
   $('#uMonth').textContent=money(mc);
+  const tot=$('#uTotal');if(tot)tot.textContent=money(L.total.cost);
   const bal=S.settings.balance;
   $('#uBal').textContent=bal&&bal.amount!=null?((bal.currency==='USD'?'$':'¥')+Number(bal.amount).toFixed(2)):'—';
   const box=$('#usageList');box.innerHTML='';
@@ -2650,7 +2674,7 @@ $('#btnBackup').onclick=async()=>{
     }
     convs.push(Object.assign({},c,{msgs}));
   }
-  const data={app:'Pico',version:1,exportedAt:new Date().toISOString(),
+  const data={app:'Pico',version:1,exportedAt:new Date().toISOString(),ledger:S.ledger,
     settings:Object.assign({},S.settings,{apiKey:''}),
     convs,memories:S.memories,personal:S.personal,drafts:S.drafts||{}};
   saveBlob('Pico-backup-'+Date.now()+'.json',JSON.stringify(data),'application/json');
@@ -2766,6 +2790,7 @@ $('#restoreFile').onchange=async e=>{
       if(d&&(d.app==='Pico'||d.app==='DeepSeek_sxy')&&Array.isArray(d.convs)){
         if(!confirm(t('restoreAsk')))return;
         S.settings=Object.assign({},S.settings,d.settings||{});
+        if(d.ledger&&d.ledger.days)S.ledger=d.ledger;
         S.convs=d.convs;S.memories=d.memories||[];S.personal=d.personal||'';S.drafts=d.drafts||{};
         S.current=S.convs[0]?S.convs[0].id:null;
         save(true);renderAll();closeAll();toast(t('restored'));
@@ -3092,6 +3117,7 @@ try{
 }catch(e){}
 async function startApp(){
 await bootData();
+ledgerSeed();
 applyCodeFont();
 applyLang();
 window.__bootMs=Math.round(performance.now()-T_BOOT);
