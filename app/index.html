@@ -15,6 +15,8 @@
 <link rel="apple-touch-icon" href="icon-192.png?v=2.0.0">
 <link rel="icon" href="icon-192.png?v=2.0.0">
 <style>
+@font-face{font-family:"Pico Code";src:url("vendor/fonts/cascadia-code-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0100-024F,U+2000-206F,U+2190-21FF,U+2200-22FF,U+2460-24FF,U+2500-257F}
+@font-face{font-family:"Pico Code";src:url("vendor/fonts/jetbrains-mono-400.woff2") format("woff2");font-weight:500 700;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0100-024F,U+2000-206F}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#f5f5f7;--fg:#1d1d1f;--muted:#86868b;--line:rgba(0,0,0,.08);
@@ -22,7 +24,9 @@
   --ink:#1d1d1f;--ink-soft:rgba(0,0,0,.28);--bubble:#ececee;--code:#f2f2f4;
   --shadow:0 16px 44px rgba(0,0,0,.10);--shadow-sm:0 2px 10px rgba(0,0,0,.05);
   --hl:inset 0 1px 0 rgba(255,255,255,.7);
-  --fs-msg:13.5px;--fs-code:11.5px;
+  --fs-msg:13.5px;--fs-code:12.5px;
+  --sans:system-ui,-apple-system,"Segoe UI Variable Text","Segoe UI","MiSans","HarmonyOS Sans SC","PingFang SC","Noto Sans SC","Microsoft YaHei UI","Microsoft YaHei",sans-serif;
+  --mono:"Pico Code",ui-monospace,SFMono-Regular,"Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
   --c-com:#9a9aa0;--c-str:#3f7a5c;--c-num:#9a6420;--c-kw:#6a5acd;--c-fn:#3d5a9a;
 }
 html[data-theme="dark"]{
@@ -34,7 +38,7 @@ html[data-theme="dark"]{
   --c-com:#75757c;--c-str:#8dbfa2;--c-num:#d6a76a;--c-kw:#a99be0;--c-fn:#8fb0e8;
 }
 html,body{height:100%;margin:0;overflow:hidden;position:fixed;inset:0;width:100%}
-body{background:var(--bg);color:var(--fg);font:13px/1.6 -apple-system,BlinkMacSystemFont,"MiSans","HarmonyOS Sans SC","PingFang SC","Noto Sans SC",sans-serif;overscroll-behavior:none;-webkit-font-smoothing:antialiased;letter-spacing:.1px}
+body{background:var(--bg);color:var(--fg);font:13px/1.6 var(--sans);overscroll-behavior:none;-webkit-font-smoothing:antialiased;letter-spacing:.1px}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;transition:transform .12s ease,opacity .15s,border-color .15s,color .15s}
 button:active{transform:scale(.98)}
 a{color:inherit;text-decoration:none}
@@ -137,17 +141,17 @@ td{min-width:72px;max-width:280px;white-space:normal}
 .math{white-space:nowrap}
 .math.disp{display:block;overflow-x:auto;margin:8px 0;white-space:normal;text-align:center}
 .katex{font-size:1.02em}
-.math-raw{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--muted)}
+.math-raw{font-family:var(--mono);font-size:11px;color:var(--muted)}
 .task{display:inline-block;width:12px;height:12px;border:1px solid var(--muted);border-radius:3px;margin-right:6px;vertical-align:-1px;text-align:center;line-height:12px;font-size:9px;color:var(--fg)}
 .imgfig{margin:10px 0}
 .imgfig img{max-width:100%;border-radius:10px;border:1px solid var(--line);display:block}
-.msg code{background:var(--code);border-radius:5px;padding:1px 5px;font:11.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}
+.msg code{background:var(--code);border-radius:7px;padding:1.5px 6px;font-family:var(--mono);font-size:.92em;font-feature-settings:'calt' 0,'liga' 0;letter-spacing:.2px;border:1px solid var(--line)}
 .codeblock{margin:10px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--code)}
-.codehead{display:flex;justify-content:space-between;align-items:center;padding:5px 10px;font-size:10px;color:var(--muted);border-bottom:1px solid var(--line);letter-spacing:.5px;text-transform:uppercase}
+.codehead{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;font-size:10px;color:var(--muted);border-bottom:1px solid var(--line);letter-spacing:.6px;text-transform:uppercase;font-family:var(--sans)}
 .copybtn{font-size:10px;color:var(--muted);padding:2px 8px;border-radius:6px;border:1px solid var(--line)}
 .copybtn:active{color:var(--fg);border-color:var(--fg)}
-.codeblock pre{margin:0;padding:9px 11px;overflow:auto;max-height:320px}
-.codeblock pre code{background:none;padding:0;font-size:var(--fs-code);line-height:1.6;display:block;white-space:pre;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.codeblock pre{margin:0;padding:12px 14px;overflow:auto;max-height:320px;scrollbar-width:thin}
+.codeblock pre code{background:none;border:0;padding:0;font-family:var(--mono);font-size:var(--fs-code);line-height:1.75;letter-spacing:.25px;display:block;white-space:pre;font-feature-settings:'calt' 0,'liga' 0;tab-size:4}
 .tk-c{color:var(--c-com)}.tk-s{color:var(--c-str)}.tk-n{color:var(--c-num)}.tk-k{color:var(--c-kw)}.tk-f{color:var(--c-fn)}
 .actions{display:flex;gap:6px;margin-top:8px;color:var(--muted);font-size:10.5px}
 .actions .cbtn{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);background:transparent}
@@ -413,7 +417,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.18</span></div>
+    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.19</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -494,7 +498,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.1.18</span></div>
+    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.1.19</span></div>
   </div>
 </aside>
 
@@ -766,7 +770,7 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.1.18</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.1.19</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。</div>
@@ -788,7 +792,7 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='2.1.18';
+const APP_VER='2.1.19';
 const T_BOOT=performance.now();
 const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 if(IS_IOS)document.documentElement.classList.add('ios');
