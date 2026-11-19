@@ -100,7 +100,7 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
       <div class="row"><span>更新</span><b id="pDate">2026-11-19</b></div>
       <div class="row" style="border-bottom:0;padding-bottom:4px"><span>SHA-256</span><b>校验</b></div>
       <div class="sha">
-        <code id="sha">d0a6262c…55de824f</code>
+        <code id="sha">c5ff7614…78c1cc46</code>
         <button class="copy" id="copySha">复制</button>
       </div>
     </div>
@@ -181,7 +181,7 @@ document.getElementById('copyApp').addEventListener('click',function(){
   if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(u).then(ok).catch(fb)}else fb();
   function fb(){var a=document.createElement('textarea');a.value=u;a.style.position='fixed';a.style.opacity=0;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}a.remove()}
 });
-var FULL_SHA='d0a6262cb57304e45addbc14d682b6b860b43d19e5690fb5cc5f3e3955de824f';
+var FULL_SHA='c5ff76143db48fa2ecd09cdac17cfa5c794e831876c3771216e9520478c1cc46';
 function shortSha(s){return s.slice(0,8)+'…'+s.slice(-8)}
 document.getElementById('sha').textContent=shortSha(FULL_SHA);
 document.getElementById('copySha').addEventListener('click',function(){

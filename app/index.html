@@ -413,7 +413,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.17</span></div>
+    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.18</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -494,7 +494,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.1.17</span></div>
+    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.1.18</span></div>
   </div>
 </aside>
 
@@ -766,7 +766,7 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.1.17</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.1.18</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。</div>
@@ -788,7 +788,7 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='2.1.17';
+const APP_VER='2.1.18';
 const T_BOOT=performance.now();
 const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 if(IS_IOS)document.documentElement.classList.add('ios');
@@ -2154,11 +2154,15 @@ function lastUserText(c){
   for(let i=c.msgs.length-1;i>=0;i--)if(c.msgs[i].role==='user')return c.msgs[i].content||'';
   return '';
 }
+function webRules(en){
+  if(en)return '\n\nWeb access rules: you have server-side tools. Whenever the user gives a URL, call deepseek_read_url on it (several at once is fine) instead of guessing. For anything time-sensitive — news, prices, versions, releases, recent events — call deepseek_web_search first, then answer. Strip tracking parameters such as ocid, utm_*, cvid before reading a link. If a page cannot be read (empty body, blocked crawler, JavaScript-rendered site), do not stop there: run deepseek_web_search with the page title or domain, answer from the public reports you find, and say the original page could not be read. Cite source links for key facts. Only say you cannot access something after the tools actually failed, and then suggest a workaround such as pasting the article text.';
+  return '\n\n联网规则：你具备服务端联网工具。用户给出链接时，必须调用 deepseek_read_url 阅读原文（一次给多条也可以），不要凭记忆猜内容。凡是时效性强的问题——新闻、价格、版本号、发布会、近期事件——先调用 deepseek_web_search 检索，再作答。链接里带 ocid、utm_*、cvid 这类跟踪参数时，先去掉再读。读不到正文（返回空壳、站点禁止抓取、页面由 JavaScript 渲染）时不要就此停住：改用 deepseek_web_search 按标题或域名检索，用检索到的公开报道回答，并说明「原文未能读取，以下依据公开报道」。关键结论附上来源链接。只有在工具确实失败后才说无法获取，并给出替代方案，例如请用户粘贴正文。';
+}
 async function buildMessages(c){
   const en=S.settings.lang==='en';
   let sys=en
-    ? 'You are DeepSeek, an AI assistant created by DeepSeek. Be accurate and concise, format with Markdown, label code blocks. The current time is '+nowText()+'. Use it when the user asks about date, weekday or time.\n\nFormatting rule: whenever a math or physics formula appears, write it in LaTeX. Inline math uses $...$, a standalone formula uses $$...$$ on its own line. Do not build formulas from Unicode superscripts, subscripts, √, ∫ or Σ characters. Chemical equations use \\ce{...}, units use \\pu{...}.'
-    : '你是 DeepSeek，由深度求索（DeepSeek）创造的 AI 助手。回答准确、简洁，用 Markdown 排版，代码块标注语言。现在是'+nowText()+'。用户问日期、星期、时间时以此为准。\n\n排版规则：凡是数学、物理公式，一律用 LaTeX 书写。行内公式用 $...$，独立成行的公式用 $$...$$ 单独占一行。不要用 Unicode 上下标、√、∫、Σ 等符号拼公式。化学方程式用 \\ce{...}，单位用 \\pu{...}。';
+    ? 'You are DeepSeek, an AI assistant created by DeepSeek. Be accurate and concise, format with Markdown, label code blocks. The current time is '+nowText()+'. Use it when the user asks about date, weekday or time.\n\nFormatting rule: whenever a math or physics formula appears, write it in LaTeX. Inline math uses $...$, a standalone formula uses $$...$$ on its own line. Do not build formulas from Unicode superscripts, subscripts, √, ∫ or Σ characters. Chemical equations use \\ce{...}, units use \\pu{...}.'+webRules(en)
+    : '你是 DeepSeek，由深度求索（DeepSeek）创造的 AI 助手。回答准确、简洁，用 Markdown 排版，代码块标注语言。现在是'+nowText()+'。用户问日期、星期、时间时以此为准。\n\n排版规则：凡是数学、物理公式，一律用 LaTeX 书写。行内公式用 $...$，独立成行的公式用 $$...$$ 单独占一行。不要用 Unicode 上下标、√、∫、Σ 等符号拼公式。化学方程式用 \\ce{...}，单位用 \\pu{...}。'+webRules(en);
   if(S.settings.personalOn&&S.personal.trim()){
     sys+=en?('\n\n[User persona — takes precedence over the default style]\n'+S.personal.trim().slice(0,4000))
            :('\n\n【用户的个性化要求，优先于默认风格】\n'+S.personal.trim().slice(0,4000));

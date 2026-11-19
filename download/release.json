@@ -1,10 +1,10 @@
 {
-  "version": "2.1.17",
-  "versionCode": 42,
-  "url": "app-2.1.17.apk",
-  "apkUrl": "https://gitee.com/suxiangyu138/qingyan-pico/releases/download/v2.1.17/Pico-2.1.17.apk",
+  "version": "2.1.18",
+  "versionCode": 43,
+  "url": "app-2.1.18.apk",
+  "apkUrl": "https://gitee.com/suxiangyu138/qingyan-pico/releases/download/v2.1.18/Pico-2.1.18.apk",
   "size": "约 1.9 MB",
   "requires": "Android 8.0 及以上",
   "updated": "2026-11-19",
-  "notes": "打开历史对话直接停在最新消息；mermaid 报错不再注入页面"
+  "notes": "联网提示词补全：读链接、失败回退搜索、去跟踪参数、附来源"
 }
