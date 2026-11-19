@@ -1,7 +1,7 @@
 {
   "name": "轻言 Pico",
   "short_name": "轻言",
-  "description": "轻言 Pico：1.2MB 的 DeepSeek 轻客户端，自带 API Key，数据只存本机。个人开发版本，与官方无关。",
+  "description": "轻言 Pico：2 MB 的 DeepSeek 轻客户端，自带 API Key，数据只存本机，手机与电脑通用。",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -11,13 +11,13 @@
   "lang": "zh-CN",
   "icons": [
     {
-      "src": "icon-192.png?v=1.9.5",
+      "src": "icon-192.png?v=2.1.22",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icon-512.png?v=1.9.5",
+      "src": "icon-512.png?v=2.1.22",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
