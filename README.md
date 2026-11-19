@@ -5,9 +5,9 @@
 > 个人开发版本，与 DeepSeek 官方无关，也不代表官方立场，仅供社区自用与学习参考。
 > 针对 2026 年 11 月 DeepSeek C 端限额政策重新设计：不再受每日对话额度、4 万字单次输入、7 天闲置会话失效的限制。
 
-**下载**：[下载页](https://suxiangyu.top/download/) · [Gitee Release](https://gitee.com/suxiangyu138/deepseek-sxy/releases) · [GitHub Release](https://github.com/suxiangyu138/deepseek-sxy/releases)
+**下载**：[下载页](https://suxiangyu.top/download/) · [Gitee Release](https://gitee.com/suxiangyu138/qingyan-pico/releases) · [GitHub Release](https://github.com/suxiangyu138/qingyan-pico/releases)
 
-**源码**：[Gitee](https://gitee.com/suxiangyu138/deepseek-sxy) · [GitHub](https://github.com/suxiangyu138/deepseek-sxy)
+**源码**：[Gitee](https://gitee.com/suxiangyu138/qingyan-pico) · [GitHub](https://github.com/suxiangyu138/qingyan-pico)
 
 ![version](https://img.shields.io/badge/version-1.9.4-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B-black)
 
@@ -200,8 +200,8 @@ Nginx 需要处理四件事：
 当前 v1.9.4，versionCode 13。
 
 - 下载页：[suxiangyu.top/download](https://suxiangyu.top/download/)
-- Gitee Release：[releases](https://gitee.com/suxiangyu138/deepseek-sxy/releases)
-- GitHub Release：[releases](https://github.com/suxiangyu138/deepseek-sxy/releases)
+- Gitee Release：[releases](https://gitee.com/suxiangyu138/qingyan-pico/releases)
+- GitHub Release：[releases](https://github.com/suxiangyu138/qingyan-pico/releases)
 
 每次发布在 Release 附 APK 与 SHA-256，变更记录见 [CHANGELOG.md](CHANGELOG.md)。
 
