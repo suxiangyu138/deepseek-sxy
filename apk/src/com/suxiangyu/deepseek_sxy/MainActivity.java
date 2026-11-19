@@ -38,6 +38,9 @@ public class MainActivity extends Activity {
     private ValueCallback<Uri[]> fileCallback;
     private static final int REQ_FILE = 1001;
     private static final int REQ_SAVE = 2002;
+    private static final int REQ_CAMERA = 1003;
+    private Uri captureUri;
+    private Uri pendingPhoto;
 
     @Override
     protected void onCreate(Bundle b) {
@@ -62,6 +65,21 @@ public class MainActivity extends Activity {
             public boolean onShowFileChooser(WebView v, ValueCallback<Uri[]> cb, FileChooserParams p) {
                 if (fileCallback != null) fileCallback.onReceiveValue(null);
                 fileCallback = cb;
+                if (p.isCaptureEnabled()) {
+                    try {
+                        Uri out = newPhotoUri();
+                        if (out != null) {
+                            Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            cam.putExtra(MediaStore.EXTRA_OUTPUT, out);
+                            cam.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            captureUri = out;
+                            startActivityForResult(cam, REQ_CAMERA);
+                            return true;
+                        }
+                    } catch (Exception e) {
+                        captureUri = null;
+                    }
+                }
                 try {
                     Intent i = p.createIntent();
                     i.addCategory(Intent.CATEGORY_OPENABLE);
@@ -128,7 +146,18 @@ public class MainActivity extends Activity {
                         java.net.HttpURLConnection c = (java.net.HttpURLConnection) new java.net.URL(url).openConnection();
                         c.setConnectTimeout(15000);
                         c.setReadTimeout(120000);
+                        c.setInstanceFollowRedirects(true);
+                        c.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 10) PicoUpdater/2.1.6");
+                        c.setRequestProperty("Referer", "https://gitee.com/");
                         java.io.InputStream in = c.getInputStream();
+                        byte[] head = new byte[2];
+                        int got = 0;
+                        while (got < 2) {
+                            int r = in.read(head, got, 2 - got);
+                            if (r <= 0) break;
+                            got += r;
+                        }
+                        if (got < 2 || head[0] != 'P' || head[1] != 'K') throw new Exception("not apk");
                         PackageInstaller pi = getPackageManager().getPackageInstaller();
                         PackageInstaller.SessionParams p = new PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL);
                         int id = pi.createSession(p);
@@ -136,6 +165,7 @@ public class MainActivity extends Activity {
                         java.io.OutputStream os = session.openWrite("pico.apk", 0, -1);
                         byte[] buf = new byte[8192];
                         int n;
+                        os.write(head, 0, 2);
                         while ((n = in.read(buf)) > 0) os.write(buf, 0, n);
                         session.fsync(os);
                         os.close();
@@ -145,11 +175,19 @@ public class MainActivity extends Activity {
                         if (Build.VERSION.SDK_INT >= 31) flags |= 0x02000000;
                         PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, id, i, flags);
                         session.commit(pending.getIntentSender());
+                        runOnUiThread(new Runnable() {
+                            public void run() { Toast.makeText(MainActivity.this, "已下载，请在系统弹窗确认安装", Toast.LENGTH_LONG).show(); }
+                        });
                     } catch (Exception e) {
                         toast("更新失败，请到下载页手动安装");
                     }
                 }
             }).start();
+        }
+
+        @JavascriptInterface
+        public void dropLastPhoto() {
+            dropPendingPhoto();
         }
 
         @JavascriptInterface
@@ -222,6 +260,19 @@ public class MainActivity extends Activity {
             pendingData = null;
             return;
         }
+        if (req == REQ_CAMERA) {
+            if (fileCallback != null) {
+                Uri out = null;
+                if (res == RESULT_OK && captureUri != null) {
+                    out = captureUri;
+                    pendingPhoto = captureUri;
+                }
+                fileCallback.onReceiveValue(out == null ? null : new Uri[]{out});
+                fileCallback = null;
+            }
+            captureUri = null;
+            return;
+        }
         if (req == REQ_FILE) {
             if (fileCallback != null) {
                 Uri[] out = null;
@@ -240,6 +291,29 @@ public class MainActivity extends Activity {
             return;
         }
         super.onActivityResult(req, res, data);
+    }
+
+
+    private Uri newPhotoUri() {
+        String name = "Pico_" + new java.text.SimpleDateFormat("yyyyMMdd_HHmmss", java.util.Locale.US).format(new java.util.Date()) + ".jpg";
+        ContentValues cv = new ContentValues();
+        cv.put(MediaStore.Images.Media.DISPLAY_NAME, name);
+        cv.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        if (Build.VERSION.SDK_INT >= 29) {
+            cv.put("relative_path", Environment.DIRECTORY_PICTURES + "/Pico");
+        }
+        return getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
+    }
+
+    private void dropPendingPhoto() {
+        final Uri u = pendingPhoto;
+        pendingPhoto = null;
+        if (u == null) return;
+        new Thread(new Runnable() {
+            public void run() {
+                try { getContentResolver().delete(u, null, null); } catch (Exception e) { }
+            }
+        }).start();
     }
 
     private void doBack() {

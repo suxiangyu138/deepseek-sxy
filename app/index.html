@@ -18,7 +18,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#f5f5f7;--fg:#1d1d1f;--muted:#86868b;--line:rgba(0,0,0,.08);
-  --panel:rgba(255,255,255,.72);--panel-2:rgba(255,255,255,.86);--soft:rgba(0,0,0,.035);
+  --panel:rgba(255,255,255,.72);--panel-2:rgba(255,255,255,.86);--soft:rgba(0,0,0,.035);--inputbg:#fff;--inputline:rgba(0,0,0,.10);
   --ink:#1d1d1f;--ink-soft:rgba(0,0,0,.28);--bubble:#ececee;--code:#f2f2f4;
   --shadow:0 16px 44px rgba(0,0,0,.10);--shadow-sm:0 2px 10px rgba(0,0,0,.05);
   --hl:inset 0 1px 0 rgba(255,255,255,.7);
@@ -27,7 +27,7 @@
 }
 html[data-theme="dark"]{
   --bg:#0b0b0c;--fg:#f5f5f7;--muted:#98989d;--line:rgba(255,255,255,.10);
-  --panel:rgba(28,28,30,.72);--panel-2:rgba(32,32,35,.88);--soft:rgba(255,255,255,.05);
+  --panel:rgba(28,28,30,.72);--panel-2:rgba(32,32,35,.88);--soft:rgba(255,255,255,.05);--inputbg:#1d1d20;--inputline:rgba(255,255,255,.12);
   --ink:#f5f5f7;--ink-soft:rgba(255,255,255,.28);--bubble:#262628;--code:#1b1b1d;
   --shadow:0 16px 44px rgba(0,0,0,.55);--shadow-sm:0 2px 10px rgba(0,0,0,.4);
   --hl:inset 0 1px 0 rgba(255,255,255,.06);
@@ -87,7 +87,17 @@ html[data-theme="dark"] .bg i:nth-child(3){background:radial-gradient(circle,#13
 .empty p{margin:0;font-size:11.5px;color:var(--muted)}
 .homever{margin-top:16px;font-size:10px;letter-spacing:.6px;color:var(--muted);opacity:.55}
 .msg.streaming{content-visibility:visible;contain:none}
-.msg{display:flex;margin:0 0 16px;font-size:var(--fs-msg);animation:rise .24s cubic-bezier(.2,.8,.2,1)}
+html.perf .top.scrolled,html.perf .drawer,html.perf .sheet{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.perf .top.scrolled{background:var(--panel)}
+html.perf .drawer,html.perf .sheet{background:var(--panel)}
+html.perf .msg,html.perf .srclist{animation:none!important}
+html.perf .bg i{animation:none!important;filter:blur(28px);opacity:.16}
+html.perf .codeblock,html.perf .mermaid-block,html.perf .tablewrap{contain:content}
+html.perf .tobottom,html.perf .top{box-shadow:none}
+html.perf{--shadow:none;--shadow-sm:0 1px 2px rgba(0,0,0,.04)}
+html.perf .mermaid-block svg{max-height:70vh}
+.msg{display:flex;margin:0 0 16px;font-size:var(--fs-msg);contain:layout style}
+.msg.fresh{animation:rise .22s cubic-bezier(.2,.8,.2,1)}
 @keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .msg.user{justify-content:flex-end}
 .msg .bubble{max-width:88%;word-break:break-word}
@@ -172,11 +182,12 @@ td{min-width:72px;max-width:280px;white-space:normal}
 @keyframes blink{50%{opacity:0}}
 .tobottom{position:absolute;right:14px;bottom:118px;width:34px;height:34px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);box-shadow:var(--shadow-sm);display:none;place-items:center;z-index:6;color:var(--fg)}
 .tobottom.show{display:grid}
-.composer{flex:0 0 auto;padding:6px 12px calc(10px + env(safe-area-inset-bottom));position:relative;z-index:4}
+.composer{flex:0 0 auto;padding:6px 12px calc(10px + env(safe-area-inset-bottom));position:relative;z-index:4;background:var(--bg)}
 .chips{display:flex;gap:6px;margin-bottom:7px;padding-left:2px;overflow-x:auto;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:transparent;white-space:nowrap;flex:0 0 auto}
 .chip.on{color:var(--fg);border-color:var(--fg)}
+.chip .lvt{font-size:10px;font-weight:600;opacity:.72}
 .chip.model{color:var(--fg);font-weight:500}
 .previews{display:none;gap:8px;padding:0 2px 8px;overflow-x:auto}
 .previews.show{display:flex}
@@ -195,8 +206,8 @@ td{min-width:72px;max-width:280px;white-space:normal}
 .attach:active{background:var(--soft)}
 .imgs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
 .imgs img{max-width:140px;max-height:140px;border-radius:10px;object-fit:cover;border:1px solid var(--line)}
-.inputwrap{display:flex;align-items:flex-end;gap:7px;background:var(--panel-2);border:1px solid var(--line);border-radius:22px;padding:6px 6px 6px 13px;-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);box-shadow:var(--shadow-sm);transition:border-color .18s}
-.inputwrap:focus-within{border-color:var(--ink-soft)}
+.inputwrap{display:flex;align-items:flex-end;gap:7px;background:var(--inputbg);border:1px solid var(--inputline);border-radius:22px;padding:6px 6px 6px 13px;box-shadow:none;transition:border-color .18s}
+.inputwrap:focus-within{border-color:var(--ink-soft);background:var(--inputbg)}
 #input{flex:1;border:0;outline:0;background:none;color:var(--fg);font:inherit;font-size:13px;line-height:1.5;resize:none;max-height:116px;padding:5px 0}
 #input::placeholder{color:var(--muted)}
 .send{width:32px;height:32px;flex:0 0 auto;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center}
@@ -204,8 +215,8 @@ td{min-width:72px;max-width:280px;white-space:normal}
 .mask{position:fixed;inset:0;background:rgba(0,0,0,.28);opacity:0;pointer-events:none;transition:.22s;z-index:20}
 .mask.show{opacity:1;pointer-events:auto}
 .mask.clear{background:transparent}
-.drawer{position:fixed;top:0;left:0;bottom:0;width:min(76vw,280px);z-index:30;transform:translateX(-102%);transition:transform .26s cubic-bezier(.2,.85,.25,1);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);background:var(--panel-2);-webkit-backdrop-filter:blur(26px) saturate(150%);backdrop-filter:blur(26px) saturate(150%);border-right:1px solid var(--line);box-shadow:var(--shadow)}
-.drawer.show{transform:none}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:min(76vw,280px);z-index:30;transform:translateX(-102%);transition:transform .26s cubic-bezier(.2,.85,.25,1),visibility .26s;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);background:var(--panel-2);-webkit-backdrop-filter:blur(26px) saturate(150%);backdrop-filter:blur(26px) saturate(150%);border-right:1px solid var(--line);box-shadow:none;visibility:hidden}
+.drawer.show{transform:none;visibility:visible;box-shadow:var(--shadow)}
 .dhead{padding:16px 16px 8px}
 .dbrand{font-size:12.5px;font-weight:600;letter-spacing:.2px;color:var(--fg)}
 .modules{display:flex;gap:7px;padding:2px 14px 6px}
@@ -247,8 +258,8 @@ a.tile{text-decoration:none}
 .dfoot .tile:active{background:var(--line)}
 
 .author{font-size:10px;color:var(--muted);opacity:.75}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;border-radius:20px 20px 0 0;transform:translateY(102%);transition:transform .3s cubic-bezier(.2,.85,.25,1);max-height:92%;overflow-y:auto;padding:8px 18px calc(24px + env(safe-area-inset-bottom));background:var(--panel-2);-webkit-backdrop-filter:blur(28px) saturate(150%);backdrop-filter:blur(28px) saturate(150%);border-top:1px solid var(--line);box-shadow:var(--shadow)}
-.sheet.show{transform:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;border-radius:20px 20px 0 0;transform:translateY(102%);transition:transform .3s cubic-bezier(.2,.85,.25,1),visibility .3s;max-height:92%;overflow-y:auto;padding:8px 18px calc(24px + env(safe-area-inset-bottom));background:var(--panel-2);-webkit-backdrop-filter:blur(28px) saturate(150%);backdrop-filter:blur(28px) saturate(150%);border-top:1px solid var(--line);box-shadow:none;visibility:hidden}
+.sheet.show{transform:none;visibility:visible;box-shadow:var(--shadow)}
 .sheet .bar{width:34px;height:4px;border-radius:2px;background:var(--line);margin:6px auto 14px}
 .sheet h2{margin:0 0 14px;font-size:14px;letter-spacing:.2px}
 .shhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
@@ -330,6 +341,21 @@ a.tile{text-decoration:none}
 .about-note{margin-top:14px;font-size:11px;color:var(--muted);line-height:1.7}
 .helprow{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:12px;line-height:1.65}
 .helprow:last-child{border-bottom:0}
+.guide{font-size:12.5px;line-height:1.75}
+.guide h3{font-size:12.5px;margin:20px 0 9px;letter-spacing:.2px}
+.guide h3:first-of-type{margin-top:14px}
+.guide>p{color:var(--muted);margin:0 0 10px}
+.gcard{border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin:0 0 8px}
+.gcard .gt{font-size:12px;font-weight:600;margin-bottom:4px}
+.gcard .gd{font-size:11.5px;color:var(--muted);line-height:1.7}
+.gcard .ge{font-size:11px;color:var(--muted);margin-top:7px;padding-top:7px;border-top:1px dashed var(--line);line-height:1.65}
+.gstep{display:flex;gap:10px;margin:0 0 13px}
+.gstep i{flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:11px;font-style:normal;display:grid;place-items:center;margin-top:1px}
+.gstep div{flex:1;min-width:0}
+.gstep b{display:block;font-size:12.5px;margin-bottom:3px}
+.gstep span{font-size:11.5px;color:var(--muted);line-height:1.7}
+.gtip{border-left:2px solid var(--ink-soft);padding:2px 0 2px 10px;font-size:11.5px;color:var(--muted);margin:12px 0;line-height:1.7}
+.gmini{display:block;width:100%;text-align:left;background:none;border:0;color:var(--muted);font-size:11px;padding:0;margin:-2px 0 9px;text-decoration:underline;text-underline-offset:3px}
 .helprow b{flex:0 0 64px;font-weight:600;font-size:11.5px;color:var(--fg)}
 #printRoot{display:none}
 @media print{
@@ -343,7 +369,12 @@ a.tile{text-decoration:none}
   #printRoot code{background:#f4f4f4}
   #printRoot table{border-collapse:collapse;width:100%}
   #printRoot th,#printRoot td{border:1px solid #ccc;padding:4px 6px}
-  #printRoot .codeblock{break-inside:avoid}
+  #printRoot .codeblock{break-inside:auto;overflow:visible;border:1px solid #ddd}
+  #printRoot .codeblock pre{max-height:none!important;overflow:visible!important;white-space:pre-wrap!important;word-break:break-word;padding:8px}
+  #printRoot .codeblock pre code{white-space:pre-wrap!important;word-break:break-word;font-size:9.5pt;line-height:1.5}
+  #printRoot .codehead{display:none!important}
+  #printRoot .tablewrap{overflow:visible!important}
+  #printRoot table{table-layout:fixed;word-break:break-word}
   #printRoot .actions,#printRoot .meta,#printRoot .sources,#printRoot .memsaved{display:none!important}
   #printRoot img{max-width:100%}
 }
@@ -372,9 +403,9 @@ a.tile{text-decoration:none}
     var n=0;try{n=Number(sessionStorage.getItem(KEY)||0)}catch(e){}
     if(n<1){
       try{sessionStorage.setItem(KEY,'1')}catch(e){}
-      setTimeout(function(){if(!window.__bootMs){try{location.reload()}catch(e){}}},2500);
+      setTimeout(function(){if(!window.__bootMs){try{location.reload()}catch(e){}}},9000);
     }
-  },4000);
+  },15000);
 })();</script>
 <div class="bg"><i></i><i></i><i></i></div>
 <div class="app">
@@ -382,7 +413,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.0</span></div>
+    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.13</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -398,7 +429,7 @@ a.tile{text-decoration:none}
       <button class="chip model" id="chipModel">V4.1 Flash ▾</button>
       <button class="chip" id="chipThink">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a6 6 0 0 0-4 10.5V17h8v-3.5A6 6 0 0 0 12 3zM9 21h6"/></svg>
-        <span data-i18n="think">深度思考</span>
+        <span data-i18n="think">深度思考</span><b class="lvt" id="thinkLv"></b>
       </button>
       <button class="chip" id="chipSearch">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
@@ -450,7 +481,7 @@ a.tile{text-decoration:none}
     </button>
     <button class="tile" id="btnHelp">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 4.5 1.5c0 1.7-2 2-2 3.5"/><path d="M12 17h.01"/></svg>
-      <span data-i18n="help">使用说明</span>
+      <span data-i18n="guide">新手引导</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
     <a class="tile" id="linkRepo" href="https://gitee.com/suxiangyu138/qingyan-pico" target="_blank" rel="noopener">
@@ -463,7 +494,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.1.0</span></div>
+    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.1.13</span></div>
   </div>
 </aside>
 
@@ -472,6 +503,7 @@ a.tile{text-decoration:none}
   <h2 data-i18n="settings">设置</h2>
   <div class="field">
     <label data-i18n="apiKeyLabel">DeepSeek API Key（一个 Key 就能用全部功能）</label>
+    <button class="gmini" id="needGuide" data-i18n="guideHint">不知道什么是 API Key？看新手引导</button>
     <div class="row">
       <input id="inKey" type="password" placeholder="sk-..." autocomplete="off" spellcheck="false">
       <button class="mini" id="btnPaste" data-i18n="paste">粘贴</button>
@@ -508,7 +540,7 @@ a.tile{text-decoration:none}
       <button class="mini" id="btnRestore" style="flex:1" data-i18n="restore">导入备份</button>
     </div>
     <input type="file" id="restoreFile" accept="application/json,.json,.zip" multiple hidden>
-    <div style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.6" data-i18n="importHelp">支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:6px;line-height:1.6" data-i18n="importHelp">支持本应用备份 JSON、DeepSeek 客户端导出的整包 zip，或解压出来的 chat_sessions/*.json（可多选）</div>
   </div>
   <div class="field">
     <label data-i18n="language">语言</label>
@@ -527,6 +559,24 @@ a.tile{text-decoration:none}
   <div class="bar"></div>
   <h2 data-i18n="chooseModel">选择模型</h2>
   <div id="modelList"></div>
+</div>
+
+<div class="sheet" id="thinkSheet">
+  <div class="bar"></div>
+  <h2 data-i18n="thinkTitle">推理强度</h2>
+  <div class="mrow" data-lv="off">
+    <div class="mi"><div class="mn" data-i18n="thinkOff">关闭</div><div class="md" data-i18n="thinkOffDesc">直接回答，最快，适合闲聊和查资料</div></div><div class="ck"></div>
+  </div>
+  <div class="mrow" data-lv="low">
+    <div class="mi"><div class="mn" data-i18n="thinkLow">低</div><div class="md" data-i18n="thinkLowDesc">简单推理，几秒出结果，最省 token</div></div><div class="ck"></div>
+  </div>
+  <div class="mrow" data-lv="high">
+    <div class="mi"><div class="mn" data-i18n="thinkHigh">高</div><div class="md" data-i18n="thinkHighDesc">官方默认档，多数问题够用</div></div><div class="ck"></div>
+  </div>
+  <div class="mrow" data-lv="max">
+    <div class="mi"><div class="mn" data-i18n="thinkMax">最高</div><div class="md" data-i18n="thinkMaxDesc">复杂推导、写代码、算题，更慢但更完整</div></div><div class="ck"></div>
+  </div>
+  <div class="gmini" style="text-decoration:none;margin-top:10px" data-i18n="thinkNote">强度越高，推理用的 token 越多，费用也越高。问题一改，下一条消息生效。</div>
 </div>
 
 <div class="sheet" id="memSheet">
@@ -588,6 +638,7 @@ a.tile{text-decoration:none}
   <div class="field" style="margin-top:14px">
     <input id="welcomeName" maxlength="16" data-i18n-ph="welcomePh" placeholder="你的称呼，可以留空">
   </div>
+  <button class="gmini" id="wlGuide" style="margin:2px 0 12px" data-i18n="guideHint">不知道什么是 API Key？看新手引导</button>
   <div style="display:flex;gap:8px">
     <button class="mini" id="wlSkip" style="flex:1" data-i18n="skip">跳过</button>
     <button class="primary" id="wlStart" style="flex:1" data-i18n="start">开始使用</button>
@@ -628,7 +679,72 @@ a.tile{text-decoration:none}
   <h2 data-i18n="appearance">外观</h2>
   <div class="sliderrow"><label data-i18n="fontSize">正文字号</label><input type="range" id="fsMsg" min="12" max="18" step="0.5"><output id="fsMsgOut"></output></div>
   <div class="sliderrow"><label data-i18n="codeSize">代码字号</label><input type="range" id="fsCode" min="10" max="15" step="0.5"><output id="fsCodeOut"></output></div>
+  <button class="mini" id="btnPerf" style="width:100%;margin-bottom:10px">流畅模式：开</button>
   <div class="sliderrow"><label data-i18n="uiScale">界面缩放</label><input type="range" id="uiScale" min="0.85" max="1.25" step="0.05"><output id="uiScaleOut"></output></div>
+</div>
+
+<div class="sheet" id="guideSheet">
+  <div class="bar"></div>
+  <div class="shhead"><h2 data-i18n="guide">新手引导</h2><button class="mini" id="guideFull" style="height:30px;padding:0 12px;font-size:11px" data-i18n="guideFull">完整说明</button></div>
+  <div class="guide">
+    <p>轻言只负责替你向 DeepSeek 的服务器发消息，所以要先用你自己的一把钥匙。下面几个词看懂，后面就都通了。</p>
+
+    <h3>先弄懂这几个词</h3>
+
+    <div class="gcard">
+      <div class="gt">API 是什么</div>
+      <div class="gd">API 就是「给别人用的接口」。去餐厅吃饭，菜单给人看，后厨只收单子；API 就是那个收单子的窗口，程序把问题递进去，答案递出来。轻言用的是 DeepSeek 开放平台的那个窗口，不是官方 App 里的窗口。</div>
+    </div>
+
+    <div class="gcard">
+      <div class="gt">API Key 是什么</div>
+      <div class="gd">窗口不认人，只认钥匙。API Key 就是这把钥匙，长这样 sk-3f9a…，一长串字母加数字。填进轻言，轻言才能替你发消息。</div>
+      <div class="ge">钥匙就是钱包：谁拿到谁花你的钱。不要发给别人，也不要截图发群里。</div>
+    </div>
+
+    <div class="gcard">
+      <div class="gt">Token 是什么</div>
+      <div class="gd">Token 是计费单位，模型按它算钱。中文大约一到两个字算一个 token，一千字的文章差不多六百到八百个 token。你发的字和它回的字都要算。</div>
+      <div class="ge">DeepSeek 按每百万 token 计价，日常聊天一天通常几分钱到几毛钱。</div>
+    </div>
+
+    <div class="gcard">
+      <div class="gt">上下文是什么</div>
+      <div class="gd">上下文是一次能记住多少内容。轻言支持 1M，大约相当于三四本长篇小说。顶栏能看到当前占用，超出后会自动丢掉最早的消息。</div>
+    </div>
+
+    <div class="gcard">
+      <div class="gt">余额是什么</div>
+      <div class="gd">DeepSeek 是预付费，先把钱充进账户，用多少扣多少。余额用完就发不出消息，点顶栏的金额可以随时刷新。</div>
+    </div>
+
+    <h3>五分钟开通</h3>
+
+    <div class="gstep"><i>1</i><div><b>打开开放平台</b><span>浏览器访问 platform.deepseek.com，用手机号或邮箱注册登录。是开放平台，不是 chat.deepseek.com 那个聊天网页。</span></div></div>
+    <div class="gstep"><i>2</i><div><b>充值</b><span>左侧点「充值」，最低 10 元。先充最少的试，10 元够聊很久。</span></div></div>
+    <div class="gstep"><i>3</i><div><b>创建 API Key</b><span>左侧点「API keys」，新建一个，名字随便起，比如 pico。</span></div></div>
+    <div class="gstep"><i>4</i><div><b>复制那串 Key</b><span>点复制，拿到 sk- 开头的一长串。它只在创建时显示一次，关掉就看不到，丢了只能删掉重建。</span></div></div>
+    <div class="gstep"><i>5</i><div><b>填进轻言</b><span>回到设置，粘贴到上面的输入框，点「测试连接」。能看到余额就通了，直接开聊。</span></div></div>
+
+    <div class="gtip">第 5 步如果提示 401，多半是少复制了几位，或者这个 Key 已被删除。回平台重新建一个最省事。</div>
+
+    <h3>出问题先看这里</h3>
+
+    <div class="gcard"><div class="gt">提示 401、Key 无效</div><div class="gd">Key 没复制全、带了空格，或者已经在平台删了。重新复制整串，注意前后不要有空格。</div></div>
+    <div class="gcard"><div class="gt">提示余额不足</div><div class="gd">账户没钱了。去平台充值，充完点顶栏金额刷新一下。</div></div>
+    <div class="gcard"><div class="gt">提示请求太频繁</div><div class="gd">短时间发得太快，等十几秒再发。</div></div>
+    <div class="gcard"><div class="gt">图片或文件发不出去</div><div class="gd">图片最多 30 张，文档最多 3 个，单个不超过 30MB。PDF、Word、PPT、Excel、EPUB 和常见文本格式都能读。</div></div>
+    <div class="gcard"><div class="gt">换手机怎么搬</div><div class="gd">设置 → 存储 → 导出备份，把 JSON 发到新设备，再用「导入备份」恢复。图片原图不进备份。</div></div>
+
+    <h3>数据在谁手里</h3>
+    <p>Key、对话、记忆、图片都只存在你这台设备上。轻言没有服务器，不中转、不上报、不统计。唯一的对外请求是你自己发起的 api.deepseek.com。</p>
+
+    <div style="display:flex;gap:8px;margin:18px 0 6px">
+      <button class="mini" id="guideOk" style="flex:1" data-i18n="guideOk">知道了</button>
+      <button class="primary" id="guideGo" style="flex:1" data-i18n="guideGo">去填 Key</button>
+    </div>
+    <div style="height:10px"></div>
+  </div>
 </div>
 
 <div class="sheet" id="helpSheet">
@@ -650,7 +766,7 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.1.0</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.1.13</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。</div>
@@ -672,7 +788,7 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='2.1.0';
+const APP_VER='2.1.13';
 const T_BOOT=performance.now();
 const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 if(IS_IOS)document.documentElement.classList.add('ios');
@@ -692,7 +808,7 @@ zh:{
   greetSub:'今天想聊点什么',userName:'朋友',chatsEmpty:'还没有对话',
   gToday:'今天',gYesterday:'昨天',gWeek:'7 天内',gEarlier:'更早',
   metaIn:'输入',metaHit:'缓存命中',metaOut:'输出',metaThink:'思考',thisChat:'本对话',
-  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',usage:'用量',uToday:'今日',uMonth:'本月',uBal:'余额',uExport:'导出 CSV',usageNote:'仅统计本机记录，金额按接口返回的用量估算，以官方账单为准。',uEmpty:'还没有可统计的记录',uiScale:'界面缩放',cont:'继续',provider:'服务商',custom:'自定义',baseUrl:'接口地址',modelName:'模型名',providerKey:'该服务商 Key（留空用上面那把）',storage:'存储',storageText:'文本数据',storageImg:'图片缓存',storageFiles:'张图片',clearImg:'清理图片缓存',cleared:'已清理',loadMore:'加载更早的消息',saveImg:'保存图片',importTitle:'导入对话',importZip:'这是压缩包，请先解压再选择里面的 json 文件',importDone:'导入完成：新增 ',importSkip:'，跳过 ',importHelp:'支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）',deleted:'已删除',backup:'导出备份',restore:'导入备份',restoreAsk:'导入会覆盖当前全部对话与设置，确定继续？',restored:'已恢复',backupDone:'备份已导出',backupFail:'备份文件解析失败',searchPh:'搜索对话',noResult:'没有匹配的对话',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thought:'已深度思考',
+  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',usage:'用量',uToday:'今日',uMonth:'本月',uBal:'余额',uExport:'导出 CSV',usageNote:'仅统计本机记录，金额按接口返回的用量估算，以官方账单为准。',uEmpty:'还没有可统计的记录',uiScale:'界面缩放',cont:'继续',provider:'服务商',custom:'自定义',baseUrl:'接口地址',modelName:'模型名',providerKey:'该服务商 Key（留空用上面那把）',storage:'存储',storageText:'文本数据',chatsUnit:' 个会话',storageImg:'图片缓存',storageFiles:'张图片',clearImg:'清理图片缓存',cleared:'已清理',loadMore:'加载更早的消息',saveImg:'保存图片',importTitle:'导入对话',importZip:'这是压缩包，请先解压再选择里面的 json 文件',importZipOld:'当前浏览器版本太旧，无法直接解压，请先解压后再选 JSON',importZipBad:'这个压缩包里没有找到 chat_sessions 会话文件',importZipAsk:'压缩包里有 %s 个会话，解压后约 %s MB。会全部导入，占用的本机空间也是这个量级，导入过程中不要锁屏。继续吗？',importZipBusy:'正在导入 %s / %s',importZipDone:'导入完成：新增 %s，跳过或失败 %s',importZipRest:'，其余因本地空间不足未导入',importDone:'导入完成：新增 ',importSkip:'，跳过 ',importHelp:'支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）',deleted:'已删除',backup:'导出备份',restore:'导入备份',restoreAsk:'导入会覆盖当前全部对话与设置，确定继续？',restored:'已恢复',backupDone:'备份已导出',backupFail:'备份文件解析失败',searchPh:'搜索对话',noResult:'没有匹配的对话',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thinkTitle:'推理强度',thinkOff:'关闭',thinkOffDesc:'直接回答，最快，适合闲聊和查资料',thinkLow:'低',thinkLowDesc:'简单推理，几秒出结果，最省 token',thinkHigh:'高',thinkHighDesc:'官方默认档，多数问题够用',thinkMax:'最高',thinkMaxDesc:'复杂推导、写代码、算题，更慢但更完整',thinkNote:'官方只有低、高、最高三档，默认高。越高推理 token 越多，费用越高；改完对下一条消息生效。',thought:'已深度思考',
   searchNow:'正在联网搜索：',openNow:'正在打开网页：',findNow:'正在网页内查找：',readNow:'正在阅读链接：',toolNow:'正在调用联网能力…',
   stopped:'（已停止）',netErr:'网络错误，请重试',reqFail:'请求失败（',keyBad:'API Key 无效或已过期',noBalance:'账户余额不足',
   tooOften:'请求太频繁或并发超限，稍后再试',genFail:'生成失败',
@@ -708,7 +824,7 @@ zh:{
   install3:'桌面出现「轻言」，点开即用',install4:'Chrome、Edge、部分国产浏览器都支持；微信/QQ 的内置浏览器装不了。',
   balance:'余额',balanceFail:'余额获取失败',balanceHint:'点击刷新余额',
   edit:'编辑',editTitle:'编辑消息',send:'发送',cancel:'取消',
-  appearance:'外观',nickname:'称呼（可选）',nicknamePh:'留空就只显示问候语',welcomeTitle:'你好，我是 DeepSeek',welcomeSub:'先告诉我怎么称呼你，之后都可以在设置里改',welcomePh:'你的称呼，可以留空',skip:'跳过',start:'开始使用',fontSize:'正文字号',codeSize:'代码字号',help:'使用说明',repo:'仓库',author:'轻言 Pico',about:'关于作者',testConn:'测试连接',testing:'测试中…',keyOk:'连接正常',keyFail:'连接失败',
+  appearance:'外观',nickname:'称呼（可选）',nicknamePh:'留空就只显示问候语',welcomeTitle:'你好，我是 DeepSeek',welcomeSub:'先告诉我怎么称呼你，之后都可以在设置里改',welcomePh:'你的称呼，可以留空',skip:'跳过',start:'开始使用',fontSize:'正文字号',codeSize:'代码字号',help:'使用说明',guide:'新手引导',guideOk:'知道了',guideGo:'去填 Key',guideFull:'完整说明',guideHint:'不知道什么是 API Key？看新手引导',repo:'仓库',author:'轻言 Pico',about:'关于作者',testConn:'测试连接',testing:'测试中…',keyOk:'连接正常',keyFail:'连接失败',
   aboutSub:'一个人写的小工具',email:'邮箱',version:'版本',copy:'复制',
   aboutNote:'个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。',
   chatLabel:'对话',privacyLabel:'隐私',
@@ -735,7 +851,7 @@ en:{
   greetSub:"What's on your mind",userName:'Suxiangyu',chatsEmpty:'No chats yet',
   gToday:'Today',gYesterday:'Yesterday',gWeek:'Previous 7 days',gEarlier:'Earlier',
   metaIn:'In',metaHit:'cached',metaOut:'Out',metaThink:'Thinking',thisChat:'This chat',
-  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',exportTitle:'Export this answer',exportTxt:'Plain text',exported:'Exported',exportShare:'Export',exportHint:'Markdown keeps formatting; plain text strips markers; PDF uses the system print dialog and pick Save as PDF.',pin:'Pin',usage:'Usage',uToday:'Today',uMonth:'Month',uBal:'Balance',uExport:'Export CSV',usageNote:'Local records only. Amounts are estimated from returned usage; the official bill prevails.',uEmpty:'No usage recorded yet',uiScale:'UI scale',cont:'Continue',provider:'Provider',custom:'Custom',baseUrl:'Base URL',modelName:'Model',providerKey:'Provider key (blank = above)',storage:'Storage',storageText:'Text data',storageImg:'Image cache',storageFiles:' images',clearImg:'Clear image cache',cleared:'Cleared',loadMore:'Load earlier messages',saveImg:'Save image',importTitle:'Imported chat',importZip:'That is a zip file. Unzip it and pick the json files inside.',importDone:'Imported: ',importSkip:', skipped ',importHelp:'Supports this app backup JSON, or chat_sessions/*.json exported from DeepSeek (multi-select)',deleted:'Deleted',backup:'Export backup',restore:'Import backup',restoreAsk:'Importing replaces all chats and settings. Continue?',restored:'Restored',backupDone:'Backup exported',backupFail:'Invalid backup file',searchPh:'Search chats',noResult:'No matching chats',updating:'Clearing cache…',updatedTo:'Updated to ',unpin:'Unpin',lock:'Lock',unlock:'Unlock',delChat:'Delete chat',protectedHint:'Pinned or locked chats cannot be deleted',tagPin:'Pinned',tagLock:'Locked',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thought:'Thought',
+  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',exportTitle:'Export this answer',exportTxt:'Plain text',exported:'Exported',exportShare:'Export',exportHint:'Markdown keeps formatting; plain text strips markers; PDF uses the system print dialog and pick Save as PDF.',pin:'Pin',usage:'Usage',uToday:'Today',uMonth:'Month',uBal:'Balance',uExport:'Export CSV',usageNote:'Local records only. Amounts are estimated from returned usage; the official bill prevails.',uEmpty:'No usage recorded yet',uiScale:'UI scale',cont:'Continue',provider:'Provider',custom:'Custom',baseUrl:'Base URL',modelName:'Model',providerKey:'Provider key (blank = above)',storage:'Storage',storageText:'Text data',chatsUnit:' chats',storageImg:'Image cache',storageFiles:' images',clearImg:'Clear image cache',cleared:'Cleared',loadMore:'Load earlier messages',saveImg:'Save image',importTitle:'Imported chat',importZip:'That is a zip file. Unzip it and pick the json files inside.',importZipOld:'This browser cannot unzip. Please unzip and pick the JSON files.',importZipBad:'No chat_sessions JSON found in this zip',importZipAsk:'This zip has %s sessions, about %s MB unpacked. All of them will be imported and take the same amount of local space. Keep the screen on during import. Continue?',importZipBusy:'Importing %s / %s',importZipDone:'Imported %s, skipped or failed %s',importZipRest:', the rest skipped for lack of space',importDone:'Imported: ',importSkip:', skipped ',importHelp:'Supports this app backup JSON, or chat_sessions/*.json exported from DeepSeek (multi-select)',deleted:'Deleted',backup:'Export backup',restore:'Import backup',restoreAsk:'Importing replaces all chats and settings. Continue?',restored:'Restored',backupDone:'Backup exported',backupFail:'Invalid backup file',searchPh:'Search chats',noResult:'No matching chats',updating:'Clearing cache…',updatedTo:'Updated to ',unpin:'Unpin',lock:'Lock',unlock:'Unlock',delChat:'Delete chat',protectedHint:'Pinned or locked chats cannot be deleted',tagPin:'Pinned',tagLock:'Locked',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thinkTitle:'Reasoning effort',thinkOff:'Off',thinkOffDesc:'Answer directly, fastest for chat and lookups',thinkLow:'Low',thinkLowDesc:'Light reasoning, cheapest',thinkHigh:'High',thinkHighDesc:'API default, enough for most questions',thinkMax:'Max',thinkMaxDesc:'Hard derivations, code, math. Slower but more complete',thinkNote:'The API offers low, high and max only, defaulting to high. Higher effort costs more. Applies to the next message.',thought:'Thought',
   searchNow:'Search: ',openNow:'Open: ',findNow:'Find: ',readNow:'Read: ',toolNow:'Web tools…',
   stopped:'(stopped)',netErr:'Network error, please retry',reqFail:'Request failed (',keyBad:'Invalid or expired API key',noBalance:'Insufficient balance',
   tooOften:'Too many requests, try again later',genFail:'Generation failed',
@@ -751,7 +867,7 @@ en:{
   install3:'Tap the new icon to open instantly',install4:'Chrome, Edge and most mobile browsers work; in-app browsers (WeChat/QQ) do not.',
   balance:'Balance',balanceFail:'Balance unavailable',balanceHint:'Tap to refresh balance',
   edit:'Edit',editTitle:'Edit message',send:'Send',cancel:'Cancel',
-  appearance:'Appearance',nickname:'Nickname (optional)',nicknamePh:'Leave empty to show greeting only',welcomeTitle:"Hi, I'm DeepSeek",welcomeSub:'Tell me what to call you, you can change it later',welcomePh:'Your name, optional',skip:'Skip',start:'Start',fontSize:'Text size',codeSize:'Code size',help:'Help',repo:'Repo',author:'By Suxiangyu',about:'About',testConn:'Test connection',testing:'Testing…',keyOk:'Connected',keyFail:'Connection failed',
+  appearance:'Appearance',nickname:'Nickname (optional)',nicknamePh:'Leave empty to show greeting only',welcomeTitle:"Hi, I'm DeepSeek",welcomeSub:'Tell me what to call you, you can change it later',welcomePh:'Your name, optional',skip:'Skip',start:'Start',fontSize:'Text size',codeSize:'Code size',help:'Help',guide:'Quick start',guideOk:'Got it',guideGo:'Add key',guideFull:'Full guide',guideHint:'New to API keys? Read the quick start',repo:'Repo',author:'By Suxiangyu',about:'About',testConn:'Test connection',testing:'Testing…',keyOk:'Connected',keyFail:'Connection failed',
   aboutSub:'A small tool built by one person',email:'Email',version:'Version',copy:'Copy',
   aboutNote:'Personal project, not affiliated with DeepSeek. Feedback: suxiangyu_dev@foxmail.com or open an issue.',
   chatLabel:'Chat',privacyLabel:'Privacy',
@@ -765,7 +881,7 @@ en:{
 }};
 function t(k,v){const d=I18N[S.settings.lang==='en'?'en':'zh'];const s=d[k]!==undefined?d[k]:I18N.zh[k];return v===undefined?s:String(s).replace('%s',v)}
 const t_=t;
-const KEY='qianliao.v2';
+const KEY='qianliao.v2',LAST_KEY='qianliao.last';
 const OLD='qianliao.v1';
 const MODELS=[
   {id:'deepseek-flash',name:'V4.1 Flash',short:'V4.1 Flash',descKey:'modelFlash'},
@@ -786,7 +902,7 @@ function calcCost(model,u){
 }
 function fmtTok(v){v=v||0;return v>=10000?(v/1000).toFixed(1)+'k':String(v)}
 function fmtMoney(v){if(!v)return '¥0';return '¥'+(v<0.01?v.toFixed(4):v.toFixed(3))}
-const DEF={settings:{apiKey:'',theme:'auto',think:false,search:false,model:'deepseek-flash',memoryOn:true,personalOn:true,autoMem:true,lang:'zh',fsMsg:13.5,fsCode:11.5,uiScale:1,name:'',onboarded:false},convs:[],current:null,memories:[],personal:''};
+const DEF={settings:{apiKey:'',theme:'auto',think:false,thinkLevel:'high',search:false,model:'deepseek-flash',memoryOn:true,personalOn:true,autoMem:true,lang:'zh',fsMsg:13.5,fsCode:11.5,uiScale:1,perf:true,name:'',onboarded:false},convs:[],current:null,memories:[],personal:''};
 let S=load();
 let streamAbort=null,streaming=false,pending=[],pendingFiles=[],selectMode=false,selected=new Set();
 function load(){
@@ -802,10 +918,66 @@ function load(){
   return JSON.parse(JSON.stringify(DEF));
 }
 let saveTimer=null;
+/* 会话存 IndexedDB，设置与记忆存 localStorage：前者不受 5MB 限制 */
+const DB_NAME='qianliao',DB_STORE='convs';
+let db=null,idbSnap=null;
+function openDB(){
+  if(db)return Promise.resolve(db);
+  return new Promise((res,rej)=>{
+    let r;
+    try{r=indexedDB.open(DB_NAME,1)}catch(e){return rej(e)}
+    r.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains(DB_STORE))d.createObjectStore(DB_STORE,{keyPath:'id'})};
+    r.onsuccess=()=>{db=r.result;res(db)};
+    r.onerror=()=>rej(r.error);
+  });
+}
+function idbAll(){
+  return new Promise((res,rej)=>{
+    const q=db.transaction(DB_STORE,'readonly').objectStore(DB_STORE).getAll();
+    q.onsuccess=()=>res(q.result||[]);q.onerror=()=>rej(q.error);
+  });
+}
+function idbPutMany(list){
+  return new Promise((res,rej)=>{
+    if(!list.length)return res();
+    const tx=db.transaction(DB_STORE,'readwrite'),st=tx.objectStore(DB_STORE);
+    for(const c of list)st.put(c);
+    tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error);
+  });
+}
+function idbDelMany(ids){
+  return new Promise((res,rej)=>{
+    if(!ids.length)return res();
+    const tx=db.transaction(DB_STORE,'readwrite'),st=tx.objectStore(DB_STORE);
+    for(const id of ids)st.delete(id);
+    tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error);
+  });
+}
+function convSig(c){return (c.title||'')+'|'+(c.pinned?1:0)+'|'+(c.locked?1:0)+'|'+(c.updatedAt||0)+'|'+((c.msgs&&c.msgs.length)||0)}
+function metaStore(){
+  return {settings:S.settings,memories:S.memories,personal:S.personal,drafts:S.drafts||{},current:S.current,convs:[]};
+}
 function persist(){
-  try{localStorage.setItem(KEY,JSON.stringify(S));return}catch(e){}
-  for(const c of S.convs)for(const m of c.msgs)if(m.images)delete m.images;
-  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast(t('storageFull'))}
+  if(!db){
+    try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast(t('storageFull'))}
+    return;
+  }
+  try{localStorage.setItem(KEY,JSON.stringify(metaStore()))}catch(e){}
+  const snap=new Map(),puts=[];
+  for(const c of S.convs){
+    const sig=convSig(c);snap.set(c.id,sig);
+    if(!idbSnap||idbSnap.get(c.id)!==sig||c.id===S.current)puts.push(c);
+  }
+  const dels=[];
+  if(idbSnap)for(const k of idbSnap.keys())if(!snap.has(k))dels.push(k);
+  idbSnap=snap;
+  if(puts.length)idbPutMany(puts).catch(()=>{});
+  if(dels.length)idbDelMany(dels).catch(()=>{});
+  try{
+    const c=cur();
+    if(c)localStorage.setItem(LAST_KEY,JSON.stringify({id:c.id,msgs:c.msgs,title:c.title,updatedAt:c.updatedAt}));
+    else localStorage.removeItem(LAST_KEY);
+  }catch(e){}
 }
 function save(now){
   if(now){persist();return}
@@ -815,8 +987,51 @@ function save(now){
     else persist();
   },800);
 }
+async function bootData(){
+  try{
+    await openDB();
+    let all=await idbAll();
+    if(!all.length&&S.convs&&S.convs.length){
+      all=S.convs;
+      await idbPutMany(all);
+      try{localStorage.setItem(KEY,JSON.stringify(metaStore()))}catch(e){}
+    }
+    if(all.length)S.convs=all;
+    S.convs.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+    idbSnap=new Map();
+    for(const c of S.convs)idbSnap.set(c.id,convSig(c));
+  }catch(e){db=null}
+  try{
+    const m=JSON.parse(localStorage.getItem(LAST_KEY)||'null');
+    if(m&&m.id){
+      const c=S.convs.find(x=>x.id===m.id);
+      if(c&&(m.msgs||[]).length>(c.msgs||[]).length){
+        c.msgs=m.msgs;c.title=m.title||c.title;
+        c.updatedAt=Math.max(c.updatedAt||0,m.updatedAt||0);
+      }
+    }
+  }catch(e){}
+  if(!S.convs.some(c=>c.id===S.current))S.current=S.convs[0]?S.convs[0].id:null;
+}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 function cur(){return S.convs.find(c=>c.id===S.current)||null}
+function thinkParams(){
+  if(!S.settings.think)return {thinking:{type:'disabled'}};
+  const lv=S.settings.thinkLevel||'high';
+  return {thinking:{type:'enabled'},reasoning_effort:(lv==='low'||lv==='max')?lv:'high'};
+}
+async function postJSON(url,body,signal){
+  const opts={method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.settings.apiKey},signal:signal,body:JSON.stringify(body)};
+  let r=await fetch(url,opts);
+  if(r.status===400&&body&&body.reasoning_effort){
+    let txt='';try{txt=await r.clone().text()}catch(e){}
+    if(/reasoning_effort|unknown|unsupported|invalid/i.test(txt)){
+      const b=Object.assign({},body);delete b.reasoning_effort;
+      r=await fetch(url,Object.assign({},opts,{body:JSON.stringify(b)}));
+    }
+  }
+  return r;
+}
 function modelOf(id){return MODELS.find(m=>m.id===id)||MODELS[0]}
 function saveDraft(){
   const c=cur();if(!c)return;
@@ -846,6 +1061,12 @@ function startFresh(){
   save(true);
 }
 function toast(t,ms){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),ms||2200)}
+function applyPerf(){
+  const on=S.settings.perf!==false;
+  document.documentElement.classList.toggle('perf',on);
+  const b=document.querySelector('#btnPerf');
+  if(b)b.textContent=on?'流畅模式：开':'流畅模式：关';
+}
 function applyScale(){
   const v=Number(S.settings.uiScale)||1;
   document.documentElement.style.setProperty('--ui',v);
@@ -1193,7 +1414,15 @@ function renderTotal(){
   el.classList.add('show');
 }
 function renderTitle(){const c=cur();$('#chatTitle').textContent=c?(c.title||t('newTitle')):t('appName')}
-function renderChips(){const m=modelOf(S.settings.model);$('#chipModel').textContent=m.short+' ▾';$('#chipThink').classList.toggle('on',!!S.settings.think);$('#chipSearch').classList.toggle('on',!!S.settings.search)}
+function renderChips(){
+  const m=modelOf(S.settings.model);
+  $('#chipModel').textContent=m.short+' ▾';
+  const on=!!S.settings.think;
+  $('#chipThink').classList.toggle('on',on);
+  const lv=S.settings.thinkLevel||'high';
+  const lb=$('#thinkLv');if(lb)lb.textContent=on?({low:'低',high:'高',max:'最高'}[lv]||''):'';
+  $('#chipSearch').classList.toggle('on',!!S.settings.search);
+}
 function renderList(){
   const box=$('#convlist');box.innerHTML='';
   const q=($('#convSearch')&&$('#convSearch').value||'').trim().toLowerCase();
@@ -1419,6 +1648,8 @@ function exportPdf(){
   const root=document.createElement('div');root.id='printRoot';
   try{root.innerHTML='<h1>'+esc(exportName(m))+'</h1>'+md(m.content||'').html}
   catch(e){root.innerHTML='<pre>'+esc(m.content||'')+'</pre>'}
+  root.querySelectorAll('pre').forEach(p=>{p.style.maxHeight='none';p.style.overflow='visible';p.style.whiteSpace='pre-wrap';p.style.wordBreak='break-word'});
+  root.querySelectorAll('.codehead').forEach(h=>{h.style.display='none'});
   document.body.appendChild(root);
   const cleanup=()=>{try{root.remove()}catch(e){}};
   if(nativeBridge()){
@@ -1584,8 +1815,8 @@ function renderMsgs(){
   box.querySelectorAll('img').forEach(im=>{if(!im.complete)im.addEventListener('load',()=>scrollBottom(false),{once:true})});
   scrollBottom(true);
 }
-function msgEl(m){
-  const d=document.createElement('div');d.className='msg '+(m.role==='user'?'user':'assistant');
+function msgEl(m,fresh){
+  const d=document.createElement('div');d.className='msg '+(m.role==='user'?'user':'assistant')+(fresh?' fresh':'');
   const b=document.createElement('div');b.className='bubble';
   if(m.role==='user'){
     if(m.files&&m.files.length){const fg=document.createElement('div');fg.style.marginBottom='5px';for(const f of m.files){const d=document.createElement('span');d.className='filechip';const nm=document.createElement('span');nm.className='nm';nm.textContent=f.name||'file';d.appendChild(nm);fg.appendChild(d)}b.appendChild(fg)}
@@ -1814,7 +2045,7 @@ async function send(){
   c.updatedAt=Date.now();save(true);
   renderTitle();renderList();
   const box=$('#msgs');if(c.msgs.length===1)box.innerHTML='';
-  box.appendChild(msgEl(user));scrollBottom(true);
+  box.appendChild(msgEl(user,true));scrollBottom(true);
   const am={role:'assistant',content:'',reasoning:'',tools:[],ts:Date.now()};
   c.msgs.push(am);
   const el=msgEl(am);box.appendChild(el);
@@ -1831,10 +2062,10 @@ async function continueGen(m){
   if(!bubble)return;
   setBusy(true);streamAbort=new AbortController();
   const body={model:S.settings.model,messages:msgs,stream:true,stream_options:{include_usage:true},max_tokens:8192,
-    thinking:{type:S.settings.think?'enabled':'disabled'},tools:toolsList()};
+    ...thinkParams(),tools:toolsList()};
   const url='https://api.deepseek.com/beta/chat/completions';
   try{
-    const resp=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.settings.apiKey},body:JSON.stringify(body),signal:streamAbort.signal});
+    const resp=await postJSON(url,body,streamAbort.signal);
     if(!resp.ok)throw new Error('HTTP '+resp.status);
     const reader=resp.body.getReader();const dec=new TextDecoder();let buf='';
     while(true){
@@ -1943,14 +2174,11 @@ async function run(c,am,bubble){
     let model=S.settings.model||'deepseek-flash';
     if(hasImg&&model!=='deepseek-flash'){model='deepseek-flash';S.settings.model=model;renderChips()}
     const body={model:model,messages:await buildMessages(c),stream:true,stream_options:{include_usage:true},max_tokens:8192,
-      thinking:{type:S.settings.think?'enabled':'disabled'},tools:toolsList()};
-    const fetchRetry=async(url,opts)=>{try{return await fetch(url,opts)}catch(err){if(err&&err.name==='AbortError')throw err;await new Promise(r=>setTimeout(r,700));return fetch(url,opts)}};
-    const resp=await fetchRetry('https://api.deepseek.com/chat/completions',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.settings.apiKey},
-      body:JSON.stringify(body),
-      signal:streamAbort.signal
-    });
+      ...thinkParams(),tools:toolsList()};
+    const url0='https://api.deepseek.com/chat/completions';
+    let resp;
+    try{resp=await postJSON(url0,body,streamAbort.signal)}
+    catch(err){if(err&&err.name==='AbortError')throw err;await new Promise(r=>setTimeout(r,700));resp=await postJSON(url0,body,streamAbort.signal)}
     if(!resp.ok){
       let msg=t('reqFail')+resp.status+')';
       if(resp.status===401)msg=t('keyBad');
@@ -2075,7 +2303,7 @@ async function submitEdit(){
   renderTitle();renderList();renderMsgs();
   const am={role:'assistant',content:'',reasoning:'',tools:[],ts:Date.now()};
   c.msgs.push(am);save(true);
-  const box=$('#msgs');const el=msgEl(am);box.appendChild(el);scrollBottom(true);
+  const box=$('#msgs');const el=msgEl(am,true);box.appendChild(el);scrollBottom(true);
   await run(c,am,el.querySelector('.bubble'));
 }
 function openDrawer(){$('#drawer').classList.add('show');$('#mask').classList.add('show');loadBalance(false)}
@@ -2168,7 +2396,14 @@ function closeSheets(){
 }
 function fmtBytes(n){if(n<1024)return n+' B';if(n<1048576)return (n/1024).toFixed(1)+' KB';return (n/1048576).toFixed(1)+' MB'}
 async function updateStorage(){
-  try{const t=document.querySelector('#stText');if(t)t.textContent=fmtBytes(new Blob([localStorage.getItem(KEY)||'']).size)}catch(e){}
+  try{
+    const el=document.querySelector('#stText');
+    if(el){
+      let used=0;
+      try{const est=await navigator.storage.estimate();used=est.usage||0}catch(e){}
+      el.textContent=fmtBytes(used)+' · '+S.convs.length+t('chatsUnit');
+    }
+  }catch(e){}
   try{
     const c=await caches.open(IMG_CACHE);const keys=await c.keys();let total=0;
     for(const req of keys){const r=await c.match(req);if(r){total+=(await r.blob()).size}}
@@ -2228,7 +2463,13 @@ function openAppear(){
   $('#appearSheet').classList.add('show');$('#mask').classList.add('show');
 }
 $('#btnAppearance').onclick=()=>{closeAll();openAppear()};
-$('#btnHelp').onclick=()=>{closeAll();$('#helpSheet').classList.add('show');$('#mask').classList.add('show')};
+function openGuide(){closeAll();$('#guideSheet').classList.add('show');$('#mask').classList.add('show')}
+$('#btnHelp').onclick=openGuide;
+$('#wlGuide').onclick=openGuide;
+$('#needGuide').onclick=openGuide;
+$('#guideOk').onclick=()=>closeAll();
+$('#guideFull').onclick=()=>{closeAll();$('#helpSheet').classList.add('show');$('#mask').classList.add('show')};
+$('#guideGo').onclick=()=>{closeAll();openSettings();setTimeout(()=>{try{$('#inKey').focus()}catch(e){}},260)};
 $('#expMd').onclick=exportMarkdown;
 $('#expTxt').onclick=exportText;
 $('#expPdf').onclick=exportPdf;
@@ -2239,13 +2480,27 @@ function cmpVer(a,b){
   for(let i=0;i<3;i++){const x=pa[i]||0,y=pb[i]||0;if(x!==y)return x>y?1:-1}
   return 0;
 }
+function getText(url){
+  try{
+    if(nativeBridge())return Promise.resolve(AndroidSaver.fetchText(url)||'');
+    return fetch(url,{cache:'no-store'}).then(function(r){return r.ok?r.text():''});
+  }catch(e){return Promise.resolve('')}
+}
+const GH_UP='https://gitee.com/api/v5/repos/suxiangyu138/qingyan-pico/releases/latest';
+async function updateInfo(){
+  const cand=[];
+  try{const t=await getText('https://suxiangyu.top/download/release.json?ts='+Date.now());if(t){const j=JSON.parse(t);if(j&&j.version)cand.push(j)}}catch(e){}
+  try{const t=await getText(GH_UP);if(t){const j=JSON.parse(t);if(j&&j.tag_name){
+    const v=String(j.tag_name).replace(/^v/,'');
+    const a=(j.assets||[]).filter(function(x){return /\.apk$/i.test(x.name||'')})[0];
+    cand.push({version:v,url:a?a.name:'',apkUrl:a?a.browser_download_url:'',size:'约 1.9 MB',notes:j.body||''});
+  }}}catch(e){}
+  cand.sort(function(a,b){return cmpVer(b.version,a.version)});
+  return cand[0]||null;
+}
 async function checkUpdate(manual){
   let info=null;
-  const url='https://suxiangyu.top/download/release.json?ts='+Date.now();
-  try{
-    if(nativeBridge()){const txt=AndroidSaver.fetchText(url);if(txt)info=JSON.parse(txt)}
-    else{const r=await fetch(url,{cache:'no-store'});if(r.ok)info=await r.json()}
-  }catch(e){}
+  try{info=await updateInfo()}catch(e){}
   if(!info||!info.version){
     if(manual){
       if(nativeBridge())toast('检查更新失败，请检查网络');
@@ -2255,7 +2510,7 @@ async function checkUpdate(manual){
   }
   const cur=APP_VER;
   if(cmpVer(info.version,cur)<=0){if(manual)toast('已是最新版本 v'+cur);return}
-  const notes=info.notes?('\n\n'+info.notes):'';
+  const notes=info.notes?('\n\n'+String(info.notes).split('\n').filter(function(x){return x.trim()}).slice(0,6).join('\n')):'';
   if(!confirm('发现新版本 '+info.version+'，当前 '+cur+'\n大小 '+(info.size||'')+notes+'\n\n现在更新？'))return;
   if(nativeBridge()){
     const u=info.apkUrl||('https://suxiangyu.top/download/'+(info.url||('app-'+info.version+'.apk')));
@@ -2268,6 +2523,7 @@ $('#btnForceUpdate').onclick=()=>checkUpdate(true);
 $('#copyMail').onclick=()=>{copyText('suxiangyu_dev@foxmail.com');toast(t('copied'))};
 $('#fsMsg').oninput=e=>{S.settings.fsMsg=Number(e.target.value);$('#fsMsgOut').textContent=S.settings.fsMsg+'px';applyFonts();save()};
 $('#fsCode').oninput=e=>{S.settings.fsCode=Number(e.target.value);$('#fsCodeOut').textContent=S.settings.fsCode+'px';applyFonts();save()};
+$('#btnPerf').onclick=()=>{S.settings.perf=S.settings.perf===false;applyPerf();save();toast(S.settings.perf!==false?'已开启流畅模式':'已关闭流畅模式')};
 $('#uiScale').oninput=e=>{S.settings.uiScale=Number(e.target.value);$('#uiScaleOut').textContent=S.settings.uiScale.toFixed(2)+'×';applyScale();save()};
 $('#editCancel').onclick=()=>{editing=null;closeAll()};
 $('#editSend').onclick=submitEdit;
@@ -2315,6 +2571,83 @@ $('#btnClearImg').onclick=async()=>{
   try{await caches.delete(IMG_CACHE);imgUrlCache.clear()}catch(e){}
   updateStorage();toast(t('cleared'));
 };
+
+/* ---------- ZIP 直读（官方导出包） ---------- */
+async function zipIndex(file){
+  const tl=Math.min(file.size,66000);
+  const buf=new Uint8Array(await file.slice(file.size-tl).arrayBuffer());
+  let e=-1;
+  for(let i=buf.length-22;i>=0;i--){
+    if(buf[i]===0x50&&buf[i+1]===0x4b&&buf[i+2]===5&&buf[i+3]===6){e=i;break}
+  }
+  if(e<0)throw new Error('bad zip');
+  const dv=new DataView(buf.buffer,e);
+  const n=dv.getUint16(10,true),cdSize=dv.getUint32(12,true),cdOff=dv.getUint32(16,true);
+  const cd=new Uint8Array(await file.slice(cdOff,cdOff+cdSize).arrayBuffer());
+  const cv=new DataView(cd.buffer),out=[];let p=0;
+  for(let i=0;i<n;i++){
+    if(cv.getUint32(p,true)!==0x02014b50)break;
+    const tm=cv.getUint16(p+12,true),dt=cv.getUint16(p+14,true);
+    const method=cv.getUint16(p+10,true),csz=cv.getUint32(p+20,true),usz=cv.getUint32(p+24,true);
+    const nl=cv.getUint16(p+28,true),el=cv.getUint16(p+30,true),cl=cv.getUint16(p+32,true),off=cv.getUint32(p+42,true);
+    const name=new TextDecoder().decode(cd.subarray(p+46,p+46+nl));
+    const y=1980+((dt>>9)&0x7f),mo=((dt>>5)&0x0f)-1,d=dt&0x1f,h=(tm>>11)&0x1f,mi=(tm>>5)&0x3f;
+    out.push({name,method,csz,usz,off,mtime:Date.UTC(y,mo,d,h,mi)});
+    p+=46+nl+el+cl;
+  }
+  return out;
+}
+async function zipText(file,ent){
+  const lh=new Uint8Array(await file.slice(ent.off,ent.off+30).arrayBuffer());
+  const lv=new DataView(lh.buffer);
+  const start=ent.off+30+lv.getUint16(26,true)+lv.getUint16(28,true);
+  const raw=await file.slice(start,start+ent.csz).arrayBuffer();
+  if(ent.method===0)return new TextDecoder().decode(raw);
+  const st=new Blob([raw]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+  return await new Response(st).text();
+}
+async function importZip(file){
+  if(typeof DecompressionStream==='undefined'){toast(t('importZipOld'),4000);return}
+  let ents;
+  try{ents=await zipIndex(file)}catch(e){toast(t('importZipBad'),3000);return}
+  const idxEnt=ents.find(e=>/^chat_session_index\.json$/i.test(e.name));
+  const stamp={};
+  if(idxEnt){
+    try{
+      const arr=JSON.parse(await zipText(file,idxEnt));
+      for(const it of arr){if(it&&it.id)stamp[it.id]=Date.parse(it.updated_at||it.inserted_at||'')||0}
+    }catch(e){}
+  }
+  const js=ents.filter(e=>/^chat_sessions\/[^\/]+\.json$/i.test(e.name));
+  js.sort((a,b)=>{
+    const ia=(a.name.match(/([^\/]+)\.json$/i)||[])[1],ib=(b.name.match(/([^\/]+)\.json$/i)||[])[1];
+    return (stamp[ib]||b.mtime)-(stamp[ia]||a.mtime);
+  });
+  if(!js.length){toast(t('importZipBad'),3000);return}
+  const mb=Math.round(js.reduce((a,e)=>a+e.usz,0)/1048576);
+  if(!confirm(t('importZipAsk',js.length+'|'+mb)))return;
+  let added=0,skipped=0,failed=0;
+  const existing=new Set(S.convs.map(c=>c.id));
+  let batch=[];
+  for(let i=0;i<js.length;i++){
+    if(i%25===0)toast(t('importZipBusy',(i+1)+'|'+js.length),1500);
+    let conv;
+    try{conv=convertSession(JSON.parse(await zipText(file,js[i])))}catch(err){failed++;continue}
+    if(!conv.msgs.length||existing.has(conv.id)){skipped++;continue}
+    S.convs.push(conv);existing.add(conv.id);added++;
+    batch.push(conv);
+    if(batch.length>=40){
+      try{await idbPutMany(batch)}catch(e){}
+      batch=[];
+    }
+  }
+  if(batch.length){try{await idbPutMany(batch)}catch(e){}}
+  S.convs.sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+  S.current=S.convs[0]?S.convs[0].id:null;
+  idbSnap=new Map();for(const c of S.convs)idbSnap.set(c.id,convSig(c));
+  persist();renderAll();closeAll();
+  toast(t('importZipDone',added+'|'+(skipped+failed)),4200);
+}
 $('#btnRestore').onclick=()=>$('#restoreFile').click();
 $('#restoreFile').onchange=async e=>{
   const files=[...(e.target.files||[])];e.target.value='';
@@ -2322,7 +2655,7 @@ $('#restoreFile').onchange=async e=>{
   let added=0,skipped=0,failed=0;
   const existing=new Set(S.convs.map(c=>c.id));
   for(const f of files){
-    if(/\.zip$/i.test(f.name)){toast(t('importZip'),3500);failed++;continue}
+    if(/\.zip$/i.test(f.name)){await importZip(f);return}
     try{
       const d=JSON.parse(await f.text());
       if(d&&(d.app==='Pico'||d.app==='DeepSeek_sxy')&&Array.isArray(d.convs)){
@@ -2376,6 +2709,7 @@ async function addImages(list){
       pending.push(await shrink(f,big?1024:1280,big?0.72:0.82));
     }catch(err){toast(t('imgFail'))}
   }
+  try{if(nativeBridge())AndroidSaver.dropLastPhoto()}catch(e){}
   renderPending();
 }
 async function addFiles(list){
@@ -2486,27 +2820,42 @@ $('#btnLangZh').onclick=()=>setLang('zh');
 $('#btnLangEn').onclick=()=>setLang('en');
 $('#btnTheme').onclick=()=>{const o=['auto','light','dark'];S.settings.theme=o[(o.indexOf(S.settings.theme)+1)%3];save(true);applyTheme()};
 $('#btnClear').onclick=()=>{if(confirm(t('clearAsk'))){S.convs=[];S.current=null;save(true);renderAll();toast(t('cleared'))}};
-$('#chipThink').onclick=()=>{S.settings.think=!S.settings.think;save(true);renderChips()};
+function openThink(){
+  const lv=S.settings.think?(S.settings.thinkLevel||'high'):'off';
+  document.querySelectorAll('#thinkSheet .mrow').forEach(r=>r.classList.toggle('on',r.dataset.lv===lv));
+  $('#thinkSheet').classList.add('show');$('#mask').classList.add('show');
+}
+$('#chipThink').onclick=openThink;
+document.querySelectorAll('#thinkSheet .mrow').forEach(r=>r.onclick=()=>{
+  const lv=r.dataset.lv;
+  S.settings.think=lv!=='off';
+  S.settings.thinkLevel=lv==='off'?'high':lv;
+  save(true);renderChips();closeAll();
+  if(lv==='off')toast('已关闭深度思考');
+  else toast('推理强度：'+({low:'低',high:'高',max:'最高'})[lv]);
+});
 $('#chipSearch').onclick=()=>{S.settings.search=!S.settings.search;save(true);renderChips();if(S.settings.search)toast(t('searchBill'),2600)};
 $('#btnSend').onclick=()=>{if(streaming){if(streamAbort)streamAbort.abort();return}send()};
 $('#input').addEventListener('input',e=>{const t=e.target;t.style.height='auto';t.style.height=Math.min(t.scrollHeight,116)+'px';saveDraft()});
 $('#input').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)&&!e.isComposing){e.preventDefault();send()}});
 let scrollTimer=null;
 let lastScrollTop=0;
+let scrollRaf=0;
 $('#msgs').addEventListener('scroll',()=>{
   document.body.classList.add('scrolling');
   clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>document.body.classList.remove('scrolling'),160);
-  {
+  if(scrollRaf)return;
+  scrollRaf=requestAnimationFrame(()=>{
+    scrollRaf=0;
     const el=$('#msgs');
     const dist=el.scrollHeight-el.scrollTop-el.clientHeight;
     if(dist<40)followBottom=true;
     else if(el.scrollTop<lastScrollTop-8)followBottom=false;
     lastScrollTop=el.scrollTop;
-  }
-  $('.top').classList.toggle('scrolled',$('#msgs').scrollTop>4);
-  const el=$('#msgs');
-  $('#toBottom').classList.toggle('show',el.scrollHeight-el.scrollTop-el.clientHeight>500);
-});
+    $('.top').classList.toggle('scrolled',el.scrollTop>4);
+    $('#toBottom').classList.toggle('show',dist>500);
+  });
+},{passive:true});
 (()=>{
   const v=$('#imgView'),img=$('#ivImg');
   let pinch=false,d0=0,s0=1;
@@ -2555,7 +2904,7 @@ function applyLang(){
   document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=t_(el.dataset.i18n)});
   document.querySelectorAll('[data-i18n-ph]').forEach(el=>{el.placeholder=t_(el.dataset.i18nPh)});
   document.title=t_('appName');
-  applyTheme();applyFonts();applyScale();
+  applyTheme();applyFonts();applyScale();applyPerf();
   $('#btnSelect').textContent=selectMode?t_('done'):t_('manage');
   $('#btnLangZh').style.borderColor=S.settings.lang==='en'?'':'var(--accent)';
   $('#btnLangEn').style.borderColor=S.settings.lang==='en'?'var(--accent)':'';
@@ -2579,6 +2928,8 @@ try{
     setTimeout(()=>toast(t('updatedTo')+'v'+APP_VER,3000),500);
   }
 }catch(e){}
+async function startApp(){
+await bootData();
 applyLang();
 window.__bootMs=Math.round(performance.now()-T_BOOT);
 try{sessionStorage.removeItem('qianliao.bootretry')}catch(e){}
@@ -2600,6 +2951,8 @@ setTimeout(()=>migrateImages().catch(()=>{}),1500);
 if(S.settings.apiKey)setTimeout(()=>loadBalance(false),600);
 setTimeout(()=>{ensureKatex()},900);
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(S.settings.theme==='auto')applyTheme()});
+}
+startApp();
 window.addEventListener('beforeunload',()=>save(true));
 window.addEventListener('pagehide',()=>save(true));
 window.__handleBack=function(){
