@@ -413,7 +413,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.13</span></div>
+    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.14</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -494,7 +494,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.1.13</span></div>
+    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.1.14</span></div>
   </div>
 </aside>
 
@@ -766,7 +766,7 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.1.13</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.1.14</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。</div>
@@ -788,7 +788,7 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='2.1.13';
+const APP_VER='2.1.14';
 const T_BOOT=performance.now();
 const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 if(IS_IOS)document.documentElement.classList.add('ios');
@@ -879,7 +879,15 @@ en:{
   copyUrl:'Copy page address',langZh:'中文',langEn:'English',
   note:'Search, link reading and thinking run through the official DeepSeek API — no extra keys. Your key and chats stay in this browser.'
 }};
-function t(k,v){const d=I18N[S.settings.lang==='en'?'en':'zh'];const s=d[k]!==undefined?d[k]:I18N.zh[k];return v===undefined?s:String(s).replace('%s',v)}
+function t(k){
+  const d=I18N[S.settings.lang==='en'?'en':'zh'];
+  const s=d[k]!==undefined?d[k]:I18N.zh[k];
+  if(s===undefined)return s;
+  if(arguments.length<2)return s;
+  let out=String(s);
+  for(let i=1;i<arguments.length;i++)out=out.replace('%s',arguments[i]);
+  return out;
+}
 const t_=t;
 const KEY='qianliao.v2',LAST_KEY='qianliao.last';
 const OLD='qianliao.v1';
@@ -2625,12 +2633,12 @@ async function importZip(file){
   });
   if(!js.length){toast(t('importZipBad'),3000);return}
   const mb=Math.round(js.reduce((a,e)=>a+e.usz,0)/1048576);
-  if(!confirm(t('importZipAsk',js.length+'|'+mb)))return;
+  if(!confirm(t('importZipAsk',js.length,mb)))return;
   let added=0,skipped=0,failed=0;
   const existing=new Set(S.convs.map(c=>c.id));
   let batch=[];
   for(let i=0;i<js.length;i++){
-    if(i%25===0)toast(t('importZipBusy',(i+1)+'|'+js.length),1500);
+    if(i%25===0)toast(t('importZipBusy',i+1,js.length),1500);
     let conv;
     try{conv=convertSession(JSON.parse(await zipText(file,js[i])))}catch(err){failed++;continue}
     if(!conv.msgs.length||existing.has(conv.id)){skipped++;continue}
@@ -2646,7 +2654,7 @@ async function importZip(file){
   S.current=S.convs[0]?S.convs[0].id:null;
   idbSnap=new Map();for(const c of S.convs)idbSnap.set(c.id,convSig(c));
   persist();renderAll();closeAll();
-  toast(t('importZipDone',added+'|'+(skipped+failed)),4200);
+  toast(t('importZipDone',added,skipped+failed),4200);
 }
 $('#btnRestore').onclick=()=>$('#restoreFile').click();
 $('#restoreFile').onchange=async e=>{

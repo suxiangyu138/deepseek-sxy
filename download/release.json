@@ -1,10 +1,10 @@
 {
-  "version": "2.1.13",
-  "versionCode": 38,
-  "url": "app-2.1.13.apk",
-  "apkUrl": "https://gitee.com/suxiangyu138/qingyan-pico/releases/download/v2.1.13/Pico-2.1.13.apk",
+  "version": "2.1.14",
+  "versionCode": 39,
+  "url": "app-2.1.14.apk",
+  "apkUrl": "https://gitee.com/suxiangyu138/qingyan-pico/releases/download/v2.1.14/Pico-2.1.14.apk",
   "size": "约 1.9 MB",
   "requires": "Android 8.0 及以上",
   "updated": "2026-11-19",
-  "notes": "会话改存 IndexedDB，官方导出 zip 支持全量导入"
+  "notes": "修复导入提示里的占位符；会话改存 IndexedDB，官方导出 zip 支持全量导入"
 }

@@ -11,7 +11,7 @@
 
 **源码**：[Gitee](https://gitee.com/suxiangyu138/qingyan-pico) · [GitHub](https://github.com/suxiangyu138/qingyan-pico)
 
-![version](https://img.shields.io/badge/version-2.1.13-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B%20%7C%20iOS%20%7C%20HarmonyOS-black)
+![version](https://img.shields.io/badge/version-2.1.14-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B%20%7C%20iOS%20%7C%20HarmonyOS-black)
 
 ---
 
@@ -347,13 +347,19 @@ Nginx 要做四件事：
 
 ## 十三、版本与发布
 
-当前 v2.1.13，versionCode 38。
+当前 v2.1.14，versionCode 39。
 
 - 下载页：[suxiangyu.top/download](https://suxiangyu.top/download/)
 - Gitee Release：[releases](https://gitee.com/suxiangyu138/qingyan-pico/releases)
 - 变更记录：[CHANGELOG.md](CHANGELOG.md)
 
-APK 命名约定 `Pico-X.Y.Z.apk`，站点上另存一份 `app-X.Y.Z.apk` 供下载页引用。每次发版递增 versionCode，versionName 在发版时更新。
+APK 命名约定 `Pico-X.Y.Z.apk`，站点上另存一份 `app-X.Y.Z.apk` 供下载页引用。
+
+版本号规则：
+
+- `versionName` 只在正式发版时变，一次发版一个号，不为单个修复单独加号
+- 发版之间修 bug，只递增 `versionCode`，安装包仍然可以覆盖安装
+- 当前发版目标：2.1.14（versionCode 39）
 
 ---
 
