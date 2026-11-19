@@ -179,6 +179,9 @@ td{min-width:72px;max-width:280px;white-space:normal}
 .mermaid-block svg{max-width:100%;height:auto;display:block;margin:0 auto}
 .mermaid-hint{font-size:11.5px;color:var(--muted)}
 .mermaid-block.fail{background:rgba(229,72,77,.06)}
+.mermaid-block.ok{position:relative;cursor:zoom-in}
+.mzoom{position:absolute;right:8px;top:8px;width:26px;height:26px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--fg);display:grid;place-items:center;opacity:.65}
+.mermaid-block.ok:active .mzoom,.mzoom:active{opacity:1}
 .diffpre .dl{display:block;padding:0 6px;border-radius:3px}
 .diffpre .add{background:rgba(46,160,67,.13);color:#2ea043}
 .diffpre .del{background:rgba(229,72,77,.12);color:#e5484d}
@@ -318,7 +321,14 @@ a.tile{text-decoration:none}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .imgview{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;touch-action:none}
 .imgview.show{display:flex}
-.imgview img{max-width:100%;max-height:100%;transition:transform .1s;will-change:transform}
+.imgview.solid{background:#0b0b0c}
+.imgview.solid.light{background:#ffffff}
+.imgview.light .ivbar button{color:#1d1d1f;background:rgba(0,0,0,.07);backdrop-filter:none}
+.imgview.light .ivbar button:hover{background:rgba(0,0,0,.12)}
+.ivholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:transform .1s;will-change:transform;transform-origin:center center}
+.ivholder img{max-width:100%;max-height:100%}
+.ivholder svg{max-width:100%;max-height:100%;height:auto;width:auto}
+.imgview.light .ivholder{background:#fff}
 .ivbar{position:absolute;top:calc(12px + env(safe-area-inset-top));left:12px;right:12px;display:flex;justify-content:space-between;z-index:2}
 .ivbar button{color:#fff;font-size:12.5px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.16);backdrop-filter:blur(8px)}
 .uhead{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
@@ -795,7 +805,7 @@ a.tile{text-decoration:none}
 
 <div class="imgview" id="imgView">
   <div class="ivbar"><button id="ivClose">关闭</button><button id="ivSave" data-i18n="saveImg">保存图片</button></div>
-  <img id="ivImg" alt="">
+  <div class="ivholder" id="ivHolder"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -1177,7 +1187,7 @@ function ensureMermaid(){
     el.onload=()=>{
       try{
         const dark=document.documentElement.getAttribute('data-theme')==='dark'||(!document.documentElement.getAttribute('data-theme')&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);
-        mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:dark?'dark':'default',fontFamily:'inherit',suppressErrorRendering:true,flowchart:{htmlLabels:true,useMaxWidth:true}});
+        mermaid.initialize({startOnLoad:false,securityLevel:'loose',theme:dark?'dark':'default',fontFamily:'inherit',suppressErrorRendering:true,flowchart:{htmlLabels:false,useMaxWidth:true},htmlLabels:false});
       }catch(e){}
       res(true);
     };
@@ -1230,6 +1240,11 @@ function renderMermaid(scope){
         try{
           const r=await mermaid.render('mm'+Math.random().toString(36).slice(2,9),code);
           n.innerHTML=r.svg;n.className='mermaid-block ok';
+          const zb=document.createElement('button');
+          zb.className='mzoom';zb.type='button';
+          zb.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 15v5h-5M20 9V4h-5M4 15v5h5"/></svg>';
+          zb.onclick=e=>{e.stopPropagation();openMermaidView(n)};
+          n.appendChild(zb);
           cleanMermaidBombs();
           return;
         }catch(e){}
@@ -2517,17 +2532,103 @@ async function updateStorage(){
   }catch(e){const el=document.querySelector('#stImg');if(el)el.textContent='—'}
 }
 let ivScale=1,ivX=0,ivY=0;
-function openImageView(src){
-  const v=$('#imgView'),img=$('#ivImg');
-  img.src=src;ivScale=1;ivX=0;ivY=0;img.style.transform='translate(0,0) scale(1)';
-  img.dataset.src=src;
+let ivKind='img',ivData='';
+function applyIv(){
+  const h=$('#ivHolder');if(!h)return;
+  h.style.transform='translate('+ivX+'px,'+ivY+'px) scale('+ivScale+')';
+}
+function resetIv(){ivScale=1;ivX=0;ivY=0;applyIv()}
+function openImageView(src,kind){
+  const v=$('#imgView'),holder=$('#ivHolder');
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+  v.classList.toggle('solid',kind==='svg');
+  v.classList.toggle('light',kind==='svg'&&!dark);
+  holder.innerHTML='';
+  const img=document.createElement('img');
+  img.id='ivImg';img.alt='';img.src=src;
+  holder.appendChild(img);
+  ivKind=kind||'img';ivData=src;
+  resetIv();
   v.classList.add('show');
 }
-function closeImageView(){$('#imgView').classList.remove('show');$('#ivImg').src=''}
-$('#ivClose').onclick=closeImageView;
-$('#ivSave').onclick=async()=>{
-  const src=$('#ivImg').dataset.src||$('#ivImg').src;
+function mermaidViewSrc(n){
+  const svg=n.querySelector('svg');
+  if(!svg)return '';
+  const clone=svg.cloneNode(true);
+  const vb=(clone.getAttribute('viewBox')||'').split(/[\s,]+/).filter(Boolean).map(Number);
+  let w=vb.length===4?vb[2]:(parseFloat(clone.getAttribute('width'))||800);
+  let h=vb.length===4?vb[3]:(parseFloat(clone.getAttribute('height'))||600);
+  if(!isFinite(w)||w<=0)w=800;
+  if(!isFinite(h)||h<=0)h=600;
+  const k=Math.max(1,Math.min(3,1400/Math.max(w,h)));
+  clone.setAttribute('width',Math.round(w*k));
+  clone.setAttribute('height',Math.round(h*k));
+  clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  clone.style.maxWidth='none';
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
   try{
+    const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x','0');rect.setAttribute('y','0');
+    rect.setAttribute('width',String(Math.round(w*k)));rect.setAttribute('height',String(Math.round(h*k)));
+    rect.setAttribute('fill',dark?'#0b0b0c':'#ffffff');
+    clone.insertBefore(rect,clone.firstChild);
+  }catch(e){}
+  let str='';
+  try{str=new XMLSerializer().serializeToString(clone)}catch(e){str=clone.outerHTML}
+  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(str);
+}
+function openMermaidView(n){
+  const svg=n.querySelector('svg');
+  if(!svg){toast(t('mmdFail'));return}
+  const clone=svg.cloneNode(true);
+  const vb=(clone.getAttribute('viewBox')||'').split(/[\s,]+/).filter(Boolean).map(Number);
+  let w=vb.length===4?vb[2]:(parseFloat(clone.getAttribute('width'))||800);
+  let h=vb.length===4?vb[3]:(parseFloat(clone.getAttribute('height'))||600);
+  if(!isFinite(w)||w<=0)w=800;
+  if(!isFinite(h)||h<=0)h=600;
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+  clone.setAttribute('width',String(Math.round(w)));
+  clone.setAttribute('height',String(Math.round(h)));
+  clone.style.maxWidth='none';
+  clone.style.width=Math.round(w)+'px';
+  clone.style.height=Math.round(h)+'px';
+  clone.style.background=dark?'#0b0b0c':'#ffffff';
+  const v=$('#imgView'),holder=$('#ivHolder');
+  v.classList.add('solid');
+  v.classList.toggle('light',!dark);
+  holder.innerHTML='';
+  holder.appendChild(clone);
+  ivKind='svg';
+  ivData=mermaidViewSrc(n);
+  resetIv();
+  v.classList.add('show');
+}
+function closeImageView(){$('#imgView').classList.remove('show');const h=$('#ivHolder');if(h)h.innerHTML='';ivData=''}
+$('#ivClose').onclick=closeImageView;
+async function svgToPngBlob(src,scale){
+  const img=new Image();
+  img.crossOrigin='anonymous';
+  await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=src});
+  const w=Math.max(1,Math.round((img.naturalWidth||img.width)*scale));
+  const h=Math.max(1,Math.round((img.naturalHeight||img.height)*scale));
+  const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+  const ctx=cv.getContext('2d');
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+  ctx.fillStyle=dark?'#0b0b0c':'#ffffff';ctx.fillRect(0,0,w,h);
+  ctx.drawImage(img,0,0,w,h);
+  return await new Promise((res,rej)=>cv.toBlob(b=>b?res(b):rej(new Error('png')),'image/png'));
+}
+$('#ivSave').onclick=async()=>{
+  const src=ivData||($('#ivImg')&&$('#ivImg').src)||'';
+  const kind=ivKind||'img';
+  try{
+    if(kind==='svg'){
+      let blob=null;
+      try{blob=await svgToPngBlob(src,2)}catch(e){blob=null}
+      if(blob){saveAny(blob,'chart-'+Date.now()+'.png');toast(t('saved')||'已保存');return}
+      const b2=await (await fetch(src)).blob();
+      saveAny(b2,'chart-'+Date.now()+'.svg');toast(t('saved')||'已保存');return;
+    }
     const blob=await (await fetch(src)).blob();
     saveAny(blob,'image-'+Date.now()+'.jpg');
     toast(t('saved')||'已保存');
@@ -3021,7 +3122,7 @@ $('#msgs').addEventListener('scroll',()=>{
   });
 },{passive:true});
 (()=>{
-  const v=$('#imgView'),img=$('#ivImg');
+  const v=$('#imgView');
   let pinch=false,d0=0,s0=1;
   v.addEventListener('touchstart',e=>{
     if(e.target===v){closeImageView();return}
@@ -3031,15 +3132,30 @@ $('#msgs').addEventListener('scroll',()=>{
     if(pinch&&e.touches.length===2){
       const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
       ivScale=Math.max(1,Math.min(4,s0*(d/(d0||1))));
-      img.style.transform='scale('+ivScale+')';
+      applyIv();
     }
   },{passive:true});
   v.addEventListener('touchend',()=>{pinch=false});
+  v.addEventListener('wheel',e=>{
+    e.preventDefault();
+    ivScale=Math.max(1,Math.min(6,ivScale*(e.deltaY<0?1.12:0.89)));
+    if(ivScale<=1){ivX=0;ivY=0}
+    applyIv();
+  },{passive:false});
+  let drag=false,sx=0,sy=0,bx=0,by=0;
+  const start=(x,y)=>{if(ivScale<=1)return;drag=true;sx=x;sy=y;bx=ivX;by=ivY};
+  const move=(x,y)=>{if(!drag)return;ivX=bx+(x-sx);ivY=by+(y-sy);applyIv()};
+  const end=()=>{drag=false};
+  v.addEventListener('touchstart',e=>{if(e.touches.length===1&&e.target!==v)start(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
+  v.addEventListener('touchmove',e=>{if(e.touches.length===1&&drag)move(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
+  v.addEventListener('mousedown',e=>{if(e.target!==v)start(e.clientX,e.clientY)});
+  window.addEventListener('mousemove',e=>move(e.clientX,e.clientY));
+  window.addEventListener('mouseup',end);
   let lastTap=0;
   v.addEventListener('click',e=>{
-    if(e.target===v)return;
+    if(e.target===v){closeImageView();return}
     const now=Date.now();
-    if(now-lastTap<280){ivScale=ivScale>1?1:2;img.style.transform='scale('+ivScale+')'}
+    if(now-lastTap<280){ivScale=ivScale>1?1:2;if(ivScale===1){ivX=0;ivY=0}applyIv()}
     lastTap=now;
   });
 })();
@@ -3047,11 +3163,17 @@ $('#toBottom').onclick=()=>{followBottom=true;const el=$('#msgs');el.scrollTo({t
 let searchTimer=null;
 $('#convSearch').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>renderList(),160)});
 $('#msgs').addEventListener('click',e=>{
+  const mb=e.target.closest('.mermaid-block.ok');
+  if(mb&&!e.target.closest('a')){openMermaidView(mb);return}
   if(e.target.tagName==='IMG'){
     if(e.target.closest('.md,.imgs')){e.preventDefault();openImageView(e.target.src)}
     return;
   }
   const a=e.target.closest('a');if(a&&a.href&&a.target==='_blank'){e.preventDefault();window.open(a.href,'_blank')}});
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&$('#imgView').classList.contains('show'))closeImageView();
+});
 
 /* ---------- pwa ---------- */
 if('serviceWorker' in navigator){
