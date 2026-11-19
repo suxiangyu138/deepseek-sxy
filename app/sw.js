@@ -1,6 +1,6 @@
 // 固定缓存名：更新不再依赖版本号；导航优先快速返回，静态资源 stale-while-revalidate
 const CACHE = 'qianliao';
-const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './vendor/katex/katex.min.js', './vendor/katex/katex.min.css'];
+const ASSETS = ['./', './index.html', './manifest.json', 'icon-192.png?v=1.9.5', 'icon-512.png?v=1.9.5', './vendor/katex/katex.min.js', './vendor/katex/katex.min.css'];
 const NAV_TIMEOUT = 900;
 
 self.addEventListener('install', (e) => {
