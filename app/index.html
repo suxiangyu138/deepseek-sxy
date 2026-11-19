@@ -2052,6 +2052,8 @@ function renderMsgs(keepScroll){
   const box=$('#msgs');box.innerHTML='';renderingList=true;
   const c=cur();
   if(!c||!c.msgs.length){
+    $('#toBottom').classList.remove('show','new');
+    followBottom=true;userReading=false;
     const h=new Date().getHours();
     const hi=h<6?t('greetingLate'):h<11?t('greetingMorning'):h<13?t('greetingNoon'):h<18?t('greetingAfternoon'):t('greetingEvening');
     const sep=S.settings.lang==='en'?', ':'，';
@@ -2308,7 +2310,13 @@ function scrollBottom(force){
   }
   followTick();
 }
+function scrollable(){
+  const el=$('#msgs');
+  if(!el)return false;
+  return el.scrollHeight-el.clientHeight>60;
+}
 function markReading(){
+  if(!scrollable()){followBottom=true;userReading=false;$('#toBottom').classList.remove('show','new');return}
   if(!followBottom&&userReading)return;
   userReading=true;followBottom=false;
   clearTimeout(readTimer);
@@ -2325,7 +2333,7 @@ function paintPreserving(fn){
   }
   if(following){
     followTick();
-  }else if(streaming&&!pendingNew){
+  }else if(streaming&&!pendingNew&&scrollable()){
     pendingNew=true;
     $('#toBottom').classList.add('new','show');
   }
