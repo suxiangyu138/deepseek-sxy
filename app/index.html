@@ -2325,12 +2325,8 @@ function markReading(){
 function paintPreserving(fn){
   const el=$('#msgs');
   if(!el){fn();return}
-  let following=followBottom&&!userReading;
+  const following=followBottom&&!userReading;
   fn();
-  if(!following&&userReading&&el.scrollHeight-el.scrollTop-el.clientHeight<40){
-    userReading=false;followBottom=true;following=true;pendingNew=false;
-    $('#toBottom').classList.remove('show','new');
-  }
   if(following){
     followTick();
   }else if(streaming&&!pendingNew&&scrollable()){
@@ -3354,15 +3350,21 @@ $('#msgs').addEventListener('scroll',()=>{
     const el=$('#msgs');
     if(!el)return;
     const st=el.scrollTop;
-    if(!progScroll&&st<lastScrollTop-4)markReading();
     const dist=el.scrollHeight-st-el.clientHeight;
-    if(userReading&&dist<20){
-      clearTimeout(readTimer);
-      readTimer=setTimeout(()=>{
-        userReading=false;followBottom=true;pendingNew=false;
-        $('#toBottom').classList.remove('show','new');
-        followTick();
-      },400);
+    const movedDown=st>lastScrollTop+2;
+    const movedUp=st<lastScrollTop-2;
+    if(!progScroll&&movedUp)markReading();
+    if(userReading){
+      if(movedUp)clearTimeout(readTimer);
+      else if(movedDown&&dist<24){
+        clearTimeout(readTimer);
+        readTimer=setTimeout(()=>{
+          if(!userReading)return;
+          userReading=false;followBottom=true;pendingNew=false;
+          $('#toBottom').classList.remove('show','new');
+          followTick();
+        },600);
+      }
     }
     lastScrollTop=st;
     document.body.classList.toggle('scrolling',true);
