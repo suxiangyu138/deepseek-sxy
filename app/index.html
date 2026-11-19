@@ -221,6 +221,9 @@ td{min-width:72px;max-width:280px;white-space:normal}
 #input::placeholder{color:var(--muted)}
 .send{width:32px;height:32px;flex:0 0 auto;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center}
 .send.stop{background:var(--fg);color:var(--bg)}
+.iconbtn.active{background:var(--soft);color:var(--fg)}
+.incogbar{display:none;flex:0 0 auto;padding:6px 16px;font-size:10.5px;line-height:1.5;color:var(--muted);background:var(--soft);border-bottom:1px solid var(--line);text-align:center}
+.incogbar.show{display:block}
 .mask{position:fixed;inset:0;background:rgba(0,0,0,.28);opacity:0;pointer-events:none;transition:.22s;z-index:20}
 .mask.show{opacity:1;pointer-events:auto}
 .mask.clear{background:transparent}
@@ -436,10 +439,14 @@ a.tile{text-decoration:none}
     </button>
     <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.22</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
+    <button class="iconbtn" id="btnIncog" aria-label="匿名对话">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z"/><circle cx="12" cy="12" r="2.6"/><path d="M4 20L20 4"/></svg>
+    </button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
     </button>
   </header>
+  <div class="incogbar" id="incogBar"><span data-i18n="incogHint">本对话不保存、不进历史、不写入记忆，退出后无法找回</span></div>
   <div class="usagebar" id="usageBar"><span id="usageText"></span><div class="ctxline"><i id="ctxFill"></i></div></div>
   <main class="msgs" id="msgs"></main>
   <button class="tobottom" id="toBottom" aria-label="bottom">
@@ -869,7 +876,7 @@ zh:{
   greetSub:'今天想聊点什么',userName:'朋友',chatsEmpty:'还没有对话',
   gToday:'今天',gYesterday:'昨天',gWeek:'7 天内',gEarlier:'更早',
   metaIn:'输入',metaHit:'缓存命中',metaOut:'输出',metaThink:'思考',thisChat:'本对话',
-  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',usage:'用量',uToday:'今日',uMonth:'本月',uTotal:'总计',uBal:'余额',uExport:'导出 CSV',usageNote:'总计为本机累计，删会话、换版本、清缓存都不会清零；金额按接口返回的用量估算，以官方账单为准。',uEmpty:'还没有可统计的记录',uiScale:'界面缩放',cont:'继续',provider:'服务商',custom:'自定义',baseUrl:'接口地址',modelName:'模型名',providerKey:'该服务商 Key（留空用上面那把）',storage:'存储',storageText:'文本数据',chatsUnit:' 个会话',storageImg:'图片缓存',storageFiles:'张图片',clearImg:'清理图片缓存',cleared:'已清理',loadMore:'加载更早的消息',saveImg:'保存图片',importTitle:'导入对话',importZip:'这是压缩包，请先解压再选择里面的 json 文件',importZipOld:'当前浏览器版本太旧，无法直接解压，请先解压后再选 JSON',importZipBad:'这个压缩包里没有找到 chat_sessions 会话文件',importZipAsk:'压缩包里有 %s 个会话，解压后约 %s MB。会全部导入，占用的本机空间也是这个量级，导入过程中不要锁屏。继续吗？',importZipBusy:'正在导入 %s / %s',importZipDone:'导入完成：新增 %s，跳过或失败 %s',pasteAdd:'已粘贴 %s 张图片',mmdFail:'这段图表代码 mermaid 解析不了，已按原样显示',mmdRetry:'重新渲染',mmdDrawing:'正在重新绘制…',updLatest:'已是最新版本',updFail:'检查更新失败，请检查网络',updAsk:'发现新版本 %s，当前 %s。立即刷新？',updRefreshing:'正在更新…',importZipRest:'，其余因本地空间不足未导入',importDone:'导入完成：新增 ',importSkip:'，跳过 ',importHelp:'支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）',deleted:'已删除',backup:'导出备份',restore:'导入备份',restoreAsk:'导入会覆盖当前全部对话与设置，确定继续？',restored:'已恢复',backupDone:'备份已导出',backupFail:'备份文件解析失败',searchPh:'搜索对话',noResult:'没有匹配的对话',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thinkTitle:'推理强度',thinkOff:'关闭',thinkOffDesc:'直接回答，最快，适合闲聊和查资料',thinkLow:'低',thinkLowDesc:'简单推理，几秒出结果，最省 token',thinkHigh:'高',thinkHighDesc:'官方默认档，多数问题够用',thinkMax:'最高',thinkMaxDesc:'复杂推导、写代码、算题，更慢但更完整',roleTitle:'角色',roleNew:'新建角色',roleEdit:'编辑角色',roleNone:'不使用角色',roleNoneDesc:'按默认方式回答，不附加任何设定',roleEmpty:'还没有角色。新建一个，写上你希望它扮演的身份与规则，保存后就能给任意对话使用。',roleNameLabel:'名称',roleNamePh:'例如：Java 面试官',rolePromptLabel:'提示词',rolePromptPh:'你是一名大厂技术面试官，一次只问一个问题……',roleTip:'这段文字会加入系统提示词，每次对话都会发送，写得越长费用越高。',roleNote:'角色只作用于当前对话，随时可以切换或关闭。',roleSaved:'角色已保存',roleOn:'已启用角色：',roleOff:'已关闭角色',roleNeedName:'给角色起个名字',roleNeedPrompt:'提示词不能为空',roleDelAsk:'删除这个角色？用过它的对话会变回默认。',thinkNote:'官方只有低、高、最高三档，默认高。越高推理 token 越多，费用越高；改完对下一条消息生效。',thought:'已深度思考',
+  loading:'加载中…',forceUpdate:'刷新到最新版',forceAsk:'会清掉界面缓存并重新加载，需要 dsh-go 正在运行，否则会打不开。对话和 Key 不会丢。',optCamera:'拍照',optGallery:'相册',optFile:'文件',uploading:'处理中',uploadFail:'文件处理失败',tooBig:'文件超过 30MB',unsupported:'这个格式暂时不支持',waitUpload:'文件还在处理中',fileAsk:'看看这个文件',exportTitle:'导出这条回答',exportTxt:'纯文本',exported:'已导出',exportShare:'导出',exportHint:'Markdown 保留格式；纯文本去掉标记；PDF 走系统打印，在弹出的面板里选「另存为 PDF」。',pin:'置顶',usage:'用量',uToday:'今日',uMonth:'本月',uTotal:'总计',uBal:'余额',uExport:'导出 CSV',usageNote:'总计为本机累计，删会话、换版本、清缓存都不会清零；金额按接口返回的用量估算，以官方账单为准。',uEmpty:'还没有可统计的记录',uiScale:'界面缩放',cont:'继续',provider:'服务商',custom:'自定义',baseUrl:'接口地址',modelName:'模型名',providerKey:'该服务商 Key（留空用上面那把）',storage:'存储',storageText:'文本数据',chatsUnit:' 个会话',storageImg:'图片缓存',storageFiles:'张图片',clearImg:'清理图片缓存',cleared:'已清理',loadMore:'加载更早的消息',saveImg:'保存图片',importTitle:'导入对话',importZip:'这是压缩包，请先解压再选择里面的 json 文件',importZipOld:'当前浏览器版本太旧，无法直接解压，请先解压后再选 JSON',importZipBad:'这个压缩包里没有找到 chat_sessions 会话文件',importZipAsk:'压缩包里有 %s 个会话，解压后约 %s MB。会全部导入，占用的本机空间也是这个量级，导入过程中不要锁屏。继续吗？',importZipBusy:'正在导入 %s / %s',importZipDone:'导入完成：新增 %s，跳过或失败 %s',pasteAdd:'已粘贴 %s 张图片',mmdFail:'这段图表代码 mermaid 解析不了，已按原样显示',mmdRetry:'重新渲染',mmdDrawing:'正在重新绘制…',updLatest:'已是最新版本',updFail:'检查更新失败，请检查网络',updAsk:'发现新版本 %s，当前 %s。立即刷新？',updRefreshing:'正在更新…',importZipRest:'，其余因本地空间不足未导入',importDone:'导入完成：新增 ',importSkip:'，跳过 ',importHelp:'支持本应用备份 JSON，或 DeepSeek 客户端导出的 chat_sessions/*.json（可多选）',deleted:'已删除',backup:'导出备份',restore:'导入备份',restoreAsk:'导入会覆盖当前全部对话与设置，确定继续？',restored:'已恢复',backupDone:'备份已导出',backupFail:'备份文件解析失败',searchPh:'搜索对话',noResult:'没有匹配的对话',updating:'正在刷新缓存…',updatedTo:'已更新到 ',unpin:'取消置顶',lock:'锁定',unlock:'取消锁定',delChat:'删除对话',protectedHint:'置顶或锁定的对话不能删除',tagPin:'置顶',tagLock:'锁定',ctx:'上下文',sources:'参考来源',memSaved:'已存入记忆：',thinking:'正在深度思考…',thinkTitle:'推理强度',thinkOff:'关闭',thinkOffDesc:'直接回答，最快，适合闲聊和查资料',thinkLow:'低',thinkLowDesc:'简单推理，几秒出结果，最省 token',thinkHigh:'高',thinkHighDesc:'官方默认档，多数问题够用',thinkMax:'最高',thinkMaxDesc:'复杂推导、写代码、算题，更慢但更完整',incogTitle:'匿名对话',incogSub:'关闭即消失',incogOn:'已进入匿名对话，退出后不会保留',incogExitAsk:'这段对话不会保留，确定退出？',incogGone:'匿名对话已清空',incogHint:'本对话不保存、不进历史、不写入记忆，退出后无法找回',roleTitle:'角色',roleNew:'新建角色',roleEdit:'编辑角色',roleNone:'不使用角色',roleNoneDesc:'按默认方式回答，不附加任何设定',roleEmpty:'还没有角色。新建一个，写上你希望它扮演的身份与规则，保存后就能给任意对话使用。',roleNameLabel:'名称',roleNamePh:'例如：Java 面试官',rolePromptLabel:'提示词',rolePromptPh:'你是一名大厂技术面试官，一次只问一个问题……',roleTip:'这段文字会加入系统提示词，每次对话都会发送，写得越长费用越高。',roleNote:'角色只作用于当前对话，随时可以切换或关闭。',roleSaved:'角色已保存',roleOn:'已启用角色：',roleOff:'已关闭角色',roleNeedName:'给角色起个名字',roleNeedPrompt:'提示词不能为空',roleDelAsk:'删除这个角色？用过它的对话会变回默认。',thinkNote:'官方只有低、高、最高三档，默认高。越高推理 token 越多，费用越高；改完对下一条消息生效。',thought:'已深度思考',
   searchNow:'正在联网搜索：',openNow:'正在打开网页：',findNow:'正在网页内查找：',readNow:'正在阅读链接：',toolNow:'正在调用联网能力…',
   stopped:'（已停止）',netErr:'网络错误，请重试',reqFail:'请求失败（',keyBad:'API Key 无效或已过期',noBalance:'账户余额不足',
   tooOften:'请求太频繁或并发超限，稍后再试',genFail:'生成失败',
@@ -912,7 +919,7 @@ en:{
   greetSub:"What's on your mind",userName:'Suxiangyu',chatsEmpty:'No chats yet',
   gToday:'Today',gYesterday:'Yesterday',gWeek:'Previous 7 days',gEarlier:'Earlier',
   metaIn:'In',metaHit:'cached',metaOut:'Out',metaThink:'Thinking',thisChat:'This chat',
-  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',exportTitle:'Export this answer',exportTxt:'Plain text',exported:'Exported',exportShare:'Export',exportHint:'Markdown keeps formatting; plain text strips markers; PDF uses the system print dialog and pick Save as PDF.',pin:'Pin',usage:'Usage',uToday:'Today',uMonth:'Month',uTotal:'All time',uBal:'Balance',uExport:'Export CSV',usageNote:'The all-time total is kept on this device and never resets when chats are deleted. Amounts are estimated from returned usage; the official bill prevails.',uEmpty:'No usage recorded yet',uiScale:'UI scale',cont:'Continue',provider:'Provider',custom:'Custom',baseUrl:'Base URL',modelName:'Model',providerKey:'Provider key (blank = above)',storage:'Storage',storageText:'Text data',chatsUnit:' chats',storageImg:'Image cache',storageFiles:' images',clearImg:'Clear image cache',cleared:'Cleared',loadMore:'Load earlier messages',saveImg:'Save image',importTitle:'Imported chat',importZip:'That is a zip file. Unzip it and pick the json files inside.',importZipOld:'This browser cannot unzip. Please unzip and pick the JSON files.',importZipBad:'No chat_sessions JSON found in this zip',importZipAsk:'This zip has %s sessions, about %s MB unpacked. All of them will be imported and take the same amount of local space. Keep the screen on during import. Continue?',importZipBusy:'Importing %s / %s',importZipDone:'Imported %s, skipped or failed %s',pasteAdd:'Pasted %s image(s)',mmdFail:'Mermaid could not parse this diagram, showing the source',mmdRetry:'Render again',mmdDrawing:'Redrawing…',updLatest:'Already up to date',updFail:'Update check failed, check your network',updAsk:'New version %s found, current %s. Refresh now?',updRefreshing:'Updating…',importZipRest:', the rest skipped for lack of space',importDone:'Imported: ',importSkip:', skipped ',importHelp:'Supports this app backup JSON, or chat_sessions/*.json exported from DeepSeek (multi-select)',deleted:'Deleted',backup:'Export backup',restore:'Import backup',restoreAsk:'Importing replaces all chats and settings. Continue?',restored:'Restored',backupDone:'Backup exported',backupFail:'Invalid backup file',searchPh:'Search chats',noResult:'No matching chats',updating:'Clearing cache…',updatedTo:'Updated to ',unpin:'Unpin',lock:'Lock',unlock:'Unlock',delChat:'Delete chat',protectedHint:'Pinned or locked chats cannot be deleted',tagPin:'Pinned',tagLock:'Locked',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thinkTitle:'Reasoning effort',thinkOff:'Off',thinkOffDesc:'Answer directly, fastest for chat and lookups',thinkLow:'Low',thinkLowDesc:'Light reasoning, cheapest',thinkHigh:'High',thinkHighDesc:'API default, enough for most questions',thinkMax:'Max',thinkMaxDesc:'Hard derivations, code, math. Slower but more complete',roleTitle:'Role',roleNew:'New role',roleEdit:'Edit role',roleNone:'No role',roleNoneDesc:'Answer in the default style',roleEmpty:'No roles yet. Create one with the persona and rules you want, then use it in any chat.',roleNameLabel:'Name',roleNamePh:'e.g. Java interviewer',rolePromptLabel:'Prompt',rolePromptPh:'You are a big-tech interviewer. Ask one question at a time…',roleTip:'This text is added to the system prompt on every request, so longer prompts cost more.',roleNote:'A role applies to this chat only and can be changed any time.',roleSaved:'Role saved',roleOn:'Role on: ',roleOff:'Role off',roleNeedName:'Give the role a name',roleNeedPrompt:'Prompt cannot be empty',roleDelAsk:'Delete this role? Chats using it fall back to default.',thinkNote:'The API offers low, high and max only, defaulting to high. Higher effort costs more. Applies to the next message.',thought:'Thought',
+  loading:'Loading…',forceUpdate:'Reload latest version',forceAsk:'Clears the UI cache and reloads. dsh-go must be running or the page will fail. Chats and keys are kept.',optCamera:'Camera',optGallery:'Photos',optFile:'File',uploading:'Processing',uploadFail:'Upload failed',tooBig:'File is over 30MB',unsupported:'Unsupported format',waitUpload:'File is still processing',fileAsk:'Check this file',exportTitle:'Export this answer',exportTxt:'Plain text',exported:'Exported',exportShare:'Export',exportHint:'Markdown keeps formatting; plain text strips markers; PDF uses the system print dialog and pick Save as PDF.',pin:'Pin',usage:'Usage',uToday:'Today',uMonth:'Month',uTotal:'All time',uBal:'Balance',uExport:'Export CSV',usageNote:'The all-time total is kept on this device and never resets when chats are deleted. Amounts are estimated from returned usage; the official bill prevails.',uEmpty:'No usage recorded yet',uiScale:'UI scale',cont:'Continue',provider:'Provider',custom:'Custom',baseUrl:'Base URL',modelName:'Model',providerKey:'Provider key (blank = above)',storage:'Storage',storageText:'Text data',chatsUnit:' chats',storageImg:'Image cache',storageFiles:' images',clearImg:'Clear image cache',cleared:'Cleared',loadMore:'Load earlier messages',saveImg:'Save image',importTitle:'Imported chat',importZip:'That is a zip file. Unzip it and pick the json files inside.',importZipOld:'This browser cannot unzip. Please unzip and pick the JSON files.',importZipBad:'No chat_sessions JSON found in this zip',importZipAsk:'This zip has %s sessions, about %s MB unpacked. All of them will be imported and take the same amount of local space. Keep the screen on during import. Continue?',importZipBusy:'Importing %s / %s',importZipDone:'Imported %s, skipped or failed %s',pasteAdd:'Pasted %s image(s)',mmdFail:'Mermaid could not parse this diagram, showing the source',mmdRetry:'Render again',mmdDrawing:'Redrawing…',updLatest:'Already up to date',updFail:'Update check failed, check your network',updAsk:'New version %s found, current %s. Refresh now?',updRefreshing:'Updating…',importZipRest:', the rest skipped for lack of space',importDone:'Imported: ',importSkip:', skipped ',importHelp:'Supports this app backup JSON, or chat_sessions/*.json exported from DeepSeek (multi-select)',deleted:'Deleted',backup:'Export backup',restore:'Import backup',restoreAsk:'Importing replaces all chats and settings. Continue?',restored:'Restored',backupDone:'Backup exported',backupFail:'Invalid backup file',searchPh:'Search chats',noResult:'No matching chats',updating:'Clearing cache…',updatedTo:'Updated to ',unpin:'Unpin',lock:'Lock',unlock:'Unlock',delChat:'Delete chat',protectedHint:'Pinned or locked chats cannot be deleted',tagPin:'Pinned',tagLock:'Locked',ctx:'Context',sources:'Sources',memSaved:'Saved to memory: ',thinking:'Thinking…',thinkTitle:'Reasoning effort',thinkOff:'Off',thinkOffDesc:'Answer directly, fastest for chat and lookups',thinkLow:'Low',thinkLowDesc:'Light reasoning, cheapest',thinkHigh:'High',thinkHighDesc:'API default, enough for most questions',thinkMax:'Max',thinkMaxDesc:'Hard derivations, code, math. Slower but more complete',incogTitle:'Incognito',incogSub:'gone when closed',incogOn:'Incognito on. Nothing is kept after you leave.',incogExitAsk:'This chat will not be kept. Leave?',incogGone:'Incognito chat cleared',incogHint:'This chat is not saved, listed, or remembered. It is gone once you leave.',roleTitle:'Role',roleNew:'New role',roleEdit:'Edit role',roleNone:'No role',roleNoneDesc:'Answer in the default style',roleEmpty:'No roles yet. Create one with the persona and rules you want, then use it in any chat.',roleNameLabel:'Name',roleNamePh:'e.g. Java interviewer',rolePromptLabel:'Prompt',rolePromptPh:'You are a big-tech interviewer. Ask one question at a time…',roleTip:'This text is added to the system prompt on every request, so longer prompts cost more.',roleNote:'A role applies to this chat only and can be changed any time.',roleSaved:'Role saved',roleOn:'Role on: ',roleOff:'Role off',roleNeedName:'Give the role a name',roleNeedPrompt:'Prompt cannot be empty',roleDelAsk:'Delete this role? Chats using it fall back to default.',thinkNote:'The API offers low, high and max only, defaulting to high. Higher effort costs more. Applies to the next message.',thought:'Thought',
   searchNow:'Search: ',openNow:'Open: ',findNow:'Find: ',readNow:'Read: ',toolNow:'Web tools…',
   stopped:'(stopped)',netErr:'Network error, please retry',reqFail:'Request failed (',keyBad:'Invalid or expired API key',noBalance:'Insufficient balance',
   tooOften:'Too many requests, try again later',genFail:'Generation failed',
@@ -1043,11 +1050,13 @@ function persist(){
   idbSnap=snap;
   if(puts.length)idbPutMany(puts).catch(()=>{});
   if(dels.length)idbDelMany(dels).catch(()=>{});
-  try{
-    const c=cur();
-    if(c)localStorage.setItem(LAST_KEY,JSON.stringify({id:c.id,msgs:c.msgs,title:c.title,updatedAt:c.updatedAt}));
-    else localStorage.removeItem(LAST_KEY);
-  }catch(e){}
+  if(!INC){
+    try{
+      const c=cur();
+      if(c)localStorage.setItem(LAST_KEY,JSON.stringify({id:c.id,msgs:c.msgs,title:c.title,updatedAt:c.updatedAt}));
+      else localStorage.removeItem(LAST_KEY);
+    }catch(e){}
+  }
 }
 function save(now){
   if(now){persist();return}
@@ -1084,7 +1093,8 @@ async function bootData(){
   if(!S.convs.some(c=>c.id===S.current))S.current=S.convs[0]?S.convs[0].id:null;
 }
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
-function cur(){return S.convs.find(c=>c.id===S.current)||null}
+let INC=null,incogPrev=null;
+function cur(){return INC||S.convs.find(c=>c.id===S.current)||null}
 function thinkParams(){
   if(!S.settings.think)return {thinking:{type:'disabled'}};
   const lv=S.settings.thinkLevel||'high';
@@ -1104,6 +1114,7 @@ async function postJSON(url,body,signal){
 }
 function modelOf(id){return MODELS.find(m=>m.id===id)||MODELS[0]}
 function saveDraft(){
+  if(INC)return;
   const c=cur();if(!c)return;
   S.drafts=S.drafts||{};
   const v=$('#input').value;
@@ -1620,8 +1631,39 @@ $('#roleDel').onclick=()=>{if(editingRole)delRole(editingRole)};
 $('#rolePromptIn').addEventListener('input',()=>{$('#roleCount').textContent=$('#rolePromptIn').value.length+' / 2000'});
 $('#roleNameIn').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();$('#rolePromptIn').focus()}});
 
+
+/* ---------- 匿名对话 ---------- */
+function incogActive(){return !!INC}
+function enterIncognito(){
+  if(INC){exitIncognito();return}
+  incogPrev=S.current;
+  INC={id:'incog',title:t('incogTitle'),msgs:[],ephemeral:true,createdAt:Date.now(),updatedAt:Date.now()};
+  closeAll();renderAll();
+  $('#incogBar').classList.add('show');
+  $('#btnIncog').classList.add('active');
+  toast(t('incogOn'),2200);
+}
+function exitIncognito(force){
+  if(!INC)return true;
+  if(!force&&INC.msgs.length&&!confirm(t('incogExitAsk')))return false;
+  const had=INC.msgs.length>0;
+  INC=null;
+  if(incogPrev&&S.convs.some(c=>c.id===incogPrev))S.current=incogPrev;
+  incogPrev=null;
+  closeAll();renderAll();
+  const bar=$('#incogBar');if(bar)bar.classList.remove('show');
+  const b=$('#btnIncog');if(b)b.classList.remove('active');
+  if(had)toast(t('incogGone'));
+  return true;
+}
+$('#btnIncog').onclick=enterIncognito;
 function renderTitle(){
   const c=cur();
+  if(INC){
+    $('#chatTitle').textContent=t('incogTitle');
+    const s2=$('#topVer');if(s2)s2.textContent=t('incogSub');
+    return;
+  }
   $('#chatTitle').textContent=c?(c.title||t('newTitle')):t('appName');
   const sub=$('#topVer');
   if(sub)sub.textContent=(c&&c.roleId)?(c.roleName||t('roleTitle')):('v'+APP_VER);
@@ -1669,6 +1711,7 @@ function renderList(){
     if(c.locked){const b=document.createElement('span');b.className='tag';b.textContent=t('tagLock');row.insertBefore(b,row.querySelector('.more'))}
     row.onclick=()=>{
       if(selectMode){selected.has(c.id)?selected.delete(c.id):selected.add(c.id);renderList();updateSelbar();return}
+      if(INC&&!exitIncognito())return;
       saveDraft();S.current=c.id;followBottom=true;save(true);renderAll();closeAll();restoreDraft();scrollBottom(true);
     };
     row.querySelector('.more').onclick=e=>{e.stopPropagation();c._open=!c._open;renderList()};
@@ -1756,6 +1799,7 @@ function blobToDataURL(blob){
   return new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result||'');fr.onerror=()=>res('');fr.readAsDataURL(blob)});
 }
 async function storeImage(dataUrl){
+  if(INC)return dataUrl;
   if(!('caches' in window))return dataUrl;
   try{
     const res=await fetch(dataUrl);
@@ -2258,7 +2302,7 @@ async function send(){
   if((pending.length||pendingFiles.length)&&S.settings.model!=='deepseek-flash'){S.settings.model='deepseek-flash';renderChips();toast(t('imgFlash'))}
   const user={role:'user',content:text,images:imgRefs.slice(),files:pendingFiles.filter(f=>f.id).map(f=>({id:f.id,name:f.name})),ts:Date.now()};
   const pc=parseMemCommand(text);
-  if(S.settings.autoMem&&pc&&pc.hasContent){const sv=addMemory(pc.content);if(sv)user.memSaved=sv}
+  if(!INC&&S.settings.autoMem&&pc&&pc.hasContent){const sv=addMemory(pc.content);if(sv)user.memSaved=sv}
   pending=[];pendingFiles=[];renderPending();
   if(S.drafts&&S.drafts[c.id])delete S.drafts[c.id];
   c.msgs.push(user);
@@ -2348,11 +2392,11 @@ async function buildMessages(c){
     : '你是 DeepSeek，由深度求索（DeepSeek）创造的 AI 助手。回答准确、简洁，用 Markdown 排版，代码块标注语言。现在是'+nowText()+'。用户问日期、星期、时间时以此为准。\n\n排版规则：凡是数学、物理公式，一律用 LaTeX 书写。行内公式用 $...$，独立成行的公式用 $$...$$ 单独占一行。不要用 Unicode 上下标、√、∫、Σ 等符号拼公式。化学方程式用 \\ce{...}，单位用 \\pu{...}。'+webRules(en);
   const rblock=roleBlock(c);
   if(rblock)sys+=rblock;
-  if(S.settings.personalOn&&S.personal.trim()){
+  if(!INC&&S.settings.personalOn&&S.personal.trim()){
     sys+=en?('\n\n[User persona — takes precedence over the default style]\n'+S.personal.trim().slice(0,4000))
            :('\n\n【用户的个性化要求，优先于默认风格】\n'+S.personal.trim().slice(0,4000));
   }
-  if(S.settings.memoryOn&&S.memories.length){
+  if(!INC&&S.settings.memoryOn&&S.memories.length){
     const ms=S.memories.slice(-30).map(x=>'- '+x.text).join('\n');
     sys+=en?('\n\n[Long-term memory about the user]\n'+ms+'\nUse it naturally; do not recite it line by line.')
            :('\n\n【关于用户的长期记忆】\n'+ms+'\n回答时自然地利用这些记忆，不要逐条复述。');
@@ -2393,7 +2437,7 @@ async function run(c,am,bubble){
   const started=Date.now();let first=0,tFirst=0,tLast=0;
   const _ut=lastUserText(c);
   const _pc=parseMemCommand(_ut);
-  const wantSave=!!(S.settings.autoMem&&!(_pc&&_pc.hasContent)&&(_pc||looksPersonal(_ut)));
+  const wantSave=!!(!INC&&S.settings.autoMem&&!(_pc&&_pc.hasContent)&&(_pc||looksPersonal(_ut)));
   let paintQueued=false,finished=false;
   const paint=()=>{
     if(finished||paintQueued)return;
@@ -2794,7 +2838,7 @@ function openModels(){
 
 /* ---------- events ---------- */
 $('#btnMenu').onclick=openDrawer;
-$('#btnNew').onclick=()=>newConv();
+$('#btnNew').onclick=()=>{if(INC&&!exitIncognito())return;newConv()};
 document.addEventListener('click',e=>{if(e.target.closest('.sheet .bar'))closeSheets()});
 $('#mask').onclick=()=>{
   if(document.querySelector('.sheet.show')){closeSheets();return}
