@@ -15,8 +15,9 @@
 <link rel="apple-touch-icon" href="icon-192.png?v=2.0.0">
 <link rel="icon" href="icon-192.png?v=2.0.0">
 <style>
-@font-face{font-family:"Pico Code";src:url("vendor/fonts/cascadia-code-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0100-024F,U+2000-206F,U+2190-21FF,U+2200-22FF,U+2460-24FF,U+2500-257F}
-@font-face{font-family:"Pico Code";src:url("vendor/fonts/jetbrains-mono-400.woff2") format("woff2");font-weight:500 700;font-style:normal;font-display:swap;unicode-range:U+0000-00FF,U+0100-024F,U+2000-206F}
+@font-face{font-family:"Pico Cascadia";src:url("vendor/fonts/cascadia-code-400.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+0000-00FF,U+0100-024F,U+2000-206F,U+2190-21FF,U+2200-22FF,U+2460-24FF,U+2500-257F}
+@font-face{font-family:"Pico JetBrains";src:url("vendor/fonts/jetbrains-mono-400.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+0000-00FF,U+0100-024F,U+2000-206F}
+@font-face{font-family:"Pico Fira";src:url("vendor/fonts/fira-code-400.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+0000-00FF,U+0100-024F,U+2000-206F}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#f5f5f7;--fg:#1d1d1f;--muted:#86868b;--line:rgba(0,0,0,.08);
@@ -26,7 +27,8 @@
   --hl:inset 0 1px 0 rgba(255,255,255,.7);
   --fs-msg:13.5px;--fs-code:12.5px;
   --sans:system-ui,-apple-system,"Segoe UI Variable Text","Segoe UI","MiSans","HarmonyOS Sans SC","PingFang SC","Noto Sans SC","Microsoft YaHei UI","Microsoft YaHei",sans-serif;
-  --mono:"Pico Code",ui-monospace,SFMono-Regular,"Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
+  --code-font:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --mono:var(--code-font);
   --c-com:#9a9aa0;--c-str:#3f7a5c;--c-num:#9a6420;--c-kw:#6a5acd;--c-fn:#3d5a9a;
 }
 html[data-theme="dark"]{
@@ -304,6 +306,11 @@ a.tile{text-decoration:none}
 #perText:focus,#editText:focus{border-color:var(--ink-soft)}
 .sliderrow{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
 .sliderrow:last-child{border-bottom:0}
+.fontrow{padding:10px 0;border-bottom:1px solid var(--line)}
+.fontrow label{display:block;font-size:12px;margin-bottom:8px}
+.fontpick{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.fontpick button{height:36px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--fg);font-size:12px;letter-spacing:0}
+.fontpick button.on{border-color:var(--fg);background:var(--soft)}
 .sliderrow label{font-size:11.5px;width:70px;color:var(--fg)}
 .sliderrow input[type=range]{flex:1;accent-color:var(--fg);height:20px}
 .sliderrow output{font-size:11px;color:var(--muted);width:38px;text-align:right;font-variant-numeric:tabular-nums}
@@ -417,7 +424,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.19</span></div>
+    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.20</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -498,7 +505,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.1.19</span></div>
+    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.1.20</span></div>
   </div>
 </aside>
 
@@ -682,7 +689,16 @@ a.tile{text-decoration:none}
   <div class="bar"></div>
   <h2 data-i18n="appearance">外观</h2>
   <div class="sliderrow"><label data-i18n="fontSize">正文字号</label><input type="range" id="fsMsg" min="12" max="18" step="0.5"><output id="fsMsgOut"></output></div>
-  <div class="sliderrow"><label data-i18n="codeSize">代码字号</label><input type="range" id="fsCode" min="10" max="15" step="0.5"><output id="fsCodeOut"></output></div>
+  <div class="sliderrow"><label data-i18n="codeSize">代码字号</label><input type="range" id="fsCode" min="11" max="16" step="0.5"><output id="fsCodeOut"></output></div>
+  <div class="fontrow">
+    <label data-i18n="codeFont">代码字体</label>
+    <div class="fontpick" id="fontPick">
+      <button data-f="system" style="font-family:ui-monospace,Consolas,Menlo,monospace">系统 Mono</button>
+      <button data-f="cascadia" style="font-family:'Pico Cascadia',monospace">Cascadia</button>
+      <button data-f="jetbrains" style="font-family:'Pico JetBrains',monospace">JetBrains</button>
+      <button data-f="fira" style="font-family:'Pico Fira',monospace">Fira Code</button>
+    </div>
+  </div>
   <button class="mini" id="btnPerf" style="width:100%;margin-bottom:10px">流畅模式：开</button>
   <div class="sliderrow"><label data-i18n="uiScale">界面缩放</label><input type="range" id="uiScale" min="0.85" max="1.25" step="0.05"><output id="uiScaleOut"></output></div>
 </div>
@@ -770,7 +786,7 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.1.19</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.1.20</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。</div>
@@ -792,7 +808,7 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='2.1.19';
+const APP_VER='2.1.20';
 const T_BOOT=performance.now();
 const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 if(IS_IOS)document.documentElement.classList.add('ios');
@@ -828,7 +844,7 @@ zh:{
   install3:'桌面出现「轻言」，点开即用',install4:'Chrome、Edge、部分国产浏览器都支持；微信/QQ 的内置浏览器装不了。',
   balance:'余额',balanceFail:'余额获取失败',balanceHint:'点击刷新余额',
   edit:'编辑',editTitle:'编辑消息',send:'发送',cancel:'取消',
-  appearance:'外观',nickname:'称呼（可选）',nicknamePh:'留空就只显示问候语',welcomeTitle:'你好，我是 DeepSeek',welcomeSub:'先告诉我怎么称呼你，之后都可以在设置里改',welcomePh:'你的称呼，可以留空',skip:'跳过',start:'开始使用',fontSize:'正文字号',codeSize:'代码字号',help:'使用说明',guide:'新手引导',guideOk:'知道了',guideGo:'去填 Key',guideFull:'完整说明',guideHint:'不知道什么是 API Key？看新手引导',repo:'仓库',author:'轻言 Pico',about:'关于作者',testConn:'测试连接',testing:'测试中…',keyOk:'连接正常',keyFail:'连接失败',
+  appearance:'外观',nickname:'称呼（可选）',nicknamePh:'留空就只显示问候语',welcomeTitle:'你好，我是 DeepSeek',welcomeSub:'先告诉我怎么称呼你，之后都可以在设置里改',welcomePh:'你的称呼，可以留空',skip:'跳过',start:'开始使用',fontSize:'正文字号',codeSize:'代码字号',codeFont:'代码字体',fontSwitched:'已切换代码字体',help:'使用说明',guide:'新手引导',guideOk:'知道了',guideGo:'去填 Key',guideFull:'完整说明',guideHint:'不知道什么是 API Key？看新手引导',repo:'仓库',author:'轻言 Pico',about:'关于作者',testConn:'测试连接',testing:'测试中…',keyOk:'连接正常',keyFail:'连接失败',
   aboutSub:'一个人写的小工具',email:'邮箱',version:'版本',copy:'复制',
   aboutNote:'个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。',
   chatLabel:'对话',privacyLabel:'隐私',
@@ -871,7 +887,7 @@ en:{
   install3:'Tap the new icon to open instantly',install4:'Chrome, Edge and most mobile browsers work; in-app browsers (WeChat/QQ) do not.',
   balance:'Balance',balanceFail:'Balance unavailable',balanceHint:'Tap to refresh balance',
   edit:'Edit',editTitle:'Edit message',send:'Send',cancel:'Cancel',
-  appearance:'Appearance',nickname:'Nickname (optional)',nicknamePh:'Leave empty to show greeting only',welcomeTitle:"Hi, I'm DeepSeek",welcomeSub:'Tell me what to call you, you can change it later',welcomePh:'Your name, optional',skip:'Skip',start:'Start',fontSize:'Text size',codeSize:'Code size',help:'Help',guide:'Quick start',guideOk:'Got it',guideGo:'Add key',guideFull:'Full guide',guideHint:'New to API keys? Read the quick start',repo:'Repo',author:'By Suxiangyu',about:'About',testConn:'Test connection',testing:'Testing…',keyOk:'Connected',keyFail:'Connection failed',
+  appearance:'Appearance',nickname:'Nickname (optional)',nicknamePh:'Leave empty to show greeting only',welcomeTitle:"Hi, I'm DeepSeek",welcomeSub:'Tell me what to call you, you can change it later',welcomePh:'Your name, optional',skip:'Skip',start:'Start',fontSize:'Text size',codeSize:'Code size',codeFont:'Code font',fontSwitched:'Code font changed',help:'Help',guide:'Quick start',guideOk:'Got it',guideGo:'Add key',guideFull:'Full guide',guideHint:'New to API keys? Read the quick start',repo:'Repo',author:'By Suxiangyu',about:'About',testConn:'Test connection',testing:'Testing…',keyOk:'Connected',keyFail:'Connection failed',
   aboutSub:'A small tool built by one person',email:'Email',version:'Version',copy:'Copy',
   aboutNote:'Personal project, not affiliated with DeepSeek. Feedback: suxiangyu_dev@foxmail.com or open an issue.',
   chatLabel:'Chat',privacyLabel:'Privacy',
@@ -914,7 +930,7 @@ function calcCost(model,u){
 }
 function fmtTok(v){v=v||0;return v>=10000?(v/1000).toFixed(1)+'k':String(v)}
 function fmtMoney(v){if(!v)return '¥0';return '¥'+(v<0.01?v.toFixed(4):v.toFixed(3))}
-const DEF={settings:{apiKey:'',theme:'auto',think:false,thinkLevel:'high',search:false,model:'deepseek-flash',memoryOn:true,personalOn:true,autoMem:true,lang:'zh',fsMsg:13.5,fsCode:11.5,uiScale:1,perf:true,name:'',onboarded:false},convs:[],current:null,memories:[],personal:''};
+const DEF={settings:{apiKey:'',theme:'auto',think:false,thinkLevel:'high',search:false,model:'deepseek-flash',memoryOn:true,personalOn:true,autoMem:true,lang:'zh',fsMsg:13.5,fsCode:12.5,uiScale:1,codeFont:'system',perf:true,name:'',onboarded:false},convs:[],current:null,memories:[],personal:''};
 let S=load();
 let streamAbort=null,streaming=false,pending=[],pendingFiles=[],selectMode=false,selected=new Set();
 function load(){
@@ -1073,6 +1089,17 @@ function startFresh(){
   save(true);
 }
 function toast(t,ms){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('show'),ms||2200)}
+const CODE_FONTS={
+  system:'ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace',
+  cascadia:'"Pico Cascadia",ui-monospace,Menlo,Consolas,monospace',
+  jetbrains:'"Pico JetBrains",ui-monospace,Menlo,Consolas,monospace',
+  fira:'"Pico Fira",ui-monospace,Menlo,Consolas,monospace'
+};
+function applyCodeFont(){
+  const key=CODE_FONTS[S.settings.codeFont]?S.settings.codeFont:'system';
+  document.documentElement.style.setProperty('--code-font',CODE_FONTS[key]);
+  document.querySelectorAll('#fontPick button').forEach(b=>b.classList.toggle('on',b.dataset.f===key));
+}
 function applyPerf(){
   const on=S.settings.perf!==false;
   document.documentElement.classList.toggle('perf',on);
@@ -2512,7 +2539,8 @@ $('#mask').onclick=()=>{
 };
 $('#balance').onclick=()=>loadBalance(true);
 function openAppear(){
-  const m=S.settings.fsMsg||13.5,c=S.settings.fsCode||11.5,u=Number(S.settings.uiScale)||1;
+  const m=S.settings.fsMsg||13.5,c=S.settings.fsCode||12.5,u=Number(S.settings.uiScale)||1;
+  applyCodeFont();
   $('#fsMsg').value=m;$('#fsCode').value=c;$('#uiScale').value=u;
   $('#fsMsgOut').textContent=m+'px';$('#fsCodeOut').textContent=c+'px';$('#uiScaleOut').textContent=u.toFixed(2)+'×';
   $('#appearSheet').classList.add('show');$('#mask').classList.add('show');
@@ -2595,6 +2623,9 @@ async function checkUpdate(manual){
 }
 $('#btnForceUpdate').onclick=()=>checkUpdate(true);
 $('#copyMail').onclick=()=>{copyText('suxiangyu_dev@foxmail.com');toast(t('copied'))};
+document.querySelectorAll('#fontPick button').forEach(b=>b.onclick=()=>{
+  S.settings.codeFont=b.dataset.f;save(true);applyCodeFont();toast(t('fontSwitched'));
+});
 $('#fsMsg').oninput=e=>{S.settings.fsMsg=Number(e.target.value);$('#fsMsgOut').textContent=S.settings.fsMsg+'px';applyFonts();save()};
 $('#fsCode').oninput=e=>{S.settings.fsCode=Number(e.target.value);$('#fsCodeOut').textContent=S.settings.fsCode+'px';applyFonts();save()};
 $('#btnPerf').onclick=()=>{S.settings.perf=S.settings.perf===false;applyPerf();save();toast(S.settings.perf!==false?'已开启流畅模式':'已关闭流畅模式')};
@@ -3061,6 +3092,7 @@ try{
 }catch(e){}
 async function startApp(){
 await bootData();
+applyCodeFont();
 applyLang();
 window.__bootMs=Math.round(performance.now()-T_BOOT);
 try{sessionStorage.removeItem('qianliao.bootretry')}catch(e){}

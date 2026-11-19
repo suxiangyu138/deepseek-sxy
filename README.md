@@ -11,7 +11,7 @@
 
 **源码**：[Gitee](https://gitee.com/suxiangyu138/qingyan-pico) · [GitHub](https://github.com/suxiangyu138/qingyan-pico)
 
-![version](https://img.shields.io/badge/version-2.1.19-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B%20%7C%20iOS%20%7C%20HarmonyOS-black)
+![version](https://img.shields.io/badge/version-2.1.20-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B%20%7C%20iOS%20%7C%20HarmonyOS-black)
 
 ---
 
@@ -196,7 +196,7 @@ Key 只存在你自己的设备上，不经过任何服务器，也不会被上�
 ### 4.7 外观
 
 - 主题：跟随系统 / 浅色 / 深色
-- 正文字号、代码字号、整体界面缩放
+- 正文字号、代码字号、代码字体（系统 Mono / Cascadia / JetBrains / Fira Code）、整体界面缩放
 - 流畅模式：默认开启。关掉毛玻璃、背景光斑动画与消息入场动画，弱化阴影，老机型更稳
 
 ### 4.8 备份与恢复
@@ -348,7 +348,7 @@ Nginx 要做四件事：
 
 ## 十三、版本与发布
 
-当前 v2.1.19，versionCode 44。
+当前 v2.1.20，versionCode 45。
 
 - 下载页：[suxiangyu.top/download](https://suxiangyu.top/download/)
 - Gitee Release：[releases](https://gitee.com/suxiangyu138/qingyan-pico/releases)
@@ -360,7 +360,7 @@ APK 命名约定 `Pico-X.Y.Z.apk`，站点上另存一份 `app-X.Y.Z.apk` 供下
 
 - `versionName` 只在正式发版时变，一次发版一个号，不为单个修复单独加号
 - 发版之间修 bug，只递增 `versionCode`，安装包仍然可以覆盖安装
-- 当前发版目标：2.1.19（versionCode 44）
+- 当前发版目标：2.1.20（versionCode 45）
 
 ---
 

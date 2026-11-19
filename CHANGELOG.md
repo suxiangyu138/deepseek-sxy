@@ -1,5 +1,12 @@
 # 变更记录
 
+## v2.1.20 — 2026-11-19 23:20
+
+- 外观面板新增代码字体选择：系统 Mono、Cascadia、JetBrains、Fira Code 四选一
+- 默认改为系统 Mono，Windows 上即 VS Code 默认的 Consolas
+- 代码字号默认 12.5px，可调范围放宽到 11–16px
+- 三个字体各自独立字族，切换即时生效并记住选择
+
 ## v2.1.19 — 2026-11-19 23:00
 
 - 内置 Cascadia Code 等宽字体，代码块与行内代码不再落到 Courier New 这类老字体
