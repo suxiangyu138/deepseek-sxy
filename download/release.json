@@ -1,10 +1,10 @@
 {
-  "version": "2.1.21",
-  "versionCode": 46,
-  "url": "app-2.1.21.apk",
-  "apkUrl": "https://gitee.com/suxiangyu138/qingyan-pico/releases/download/v2.1.21/Pico-2.1.21.apk",
-  "size": "约 2.0 MB",
+  "version": "2.1.22",
+  "versionCode": 47,
+  "url": "app-2.1.22.apk",
+  "apkUrl": "https://gitee.com/suxiangyu138/qingyan-pico/releases/download/v2.1.22/Pico-2.1.22.apk",
+  "size": "约 2 MB",
   "requires": "Android 8.0 及以上",
-  "updated": "2026-11-19",
-  "notes": "用量改为独立累计账本，删会话与覆盖安装不再清零"
+  "updated": "2026-11-20",
+  "notes": "统一下载页与文档口径；补充全量导入与四端通用说明"
 }

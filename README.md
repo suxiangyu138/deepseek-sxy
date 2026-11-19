@@ -1,6 +1,8 @@
 # 轻言 Pico
 
-> 1.9MB 的 DeepSeek 轻客户端。自带 API Key，数据只存本机，直连官方 API。
+> 2 MB 的 DeepSeek 轻客户端。自带 API Key，数据只存本机，直连官方 API。
+>
+> 安卓装 APK，iPhone、鸿蒙 NEXT 与电脑用网页版；官方导出的历史对话可整包导入。
 >
 > 个人开发版本，与 DeepSeek 官方无关，也不代表官方立场，仅供社区自用与学习参考。
 > 针对 2026 年 11 月 DeepSeek C 端限额政策重新设计：不受每日对话额度、4 万字单次输入、7 天闲置会话失效的限制。
@@ -11,7 +13,7 @@
 
 **源码**：[Gitee](https://gitee.com/suxiangyu138/qingyan-pico) · [GitHub](https://github.com/suxiangyu138/qingyan-pico)
 
-![version](https://img.shields.io/badge/version-2.1.21-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B%20%7C%20iOS%20%7C%20HarmonyOS-black)
+![version](https://img.shields.io/badge/version-2.1.22-black) ![license](https://img.shields.io/badge/license-MIT-black) ![platform](https://img.shields.io/badge/platform-Android%208.0%2B%20%7C%20iOS%20%7C%20HarmonyOS-black)
 
 ---
 
@@ -70,7 +72,7 @@
 | 指标 | 当前 | 参考区间 |
 |---|---|---|
 | `app/index.html` | 180 KB | 300 KB 以内，超过先考虑拆文件 |
-| APK | 1.92 MB | 单次发版增量超过 200 KB 要在变更记录里说明 |
+| APK | 2.0 MB | 单次发版增量超过 200 KB 要在变更记录里说明 |
 | 冷启动 | 约 105 ms | 300 ms 以内，这是真正要守的线 |
 | 运行时依赖 | 0 | 保持 0，不引入框架与 npm 包 |
 
@@ -90,7 +92,7 @@
 
 | 设备 | 用哪个 | 安装方式 |
 |---|---|---|
-| 安卓 8.0 及以上 | APK | 下载安装包，允许未知来源 |
+| 安卓 8.0 及以上 | APK，约 2 MB | 下载安装包，允许未知来源 |
 | 鸿蒙 4.x 及以下 | APK | 同上，兼容层直接跑 |
 | 鸿蒙 NEXT 5.x | 网页版 | 浏览器打开，添加到桌面 |
 | iPhone / iPad | 网页版 | Safari 打开，分享 → 添加到主屏幕 |
@@ -348,7 +350,7 @@ Nginx 要做四件事：
 
 ## 十三、版本与发布
 
-当前 v2.1.21，versionCode 46。
+当前 v2.1.22，versionCode 47。
 
 - 下载页：[suxiangyu.top/download](https://suxiangyu.top/download/)
 - Gitee Release：[releases](https://gitee.com/suxiangyu138/qingyan-pico/releases)
@@ -360,7 +362,7 @@ APK 命名约定 `Pico-X.Y.Z.apk`，站点上另存一份 `app-X.Y.Z.apk` 供下
 
 - `versionName` 只在正式发版时变，一次发版一个号，不为单个修复单独加号
 - 发版之间修 bug，只递增 `versionCode`，安装包仍然可以覆盖安装
-- 当前发版目标：2.1.21（versionCode 46）
+- 当前发版目标：2.1.22（versionCode 47）
 
 ---
 

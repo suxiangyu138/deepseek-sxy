@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>轻言 Pico · 下载与开源</title>
-<meta name="description" content="轻言 Pico：1.2MB 的 DeepSeek 轻客户端，自带 API Key，数据只存本机。个人开发版本，与官方无关。">
+<meta name="description" content="轻言 Pico：2 MB 的 DeepSeek 轻客户端。自带 API Key，数据只存本机，手机与电脑都能用，支持一键导入官方导出的历史对话。个人开发版本，与官方无关。">
 <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b0b0c" media="(prefers-color-scheme: dark)">
 <style>
@@ -73,15 +73,15 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
 <div class="bg"><i></i><i></i></div>
 <div class="wrap">
 
-  <span class="badge" id="badge"><span class="dot"></span>v2.1.15 · 开源 · 支持应用内更新</span>
+  <span class="badge" id="badge"><span class="dot"></span>v2.1.22 · 开源 · 长期可用</span>
 
   <div class="hero">
     <div>
       <div class="brand">
-        <img class="icon" src="icon.png?v=2.1.15" alt="轻言 Pico" onerror="this.style.display='none'">
+        <img class="icon" src="icon.png?v=2.1.22" alt="轻言 Pico" onerror="this.style.display='none'">
         <h1>轻言 <span style="font-weight:600;font-size:.55em;color:var(--muted);letter-spacing:0">Pico</span></h1>
       </div>
-      <p class="sub">1.2MB 的 DeepSeek 轻客户端。自带 API Key，数据只存本机，绕开 C 端每日额度与 4 万字输入限制，上下文 1M。个人开发版本，与 DeepSeek 官方无关。</p>
+      <p class="sub">2 MB 的 DeepSeek 轻客户端。自带 API Key，数据只存本机，绕开 C 端每日额度与 4 万字输入限制，上下文 1M。安卓装 APK，iPhone、鸿蒙与电脑用网页版，历史对话可以直接导入。</p>
       <div class="actions" id="androidActions">
         <a class="btn" id="dl" href="app-latest.apk" download>下载 Android 安装包</a>
         <a class="btn ghost" href="#install">安装说明</a>
@@ -94,13 +94,13 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
 
     <div class="panel">
       <h2>版本信息</h2>
-      <div class="row"><span>版本</span><b id="pVer">2.1.15</b></div>
-      <div class="row"><span>大小</span><b id="pSize">约 1.2 MB</b></div>
+      <div class="row"><span>版本</span><b id="pVer">2.1.22</b></div>
+      <div class="row"><span>大小</span><b id="pSize">约 2 MB</b></div>
       <div class="row"><span>系统</span><b id="pReq">Android 8.0+</b></div>
       <div class="row"><span>更新</span><b id="pDate">2026-11-19</b></div>
       <div class="row" style="border-bottom:0;padding-bottom:4px"><span>SHA-256</span><b>校验</b></div>
       <div class="sha">
-        <code id="sha">aab2efe4…c3617db4</code>
+        <code id="sha">49d9b54b…2075cc92</code>
         <button class="copy" id="copySha">复制</button>
       </div>
     </div>
@@ -111,8 +111,10 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
     <div class="grid">
       <div class="card"><b>不受每日额度限制</b><p>官方 App 与网页版自 2026 年 11 月起限制每日对话额度、单次约 4 万字输入。这里用自己的 API Key 直连，按量计费。</p></div>
       <div class="card"><b>对话留在本机</b><p>会话、记忆、图片只存设备本地。没有账号与云同步，删应用即清空，不存在「7 天不活跃就续不上」。</p></div>
-      <div class="card"><b>能力对齐官方客户端</b><p>深度思考、联网搜索、阅读链接、图片识别、PDF 与 Office 解析，全部走官方接口，模型 V4.1 Flash / V4 Pro。</p></div>
-      <div class="card"><b>用量透明</b><p>每条回答显示缓存命中率、输出速率与费用；顶栏实时显示上下文占用，不用猜还剩多少。</p></div>
+      <div class="card"><b>能力对齐官方客户端</b><p>深度思考（低/高/最高三档）、联网搜索、阅读链接、图片识别、PDF 与 Office 解析，全部走官方接口，模型 V4.1 Flash / V4 Pro。</p></div>
+      <div class="card"><b>用量透明</b><p>每条回答显示缓存命中率、输出速率与费用；顶栏实时显示上下文占用。累计花费单独记账，删会话、换版本都不清零。</p></div>
+      <div class="card"><b>历史对话可迁移</b><p>官方导出的整包 zip 直接选进「导入对话」，两千多个会话全量导入，按最近使用排序。</p></div>
+      <div class="card"><b>一个包，四种设备</b><p>安卓与鸿蒙 4 及以下装 APK；iPhone、鸿蒙 NEXT、电脑打开网页版添加桌面，界面与功能完全一致。</p></div>
     </div>
   </section>
 
@@ -130,7 +132,7 @@ footer a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line
     <div class="steps">
       <div class="step"><div class="num">1</div><div><b>用 Safari 打开网页版</b><p>点上方「打开网页版」，必须是 Safari，微信内置浏览器不行。</p></div></div>
       <div class="step"><div class="num">2</div><div><b>点底部分享按钮</b><p>地址栏右侧或底部的方框箭头图标，菜单里选「添加到主屏幕」。</p></div></div>
-      <div class="step"><div class="num">3</div><div><b>确认添加</b><p>桌面出现 DeepSeek_sxy 图标，点开即全屏使用，首次进入填自己的 API Key。</p></div></div>
+      <div class="step"><div class="num">3</div><div><b>确认添加</b><p>桌面出现「轻言」图标，点开即全屏使用，首次进入填自己的 API Key。</p></div></div>
     </div>
   </section>
 
@@ -181,7 +183,7 @@ document.getElementById('copyApp').addEventListener('click',function(){
   if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(u).then(ok).catch(fb)}else fb();
   function fb(){var a=document.createElement('textarea');a.value=u;a.style.position='fixed';a.style.opacity=0;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){}a.remove()}
 });
-var FULL_SHA='aab2efe4d35894baeaf83bcd28c71d551a45011de75f595cdbc1a233c3617db4';
+var FULL_SHA='49d9b54b721017e2efdae769553ee7a502fe97ffb386f28d835e26182075cc92';
 function shortSha(s){return s.slice(0,8)+'…'+s.slice(-8)}
 document.getElementById('sha').textContent=shortSha(FULL_SHA);
 document.getElementById('copySha').addEventListener('click',function(){
