@@ -1,7 +1,10 @@
 {
-  "version": "2.0.0",
-  "url": "app-2.0.0.apk",
+  "version": "2.1.0",
+  "versionCode": 25,
+  "url": "app-2.1.0.apk",
+  "apkUrl": "https://suxiangyu.top/download/app-2.1.0.apk",
   "size": "约 1.9 MB",
   "requires": "Android 8.0 及以上",
-  "updated": "2026-11-19"
+  "updated": "2026-11-19",
+  "notes": "新增应用内检查更新，一键下载并覆盖安装，数据保留"
 }

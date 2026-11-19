@@ -382,7 +382,7 @@ a.tile{text-decoration:none}
     <button class="iconbtn" id="btnMenu" aria-label="会话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
-    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.0.0</span></div>
+    <div class="title"><span id="chatTitle">轻言</span><span class="tsub" id="topVer">v2.1.0</span></div>
     <button class="bal" id="balance" title="余额">¥—</button>
     <button class="iconbtn" id="btnNew" aria-label="新对话">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -463,7 +463,7 @@ a.tile{text-decoration:none}
       <span data-i18n="about">关于作者</span>
       <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
-    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.0.0</span></div>
+    <div class="author"><span data-i18n="author">轻言 Pico</span> · <span id="verLabel">v2.1.0</span></div>
   </div>
 </aside>
 
@@ -650,7 +650,7 @@ a.tile{text-decoration:none}
   <div class="about-row"><b data-i18n="email">邮箱</b><a href="mailto:suxiangyu_dev@foxmail.com">suxiangyu_dev@foxmail.com</a><button class="copybtn" id="copyMail" data-i18n="copy">复制</button></div>
   <div class="about-row"><b>GitHub</b><a href="https://github.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
   <div class="about-row"><b>Gitee</b><a href="https://gitee.com/suxiangyu138" target="_blank" rel="noopener">suxiangyu138</a></div>
-  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.0.0</span></div>
+  <div class="about-row"><b data-i18n="version">版本</b><span id="aboutVer">v2.1.0</span></div>
   <button class="mini" id="btnForceUpdate" style="width:100%;margin-top:10px" data-i18n="forceUpdate">刷新到最新版</button>
   <div class="about-note" id="bootInfo" style="font-size:10px;opacity:.7"></div>
   <div class="about-note" data-i18n="aboutNote">个人开发版本，与 DeepSeek 官方无关，仅供社区自用参考。有问题或建议，发邮件到 suxiangyu_dev@foxmail.com，或在仓库提 issue。</div>
@@ -672,7 +672,7 @@ a.tile{text-decoration:none}
 (function(){
 "use strict";
 const $=s=>document.querySelector(s);
-const APP_VER='2.0.0';
+const APP_VER='2.1.0';
 const T_BOOT=performance.now();
 const IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 if(IS_IOS)document.documentElement.classList.add('ios');
@@ -2233,20 +2233,38 @@ $('#expMd').onclick=exportMarkdown;
 $('#expTxt').onclick=exportText;
 $('#expPdf').onclick=exportPdf;
 $('#btnAbout').onclick=()=>{closeAll();
-  $('#btnForceUpdate').textContent=nativeBridge()?'打开下载页':t('forceUpdate');$('#aboutVer').textContent='v'+APP_VER;$('#bootInfo').textContent=(window.__bootMs?('启动 '+window.__bootMs+' ms'):'')+(IS_IOS?' · 建议添加到主屏幕，长期不用可能被系统清缓存':'');$('#aboutSheet').classList.add('show');$('#mask').classList.add('show')};
-$('#btnForceUpdate').onclick=async()=>{
-  if(nativeBridge()){try{AndroidSaver.openUrl('https://suxiangyu.top/download/');return}catch(e){}}
-  if(!confirm(t('forceAsk')))return;
-  toast(t('updating'),4000);
-  try{const rs=await navigator.serviceWorker.getRegistrations();for(const r of rs)await r.unregister()}catch(e){}
-  try{const ks=await caches.keys();for(const k of ks)await caches.delete(k)}catch(e){}
-  try{sessionStorage.setItem('qianliao.justUpdated','1')}catch(e){}
-  setTimeout(()=>{
-    const url=location.pathname+'?v='+Date.now();
-    try{location.replace(url)}catch(e){location.href=url}
-    setTimeout(()=>{if(!document.hidden)location.reload()},1500);
-  },200);
-};
+  $('#btnForceUpdate').textContent='检查更新';$('#aboutVer').textContent='v'+APP_VER;$('#bootInfo').textContent=(window.__bootMs?('启动 '+window.__bootMs+' ms'):'')+(IS_IOS?' · 建议添加到主屏幕，长期不用可能被系统清缓存':'');$('#aboutSheet').classList.add('show');$('#mask').classList.add('show')};
+function cmpVer(a,b){
+  const pa=String(a).replace(/^v/,'').split('.').map(Number),pb=String(b).replace(/^v/,'').split('.').map(Number);
+  for(let i=0;i<3;i++){const x=pa[i]||0,y=pb[i]||0;if(x!==y)return x>y?1:-1}
+  return 0;
+}
+async function checkUpdate(manual){
+  let info=null;
+  const url='https://suxiangyu.top/download/release.json?ts='+Date.now();
+  try{
+    if(nativeBridge()){const txt=AndroidSaver.fetchText(url);if(txt)info=JSON.parse(txt)}
+    else{const r=await fetch(url,{cache:'no-store'});if(r.ok)info=await r.json()}
+  }catch(e){}
+  if(!info||!info.version){
+    if(manual){
+      if(nativeBridge())toast('检查更新失败，请检查网络');
+      else{try{window.open('https://suxiangyu.top/download/','_blank')}catch(e){}}
+    }
+    return;
+  }
+  const cur=APP_VER;
+  if(cmpVer(info.version,cur)<=0){if(manual)toast('已是最新版本 v'+cur);return}
+  const notes=info.notes?('\n\n'+info.notes):'';
+  if(!confirm('发现新版本 '+info.version+'，当前 '+cur+'\n大小 '+(info.size||'')+notes+'\n\n现在更新？'))return;
+  if(nativeBridge()){
+    const u=info.apkUrl||('https://suxiangyu.top/download/'+(info.url||('app-'+info.version+'.apk')));
+    try{AndroidSaver.installApk(u)}catch(e){toast('更新失败，请到下载页手动安装')}
+  }else{
+    try{window.open('https://suxiangyu.top/download/','_blank')}catch(e){location.href='https://suxiangyu.top/download/'}
+  }
+}
+$('#btnForceUpdate').onclick=()=>checkUpdate(true);
 $('#copyMail').onclick=()=>{copyText('suxiangyu_dev@foxmail.com');toast(t('copied'))};
 $('#fsMsg').oninput=e=>{S.settings.fsMsg=Number(e.target.value);$('#fsMsgOut').textContent=S.settings.fsMsg+'px';applyFonts();save()};
 $('#fsCode').oninput=e=>{S.settings.fsCode=Number(e.target.value);$('#fsCodeOut').textContent=S.settings.fsCode+'px';applyFonts();save()};

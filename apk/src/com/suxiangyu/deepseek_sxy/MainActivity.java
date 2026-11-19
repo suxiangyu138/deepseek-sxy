@@ -1,8 +1,11 @@
 package com.suxiangyu.deepseek_sxy;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInstaller;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -31,6 +34,7 @@ import java.io.OutputStream;
 public class MainActivity extends Activity {
     private WebView web;
     private byte[] pendingData;
+    private static final String INSTALL_ACTION = "com.suxiangyu.deepseek_sxy.INSTALL_RESULT";
     private ValueCallback<Uri[]> fileCallback;
     private static final int REQ_FILE = 1001;
     private static final int REQ_SAVE = 2002;
@@ -94,6 +98,58 @@ public class MainActivity extends Activity {
             } catch (Exception e) {
                 toast("保存失败");
             }
+        }
+
+        @JavascriptInterface
+        public String fetchText(String url) {
+            try {
+                java.net.HttpURLConnection c = (java.net.HttpURLConnection) new java.net.URL(url).openConnection();
+                c.setConnectTimeout(8000);
+                c.setReadTimeout(8000);
+                c.setRequestProperty("User-Agent", "PicoUpdater");
+                java.io.InputStream in = c.getInputStream();
+                java.io.ByteArrayOutputStream bo = new java.io.ByteArrayOutputStream();
+                byte[] buf = new byte[4096];
+                int n;
+                while ((n = in.read(buf)) > 0) bo.write(buf, 0, n);
+                in.close();
+                return bo.toString("UTF-8");
+            } catch (Exception e) {
+                return "";
+            }
+        }
+
+        @JavascriptInterface
+        public void installApk(final String url) {
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        toast("开始下载更新");
+                        java.net.HttpURLConnection c = (java.net.HttpURLConnection) new java.net.URL(url).openConnection();
+                        c.setConnectTimeout(15000);
+                        c.setReadTimeout(120000);
+                        java.io.InputStream in = c.getInputStream();
+                        PackageInstaller pi = getPackageManager().getPackageInstaller();
+                        PackageInstaller.SessionParams p = new PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL);
+                        int id = pi.createSession(p);
+                        PackageInstaller.Session session = pi.openSession(id);
+                        java.io.OutputStream os = session.openWrite("pico.apk", 0, -1);
+                        byte[] buf = new byte[8192];
+                        int n;
+                        while ((n = in.read(buf)) > 0) os.write(buf, 0, n);
+                        session.fsync(os);
+                        os.close();
+                        in.close();
+                        Intent i = new Intent(INSTALL_ACTION).setPackage(getPackageName());
+                        int flags = PendingIntent.FLAG_UPDATE_CURRENT;
+                        if (Build.VERSION.SDK_INT >= 31) flags |= 0x02000000;
+                        PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, id, i, flags);
+                        session.commit(pending.getIntentSender());
+                    } catch (Exception e) {
+                        toast("更新失败，请到下载页手动安装");
+                    }
+                }
+            }).start();
         }
 
         @JavascriptInterface
