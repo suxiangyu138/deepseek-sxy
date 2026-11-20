@@ -1,10 +1,10 @@
 {
-  "version": "2.1.22",
-  "versionCode": 47,
-  "url": "app-2.1.22.apk",
-  "apkUrl": "https://gitee.com/suxiangyu138/qingyan-pico/releases/download/v2.1.22/Pico-2.1.22.apk",
+  "version": "2.1.23",
+  "versionCode": 59,
+  "url": "app-2.1.23.apk",
+  "apkUrl": "https://gitee.com/suxiangyu138/qingyan-pico/releases/download/v2.1.23/Pico-2.1.23.apk",
   "size": "约 2 MB",
   "requires": "Android 8.0 及以上",
   "updated": "2026-11-20",
-  "notes": "统一下载页与文档口径；补充全量导入与四端通用说明"
+  "notes": "图表放大与 PNG 导出；会话级角色；匿名对话；流式滚动重做；修复消息序列报错"
 }
